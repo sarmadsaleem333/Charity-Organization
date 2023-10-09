@@ -1,11 +1,11 @@
 const mysql = require('mysql2');
-require('dotenv').config({path:"../.env"}); // Load environment variables from .env file
-
+require('dotenv').config({ path: "../.env" });
 
 const con = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 const connectToMySql = () => {
@@ -18,4 +18,4 @@ const connectToMySql = () => {
     });
 }
 
-module.exports = connectToMySql;
+module.exports = { con, connectToMySql };
