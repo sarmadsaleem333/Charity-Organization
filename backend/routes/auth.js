@@ -9,12 +9,7 @@ const JWT_secret = " hbssbwu" // add your secret here
 
 
 // Route 1: Create a user using Post request "/blogging/auth/createuser". No login required
-const pool = mysql.createPool({
-    host: "127.0.0.1",  // MySQL server hostname
-    user: "root",       // MySQL username
-    password: "Ravian#1218", // MySQL password\
-    database:"projectsarmad"
-});
+
 router.post("/createuser", [
     body("name", "Enter a valid name").isLength({ min: 5 }),
     body("email", "Enter a valid email").isEmail(),
