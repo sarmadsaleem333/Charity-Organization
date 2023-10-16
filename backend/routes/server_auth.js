@@ -88,6 +88,31 @@ router.put("/edit_account_details", fetchserver, [
     } catch (error) {
         console.log(error);
     }
-})
+});
+
+
+router.put("/edit_balance", fetchserver, [
+    body("amount", "Enter amount in Rs.").notEmpty(),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const response = errors.array();
+        return res.status(400).json(response[0].msg);
+    }
+    try {
+        const { amount } = req.body;
+        con.query("update server set amount=? where server_id=?", [amount, req.server.id],
+            (error, result) => {
+                if (error) {
+                    return res.send("Error editing amount");
+                }
+                res.json({ message: "Successfully updated the amount"});
+            }
+        )
+
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 module.exports = router;
