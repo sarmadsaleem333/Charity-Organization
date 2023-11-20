@@ -21,7 +21,7 @@ router.post("/login_server", [
         return res.status(400).json(response[0].msg);
     }
     try {
-        con.query("Select * from server where email =? limit 1", [email], async (error, server) => {
+        con.query("Select * from server where smail =? limit 1", [email], async (error, server) => {
             if (error) {
                 return res.send("Error finding server");
             }
@@ -29,13 +29,13 @@ router.post("/login_server", [
 
                 return res.json({ message: "You entered wrong email", success });
             }
-            const passwordCompare = await bcrypt.compare(password, server[0].password);
+            const passwordCompare = await bcrypt.compare(password, server[0].spassword);
             if (!passwordCompare) {
                 return res.status(400).json({ success, error: "Please enter the correct Password" });
             }
             const data = {
                 server: {
-                    id: server[0].server_id
+                    id: server[0].sno
                 }
             };
             const authtoken = jwt.sign(data, JWT_Secret);
@@ -51,9 +51,10 @@ router.post("/login_server", [
 
 router.get("/fetch_server", fetchserver, async (req, res) => {
     try {
-        con.query("select name,email,phone,account_title,account_no,amount from server where server_id=?", [req.server.id], (error, result) => {
+        con.query("select sname,smail,saccounttitle,sacccountno,samount from server where sno=?", [req.server.id], (error, result) => {
 
             if (error) {
+                console.log(error);
                 return res.send("Error fetching details");
             }
             res.send(result[0]);
@@ -81,11 +82,12 @@ router.put("/edit_account_details", fetchserver, [
                 if (error) {
                     return res.send("Error editing details");
                 }
-                res.json({ message: "Successfully updated the account details"});
+                res.json({ message: "Successfully updated the account details" });
             }
         )
 
-    } catch (error) {
+    }
+    catch (error) {
         console.log(error);
     }
 });
@@ -106,7 +108,7 @@ router.put("/edit_balance", fetchserver, [
                 if (error) {
                     return res.send("Error editing amount");
                 }
-                res.json({ message: "Successfully updated the amount"});
+                res.json({ message: "Successfully updated the amount" });
             }
         )
 
