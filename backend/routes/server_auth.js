@@ -77,7 +77,7 @@ router.put("/edit_account_details", fetchserver, [
     }
     try {
         const { account_title, account_no } = req.body;
-        con.query("update server set account_no=? , account_title=? where server_id=?", [account_title, account_no, req.server.id],
+        con.query("update server set sacccountno=? , saccounttitle=? where sno=?", [ account_no,account_title, req.server.id],
             (error, result) => {
                 if (error) {
                     return res.send("Error editing details");
@@ -103,7 +103,7 @@ router.put("/edit_balance", fetchserver, [
     }
     try {
         const { amount } = req.body;
-        con.query("update server set amount=? where server_id=?", [amount, req.server.id],
+        con.query("update server set samount=? where sno=?", [amount, req.server.id],
             (error, result) => {
                 if (error) {
                     return res.send("Error editing amount");
