@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/charity_organization/user_auth', require('./routes/user_auth'));
 app.use('/charity_organization/server_auth', require('./routes/server_auth'));
-app.use('/charity_organization/case_request', require('./routes/case_request'));
+app.use('/charity_organization/case', require('./routes/case'));
 
 
 app.listen(port, () => {
