@@ -1,4 +1,3 @@
-require('dotenv').config({ path: "../../.env" });
 const express = require("express");
 const router = express.Router();
 const { validationResult, body } = require('express-validator');
@@ -7,6 +6,26 @@ const fetchuser = require('../midlleware/fetchuser');
 const fetchserver = require('../midlleware/fetchserver');
 const date = new Date();
 
+
+//notifications functions
+const handleNotifications = (message, userId) => {
+    const insertNotificationSql = "INSERT INTO notifications (nmessage) VALUES (?)";
+    con.query(insertNotificationSql, [message], (error, notificationResults) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Internal server error" });
+
+        }
+        const notificationId = notificationResults.insertId;
+        const insertUserNotificationSql = "INSERT INTO usernotification (nno, uno) VALUES (?, ?)";
+        con.query(insertUserNotificationSql, [notificationId, userId], (error) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+        });
+    });
+};
 //request for applying case
 router.post("/apply_case", fetchuser, [
     body("cdescription", "Enter a description of at least 10 characters").isLength({ min: 10 }),
@@ -103,28 +122,9 @@ router.post("/approve_case/:id", fetchserver,
                     if (error) {
                         return res.status(500).json({ error: "You have already approved this course" });
                     }
-
                     const registeredCaseId = results.insertId;
-
-                    // Insert into notifications
-                    con.query("INSERT INTO notifications (nmessage) VALUES (?)", [`Your case has been approved of cno ${req.params.id}`], (error, results2) => {
-                        if (error) {
-                            console.log(error);
-                            return res.status(500).json({ error: "Internal server error" });
-                        }
-
-                        const notificationId = results2.insertId;
-
-                        // Insert into usernotification
-                        con.query("INSERT INTO usernotification (nno, uno) VALUES (?, ?)", [notificationId, user.uno], (error, results3) => {
-                            if (error) {
-                                console.log(error);
-                                return res.status(500).json({ error: "Internal server error" });
-                            }
-
-                            return res.send(`Your case has been approved  with id ${req.params.id}`);
-                        });
-                    });
+                    handleNotifications(`Your case has been approved  with id ${req.params.id}`, user.uno);
+                    return res.send(`Your case has been approved  with id ${req.params.id}`);
                 });
             });
         } catch (error) {
@@ -144,11 +144,6 @@ router.get("/get_all_registered_cases", fetchserver
                 if (error) {
                     console.log(error);
                     return res.status(500).json({ error: "Internal server error" });
-                }
-
-                if (userResults.length === 0) {
-                    return res.send("No registered cases yet");
-
                 }
 
                 return res.send(userResults);
@@ -172,10 +167,7 @@ router.get("/get_all_registered_cases", fetchuser
                     return res.status(500).json({ error: "Internal server error" });
                 }
 
-                if (userResults.length === 0) {
-                    return res.send("No registered cases yet");
 
-                }
                 return res.send(userResults);
             });
         } catch (error) {
@@ -191,10 +183,6 @@ router.get("/get_all_applications", fetchserver, async (req, res) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
-            }
-
-            if (userResults.length === 0) {
-                return res.send("No applications found");
             }
 
             return res.send(userResults);
@@ -243,39 +231,36 @@ router.post("/donate_case/:id", fetchuser,
                                 console.log(error);
                                 return res.status(500).json({ error: "Internal server error" });
                             }
-                            con.query("Insert into notifications (nmessage) values(?)", [`You have made donation to ${results2[0].name}`], (error, results3) => {
-                                if (error) {
-                                    console.log(error);
-                                    return res.status(500).json({ error: "Internal server error" });
-                                }
-                                const notificationId = results3.insertId;
-
-                                // Insert into usernotification
-                                con.query("INSERT INTO usernotification (nno, uno) VALUES (?, ?)", [notificationId, req.user.id], (error, results4) => {
-                                    if (error) {
-                                        console.log(error);
-                                        return res.status(500).json({ error: "Internal server error" });
-                                    }
-
-                                    caseName = results2[0].name;
-                                    return res.send(`You donated for the case ${caseName}`);
-                                });
-                            })
-
+                            handleNotifications(`You have made donation to ${results2[0].name}`,req.user.id);
+                            return res.send(`You donated for the case ${caseName}`);
                         })
                     })
-
-
                 })
-
-
             });
-
 
         } catch (error) {
             console.log(error);
             return res.status(500).send("Internal server error occurred");
 
         }
-    })
+    });
+
+//route to get cases which are completed and server has not still transferred them
+router.get("/get_nontransfered_cases", fetchserver, async (req, res) => {
+
+    try {
+        con.query("select * from registeredcases natural join cases  where (clastdate<(?) or amountmade=camountreq )and  transferstatus=0 ", [date], (error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send("Internal server error occurred");
+            }
+            res.send(results);
+        })
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+    }
+});
+
 module.exports = router;
