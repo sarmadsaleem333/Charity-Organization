@@ -16,5 +16,5 @@ app.use('/charity_organization/case', require('./routes/case'));
 
 
 app.listen(port, () => {
-    console.log(`My Charity Organization is listening on port http://localhost:${port}`);
+    console.log(`Give Hope Network is listening on port http://localhost:${port}`);
 });

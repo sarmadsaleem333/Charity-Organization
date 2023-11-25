@@ -7,7 +7,6 @@ const fetchuser = require('../midlleware/fetchuser');
 const fetchserver = require('../midlleware/fetchserver');
 const date = new Date();
 
-
 //request for applying case
 router.post("/apply_case", fetchuser, [
     body("cdescription", "Enter a description of at least 10 characters").isLength({ min: 10 }),
@@ -72,49 +71,7 @@ router.get("/get_my_apply_cases", fetchuser, async (req, res) => {
     }
 });
 
-//route for getting all the applied cases
-// router.get("/get_all_applied_cases", fetchuser, async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         const response = errors.array();
-//         return res.status(400).json(response[0].msg);
-//     }
-//     try {
-//         con.query("Select * from cases where uno=(?)", [req.user.id], (error, results) => {
-//             if (error) {
-//                 console.log(error);
-//                 return res.status(500).json({ error: "Internal server error" });
-//             }
-//             return res.send(results);
-//         });
-
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send("Internal server error occurred");
-//     }
-// });
-
-//route for approving the cases
-// router.get("/get_all_applied_cases", fetchuser, async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         const response = errors.array();
-//         return res.status(400).json(response[0].msg);
-//     }
-//     try {
-//         con.query("Select * from cases where uno=(?)", [req.user.id], (error, results) => {
-//             if (error) {
-//                 console.log(error);
-//                 return res.status(500).json({ error: "Internal server error" });
-//             }
-//             return res.send(results);
-//         });
-
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send("Internal server error occurred");
-//     }
-// });
+//route for approving a case by a server 
 router.post("/approve_case/:id", fetchserver,
     [
         body("name", "Enter a name of at least 5 characters").isLength({ min: 5 }),
@@ -165,7 +122,7 @@ router.post("/approve_case/:id", fetchserver,
                                 return res.status(500).json({ error: "Internal server error" });
                             }
 
-                            return res.send(`You have approved the case with id ${req.params.id}`);
+                            return res.send(`Your case has been approved  with id ${req.params.id}`);
                         });
                     });
                 });
@@ -176,24 +133,25 @@ router.post("/approve_case/:id", fetchserver,
         }
 
     });
-//get all applied cases whose date is not passed it still 
-router.get("/get_all_applied_cases", fetchserver
+
+//get all registered cases whose date is not passed it still by server 
+router.get("/get_all_registered_cases", fetchserver
     , async (req, res) => {
 
         try {
             // Find the user associated with the applied case
-            con.query( "SELECT * FROM cases JOIN registeredcases ON cases.cno = registeredcases.cno WHERE cases.clastdate >= ?", [date], (error, userResults) => {
+            con.query("SELECT * FROM cases JOIN registeredcases ON cases.cno = registeredcases.cno WHERE cases.clastdate >= ?", [date], (error, userResults) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json({ error: "Internal server error" });
                 }
 
                 if (userResults.length === 0) {
-                    return res.status(404).json({ error: "No applications found" });
+                    return res.send("No registered cases yet");
+
                 }
 
                 return res.send(userResults);
-
 
             });
         } catch (error) {
@@ -202,5 +160,122 @@ router.get("/get_all_applied_cases", fetchserver
         }
 
     });
+//get all registered cases whose date is not passed it still by server 
+router.get("/get_all_registered_cases", fetchuser
+    , async (req, res) => {
 
+        try {
+            // Find the user associated with the applied case
+            con.query("SELECT * FROM cases JOIN registeredcases ON cases.cno = registeredcases.cno WHERE cases.clastdate >= ?", [date], (error, userResults) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({ error: "Internal server error" });
+                }
+
+                if (userResults.length === 0) {
+                    return res.send("No registered cases yet");
+
+                }
+                return res.send(userResults);
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send("Internal server error occurred");
+        }
+
+    });
+//getting all applications by a server
+router.get("/get_all_applications", fetchserver, async (req, res) => {
+    try {
+        con.query("select * from cases as c where not exists (select * from registeredcases as r where r.cno=c.cno) and c.clastdate>(?)", [date], (error, userResults) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+
+            if (userResults.length === 0) {
+                return res.send("No applications found");
+            }
+
+            return res.send(userResults);
+
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+    }
+});
+//route for charity by users 
+router.post("/donate_case/:id", fetchuser,
+    [body("amount", "Amount should not be empty").notEmpty(),
+    body("accounttitle", "Enter Account Title ").notEmpty(),
+    body("accountno", "Enter account no").notEmpty(),
+    ], async (req, res) => {
+        const { amount, accounttitle, accountno } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const response = errors.array();
+            return res.status(400).json(response[0].msg);
+        }
+        try {
+            let caseName;
+            if (amount < 100) {
+                return res.send("Amount should be atleast Rs.100");
+            }
+            con.query("INSERT INTO casedonates (uno,cno,amount,accounttitle,accountno) VALUES (?,?,?,?,?)", [req.user.id, req.params.id, amount, accounttitle, accountno], (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({ error: "Internal server error" });
+                }
+                con.query("select * from  registeredcases where cno=(?)", [req.params.id], (error, results2) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).json({ error: "Internal server error" });
+                    }
+                    con.query("UPDATE registeredcases SET amountmade =amountmade + (?) WHERE cno = (?)", [amount, req.params.id], (error, resultsN) => {
+                        if (error) {
+                            console.log(error);
+                            return res.status(500).json({ error: "Internal server error" });
+                        }
+                        con.query("UPDATE server SET samount =samount+ (?) WHERE sno = (?)", [amount, 1], (error, resultsS) => {
+                            if (error) {
+                                console.log(error);
+                                return res.status(500).json({ error: "Internal server error" });
+                            }
+                            con.query("Insert into notifications (nmessage) values(?)", [`You have made donation to ${results2[0].name}`], (error, results3) => {
+                                if (error) {
+                                    console.log(error);
+                                    return res.status(500).json({ error: "Internal server error" });
+                                }
+                                const notificationId = results3.insertId;
+
+                                // Insert into usernotification
+                                con.query("INSERT INTO usernotification (nno, uno) VALUES (?, ?)", [notificationId, req.user.id], (error, results4) => {
+                                    if (error) {
+                                        console.log(error);
+                                        return res.status(500).json({ error: "Internal server error" });
+                                    }
+
+                                    caseName = results2[0].name;
+                                    return res.send(`You donated for the case ${caseName}`);
+                                });
+                            })
+
+                        })
+                    })
+
+
+                })
+
+
+            });
+
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send("Internal server error occurred");
+
+        }
+    })
 module.exports = router;
