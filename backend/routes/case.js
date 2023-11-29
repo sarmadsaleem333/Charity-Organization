@@ -140,7 +140,7 @@ router.get("/get_all_registered_cases", fetchserver
 
         try {
             // Find the user associated with the applied case
-            con.query("SELECT * FROM cases JOIN registeredcases ON cases.cno = registeredcases.cno WHERE cases.clastdate >= ?", [date], (error, userResults) => {
+            con.query("SELECT * FROM cases JOIN registeredcases ON cases.cno = registeredcases.cno WHERE cases.clastdate >= ? ", [date], (error, userResults) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json({ error: "Internal server error" });
@@ -231,7 +231,7 @@ router.post("/donate_case/:id", fetchuser,
                                 console.log(error);
                                 return res.status(500).json({ error: "Internal server error" });
                             }
-                            handleNotifications(`You have made donation to ${results2[0].name}`,req.user.id);
+                            handleNotifications(`You have made donation to ${results2[0].name}`, req.user.id);
                             return res.send(`You donated for the case ${caseName}`);
                         })
                     })
@@ -255,6 +255,7 @@ router.get("/get_nontransfered_cases", fetchserver, async (req, res) => {
                 return res.status(500).send("Internal server error occurred");
             }
             res.send(results);
+
         })
     } catch (error) {
 
@@ -263,4 +264,39 @@ router.get("/get_nontransfered_cases", fetchserver, async (req, res) => {
     }
 });
 
+//route to made transfer the money to account of the case user which have been made
+router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
+
+    try {
+        con.query("select * from cases natural join registeredcases where cno=?", [req.params.id], (errors, result1) => {
+
+            if (errors) {
+                console.log(errors);
+                return res.status(500).send("Internal server error occurred");
+            }
+            if (result1[0].length == 0) {
+                return res.send("No case found.");
+            }
+            con.query("UPDATE server SET samount =samount- (?) WHERE sno = (?)", [result1[0].amountmade, 1], (error, result2) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).send("Internal server error occurred");
+                }
+                con.query("update registeredcases set transferstatus= 1 where cno= ? ", [req.params.id], (error, result3) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).send("Internal server error occurred");
+                    }
+                    handleNotifications(`Your case ${result1[0].name} has been resolved`,result1[0].uno);
+                    res.send(`You have transfered the amount ${result1[0].amountmade} to the case`);
+                })
+            })
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+
+    }
+})
 module.exports = router;
