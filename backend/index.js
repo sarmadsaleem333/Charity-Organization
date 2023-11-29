@@ -14,6 +14,7 @@ app.use('/charity_organization/user_auth', require('./routes/user_auth'));
 app.use('/charity_organization/server_auth', require('./routes/server_auth'));
 app.use('/charity_organization/case', require('./routes/case'));
 app.use('/charity_organization/notification', require('./routes/notification'));
+app.use('/charity_organization/donation_item', require('./routes/donation_item'));
 
 
 app.listen(port, () => {
