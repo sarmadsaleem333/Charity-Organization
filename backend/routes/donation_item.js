@@ -9,8 +9,6 @@ const handleNotifications = require("../midlleware/handleNotifications");
 
 const date = new Date();
 
-
-
 //storing in backend/public/images/
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
