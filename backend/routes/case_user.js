@@ -7,7 +7,7 @@ const fetchserver = require('../midlleware/fetchserver');
 const handleNotifications = require("../midlleware/handleNotifications");
 const date = new Date();
 
-
+//---tested----------------------------
 //request for applying case
 router.post("/apply_case", fetchuser, [
     body("cdescription", "Enter a description of at least 10 characters").isLength({ min: 10 }),
@@ -44,7 +44,7 @@ router.post("/apply_case", fetchuser, [
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
-            handleNotifications(`Your application for your case ${result.insertId} has been sent.`,req.user.id,"user");
+            handleNotifications(`Your application for your case ${results.insertId} has been sent.`,req.user.id,"user");
             return res.send("Your application has been sent. You would be informed shortly");
         });
 
@@ -72,6 +72,7 @@ router.get("/get_my_transferredcases", fetchuser, async (req, res) => {
     }
 });
 
+// --tested
 //route for getting all my inprogress cases
 router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     try {
@@ -90,6 +91,7 @@ router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     }
 });
 
+// --tested
 //route for getting my  applied cases which are not approved
 router.get("/get_my_applied_unapproved_cases", fetchuser, async (req, res) => {
     try {
@@ -107,13 +109,13 @@ router.get("/get_my_applied_unapproved_cases", fetchuser, async (req, res) => {
         return res.status(500).send("Internal server error occurred");
     }
 }); 
-
+// --tested
 //get all registered cases whose date is not passed it still by server 
 router.get("/get_all_registered_cases_by_user", fetchuser,async (req, res) => {
 
     try {
         // Find the user associated with the applied case
-        con.query("SELECT * FROM cases_shown_for_donation  WHERE cases.clastdate >= ?", [date], (error, userResults) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? or amountmade>=camountreq", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -128,4 +130,6 @@ router.get("/get_all_registered_cases_by_user", fetchuser,async (req, res) => {
     }
 
 });
+
+
 module.exports=router;

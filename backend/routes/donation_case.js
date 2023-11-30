@@ -7,7 +7,10 @@ const fetchserver = require('../midlleware/fetchserver');
 const handleNotifications = require("../midlleware/handleNotifications");
 const date = new Date();
 
+
+// -----------tested
 //route for charity by users 
+
 router.post("/donate_case/:id", fetchuser,
     [body("amount", "Amount should not be empty").notEmpty(),
     body("accounttitle", "Enter Account Title ").notEmpty(),
@@ -45,7 +48,7 @@ router.post("/donate_case/:id", fetchuser,
                                 return res.status(500).json({ error: "Internal server error" });
                             }
                             handleNotifications(`You have made donation to ${results2[0].name} of Rs. ${amount}`, req.user.id,"user");
-                            return res.send(`You donated for the case ${caseName}`);
+                            return res.send(`You donated for the case ${results2[0].name}`);
                         })
                     })
                 })

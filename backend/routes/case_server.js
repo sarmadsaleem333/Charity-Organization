@@ -7,6 +7,8 @@ const fetchserver = require('../midlleware/fetchserver');
 const handleNotifications = require("../midlleware/handleNotifications");
 const date = new Date();
 
+
+// --tested
 //route for approving a case by a server 
 router.post("/approve_case/:id", fetchserver,
     [
@@ -41,7 +43,7 @@ router.post("/approve_case/:id", fetchserver,
                     }
                     const registeredCaseId = results.insertId;
                     handleNotifications(`Your case has been approved  with id ${req.params.id}. You will reach the transfer amount after being collected.`, user.uno,"user");
-                    return res.send(`Your case has been approved  with id ${req.params.id}. You will reach the transfer amount after being collected.`);
+                    return res.send("You have approved this case.");
                 });
             });
         } catch (error) {
@@ -51,13 +53,15 @@ router.post("/approve_case/:id", fetchserver,
 
     });
 
+
+// ---tested
 //get all registered cases whose date is not passed it still by server 
 router.get("/get_all_registered_cases_by_server", fetchserver
     , async (req, res) => {
 
         try {
             // Find the user associated with the applied case
-            con.query("SELECT * FROM cases_shown_for_donation  WHERE cases.clastdate >= ? ", [date], (error, userResults) => {
+            con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? or  camountreq=amountmade ", [date], (error, userResults) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json({ error: "Internal server error" });
@@ -73,10 +77,11 @@ router.get("/get_all_registered_cases_by_server", fetchserver
 
     });
 
+// ----tested
 //getting all applications by a server
 router.get("/get_all_applications", fetchserver, async (req, res) => {
     try {
-        con.query("select * from my_applied_cases_unapproved  where  c.clastdate>(?)", [date], (error, userResults) => {
+        con.query("select * from my_applied_cases_unapproved  where  clastdate>(?)", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -111,10 +116,12 @@ router.get("/get_all_transferred_cases_by_server", fetchserver, async (req, res)
     }
 });
 
+
+//-----------tested
 //route to get the completed byut not transferred cases
 router.get("/get_all_non_transferred_cases_but_completed", fetchserver, async (req, res) => {
     try {
-        con.query("select * from registeredcases natural join cases  where ( clastdate< ? camountreq<=amountmade) and transferstatus=0 ", [date], (error, userResults) => {
+        con.query("select * from registeredcases natural join cases  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 ", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -133,7 +140,7 @@ router.get("/get_all_non_transferred_cases_but_completed", fetchserver, async (r
 router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
 
     try {
-        con.query("select * from cases natural join registeredcases where cno=?", [req.params.id], (errors, result1) => {
+        con.query(" select * from registeredcases natural join cases  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 and  cno=?", [date,req.params.id], (errors, result1) => {
 
             if (errors) {
                 console.log(errors);
