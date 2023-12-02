@@ -12,7 +12,7 @@ const stats = [
 { name: 'Paid time off', value: 'Unlimited' },
 ]
 
-export default function promotion() {
+export default function Promotion() {
   return (
     <div>
 

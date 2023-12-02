@@ -1,7 +1,8 @@
 import React from 'react'
-import promotion from '../promotion'
+import Promotion from './Promotion'
+
 export default function HomeUser() {
   return (
-    <div><promotion/></div>
+    <div><Promotion/></div>
   )
 }
