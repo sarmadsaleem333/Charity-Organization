@@ -1,6 +1,6 @@
 const { connectToMySql } = require("./db");
 const express = require("express");
-const app = express();                    //making imports 
+const app = express();                     
 const port = 3333;
 var cors = require("cors");
 const path = require('path');

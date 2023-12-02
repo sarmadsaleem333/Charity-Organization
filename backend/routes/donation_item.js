@@ -93,7 +93,7 @@ router.post("/donate_item/:id", fetchuser, [
     body("accounttitle", "Enter Account Title ").notEmpty(),
     body("accountno", "Enter account no").notEmpty(),
 ], async (req, res) => {
-    const { quantity,accountno ,accounttitle} = req.body;
+    const { quantity, accountno, accounttitle } = req.body;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -111,10 +111,10 @@ router.post("/donate_item/:id", fetchuser, [
 
             }
             if (result0[0].quantity < quantity) {
-            return res.send("Sorry this much quantity is not available");
+                return res.send("Sorry this much quantity is not available");
             }
             con.query("INSERT INTO itemdonates (uno, ino, idate, amount, quantity,accountno,accounttitle) VALUES (?, ?, ?, ?, ?,?,?)",
-                [req.user.id, req.params.id, date, result0[0].iprice * quantity, quantity,accountno,accounttitle],
+                [req.user.id, req.params.id, date, result0[0].iprice * quantity, quantity, accountno, accounttitle],
                 (error, results) => {
                     if (error) {
                         console.log(error);
@@ -149,5 +149,54 @@ router.post("/donate_item/:id", fetchuser, [
 });
 
 
+// get all non transfer details
+router.get("/all_non_transfer_items", fetchserver, async (req, res) => {
+    try {
+        con.query("select * from itemdonates natural join items where transferstatus=0", (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
 
+    }
+
+});
+// get all  transfer details
+router.get("/all_transfer_items", fetchserver, async (req, res) => {
+    try {
+        con.query("select * from itemdonates natural join items where transferstatus=1", (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+
+    }
+
+});
+router.get("/transfer_item/:id", fetchserver, async (req, res) => {
+    try {
+        con.query("update itemdonates set transferstatus=1 where receiptno=?",[req.params.id] ,(error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+        });
+        handleNotifications("You have transferred the items",1,"server");
+        res.send( "You have successfully transferred the items")
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+
+    }
+
+})
 module.exports = router;
