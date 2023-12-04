@@ -12,9 +12,9 @@ const stats = [
 { name: 'Paid time off', value: 'Unlimited' },
 ]
 
-export default function Promotion() {
+export default function Cover() {
   return (
-    <div>
+    <div className=' my-7'>
 
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
       <img

@@ -1,8 +1,11 @@
 import React from 'react'
-import Promotion from './Promotion'
+import Cover from './Cover'
+import Cards from './Cards'
 
 export default function HomeUser() {
   return (
-    <div><Promotion/></div>
+    <div><Cover />
+      <Cards />
+    </div>
   )
 }
