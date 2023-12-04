@@ -26,4 +26,4 @@ export default function CaseCard() {
         </div>
     );
 }
-                    // {/* <p className="text-sm text-gray-600">Donate today and make a positive impact.</p> */}
+                    

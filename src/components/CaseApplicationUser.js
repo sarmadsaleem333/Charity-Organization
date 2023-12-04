@@ -1,7 +1,8 @@
 import React from 'react'
+import ApplyCaseForm from './ApplyCaseForm'
 
 export default function CaseApplicationUser() {
   return (
-    <div>CaseApplicationUser</div>
+    <div><ApplyCaseForm/></div>
   )
 }
