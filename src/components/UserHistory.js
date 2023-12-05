@@ -12,7 +12,7 @@ export default function UserHistory() {
         <div className='border-b border-r border-gray-900 text-red-900 font-bold sm:truncate sm:text-3xl sm:tracking-tight'>Date of Donation</div>
         <div className='border-b border-r border-gray-900 text-red-900 font-bold sm:truncate sm:text-3xl sm:tracking-tight'>Amount Donated </div>
         <div className='border-b border-r border-gray-900 text-red-900 font-bold sm:truncate sm:text-3xl sm:tracking-tight'>Account No</div>
-        <div className='border-b border-gray-900 text-red-900 font-bold sm:truncate sm:text-3xl sm:tracking-tight'>Account Title</div>
+        <div className='border-b border-gray-900 text-red-900 font-bold sm :truncate sm:text-3xl sm:tracking-tight'>Account Title</div>
       </div>
       <div>
         <HistoryItem/>
