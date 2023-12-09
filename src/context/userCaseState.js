@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import userCaseContext from './userCaseContext'
 
-const userCaseState = (props) => {
+const UserCaseState = (props) => {
     const [RegisteredCases, setRegisteredCases] = useState([]);
     const [AllUnApprovedCases, setAllUnApprovedCases] = useState([]);
     const [AllTransferedCases, setAllTransferedCases] = useState([]);
+    const [AllInProgressCases, setAllInProgressCases] = useState([]);
     const host = "http://localhost:3333";
 
     //get all registeredCases
@@ -79,10 +80,10 @@ const userCaseState = (props) => {
 
 
     return (
-        <userCaseContext.Provider value={{ RegisteredCases, AllTransferedCases, AllUnApprovedCases, AllUnApprovedCases, getAllInProgressCases, getAllRegisteredCases, getAllTransferedCases, applyCase }} >
+        <userCaseContext.Provider value={{ RegisteredCases, AllTransferedCases, AllUnApprovedCases, AllUnApprovedCases, AllInProgressCases, getAllInProgressCases, getAllRegisteredCases, getAllTransferedCases, applyCase }} >
             {props.children}
         </userCaseContext.Provider>
     )
 }
 
-export default userCaseState;
+export default UserCaseState;
