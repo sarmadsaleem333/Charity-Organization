@@ -26,7 +26,7 @@ router.post("/apply_case", fetchuser, [
         return null; 
     }),
     body("camountreq", "Password should be at least 8 characters").notEmpty(),
-    body("caccountno", "Mention the account no").notEmpty(),
+    body("caccountno", "Mention the account no should be atleast 11 characters").isLength(11),
     body("caccounttitle", "Mention the account title").notEmpty(),
 ], async (req, res) => {
     const { cdescription, clastdate, camountreq, caccountno, caccounttitle } = req.body;
