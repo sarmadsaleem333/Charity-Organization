@@ -124,8 +124,6 @@ const serverCaseState = (props) => {
                 },
             });
 
-
-
             const message = await response.json();
             return message;
 
@@ -135,8 +133,8 @@ const serverCaseState = (props) => {
     };
 
     return (
-        <serverCaseContext.Provider value={{}} >
-            {/* {props.children} */}
+        <serverCaseContext.Provider value={{ approveCase, getServerRegisteredCases, getUserApplications, getTransferredCasesByServer, getNonTransferredCompletedCases, transferCaseMoney }} >
+            {props.children}
         </serverCaseContext.Provider>
     )
 }
