@@ -7,6 +7,8 @@ const serverCaseState = (props) => {
     const [UserApplications, setUserApplications] = useState([]);
     const [TransferredCases, setTransferredCases] = useState([]);
     const [NonTransferredCompletedCases, setNonTransferredCompletedCases] = useState([]);
+    const host = "http://localhost:3333";
+
     // approve the case 
     const approveCase = async (caseId) => {
         try {
@@ -133,10 +135,11 @@ const serverCaseState = (props) => {
     };
 
     return (
-        <serverCaseContext.Provider value={{ approveCase, getServerRegisteredCases, getUserApplications, getTransferredCasesByServer, getNonTransferredCompletedCases, transferCaseMoney }} >
+        <serverCaseContext.Provider value={{ ServerRegisteredCases, TransferredCases, UserApplications, NonTransferredCompletedCases, approveCase, getServerRegisteredCases, getUserApplications, getTransferredCasesByServer, getNonTransferredCompletedCases, transferCaseMoney }} >
             {props.children}
         </serverCaseContext.Provider>
     )
 }
+
 
 export default serverCaseState;

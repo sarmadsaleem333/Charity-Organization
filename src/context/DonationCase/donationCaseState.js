@@ -2,6 +2,7 @@ import donationCaseContext from "./donationCaseContext";
 import React from "react";
 
 const donationCaseState = (props) => {
+    const host = "http://localhost:3333";
 
     const donateCase = async (caseId, amount, accounttitle, accountno) => {
         try {
@@ -23,7 +24,7 @@ const donationCaseState = (props) => {
 
 
     return (
-        <donationCaseContext.Provider value={{}} >
+        <donationCaseContext.Provider value={{ donateCase }} >
             {props.children}
         </donationCaseContext.Provider>
     )
