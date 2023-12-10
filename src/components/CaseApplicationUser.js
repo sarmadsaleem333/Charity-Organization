@@ -18,6 +18,7 @@ export default function CaseApplicationUser() {
       <div className='flex flex-wrap justify-center gap-4'>
         {/* <CaseCard/> */}
       </div>
+    
     </>
   )
 }
