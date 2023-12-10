@@ -1,21 +1,26 @@
 import { Fragment } from 'react';
 import { Disclosure, } from '@headlessui/react';
-import { Bars3Icon,  XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
 const navigation = [
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Item Donation', href: '/item_donation_user', current: false },
   { name: 'History', href: '/history_user', current: false },
-  { name: 'Case Application', href: '/caseapplication', current: false },
-  { name: 'Events', href: '/events_user', current: false },
+  { name: 'My Cases', href: '/my_cases', current: false },
+  { name: 'Cases', href: '/cases_server', current: false },
+  { name: 'Events', href: '/events_server', current: false },
+  { name: 'Items', href: '/items_server', current: false },
+  { name: 'Transaction', href: '/transaction_server', current: false },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar() {
+export default function Navbar(props) {
+  let { user } = props;
+  const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4,8);
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -43,7 +48,7 @@ export default function Navbar() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {visibleNavigation.map((item) => (
                       <Link
                         key={item.name}
                         to={item.href}

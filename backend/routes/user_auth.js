@@ -12,11 +12,13 @@ const fetchuser = require('../midlleware/fetchuser');
 router.post("/create_user", [
     body("name", "Enter a valid name").isLength({ min: 5 }),
     body("email", "Enter a valid email").isEmail(),
-    body("password", "Password should be atleast 8 characters").isLength({ min: 8 }),
-    body("status","Enter your status").notEmpty(),
-    body("phone","Phone number should be of 11 characters").isLength(11),
+    body("password", "Password should be at least 8 characters and contain one numeric and one special character")
+        .isLength({ min: 8 })
+        .matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]$/, "g"),
+    body("status", "Enter your status").notEmpty(),
+    body("phone", "Phone number should be of 11 characters").isLength(11),
 ], async (req, res) => {
-    const { name, email,  password,status,phone } = req.body;
+    const { name, email, password, status, phone } = req.body;
     let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -25,7 +27,7 @@ router.post("/create_user", [
     }
     try {
         // Check if a user with the same email or phone already exists
-        con.query("SELECT * from users WHERE uemail = ? or uphone=? " , [email,phone],(error, results) => {
+        con.query("SELECT * from users WHERE uemail = ? or uphone=? ", [email, phone], (error, results) => {
             if (error) {
                 console.log(error)
                 console.log("Error finding user");
@@ -51,7 +53,7 @@ router.post("/create_user", [
                     }
 
 
-                    con.query("INSERT INTO users (uname, uemail,ustatus, upassword,uphone) VALUES (?,?,?,?,?)", [name, email, status, secPass,phone], (error, result) => {
+                    con.query("INSERT INTO users (uname, uemail,ustatus, upassword,uphone) VALUES (?,?,?,?,?)", [name, email, status, secPass, phone], (error, result) => {
                         if (error) {
                             console.log("Error creating a user", error);
                             return res.status(500).json({ error: "Internal server error", success });
@@ -126,8 +128,8 @@ router.get("/fetch_user", fetchuser, async (req, res) => {
             if (error) {
                 return res.send("Error fetching details");
             }
-             console.log(req.user.id)
-             res.send(result[0]);
+            console.log(req.user.id)
+            res.send(result[0]);
         }
         )
     } catch (error) {
