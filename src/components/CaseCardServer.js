@@ -4,7 +4,7 @@ import serverCaseContext from '../context/ServerCase/serverCaseContext';
 import alertContext from '../context/alertContext/AlertContext';
 
 export default function CaseCardServer(props) {
-  const { application, donate } = props;
+  const { application, donate, show } = props;
   const context = useContext(serverCaseContext);
   const context2 = useContext(alertContext);
   const { approveCase } = context;
@@ -71,6 +71,11 @@ export default function CaseCardServer(props) {
             <div className="font-semibold text-lg mb-2 text-red-900">By: {application.uname}</div>
             <p className="py-2 text-base font-semibold">Apply Date: {application.capplydate.slice(0, 10)}</p>
             <div className="font-semibold text-lg mb-2">Amount Requested: PKR {application.camountreq}</div>
+            {show && <>
+              <div className="font-semibold text-lg mb-2">Account Number: PKR {application.caccountno}</div>
+              <div className="font-semibold text-lg mb-2">Account Title: PKR {application.caccounttitle}</div>
+            </>
+            }
             {donate && <div className="font-semibold text-lg mb-2">Amount Made: PKR {application.amountmade}</div>}
             <p className="text-gray-700 text-base">
               {application.cdescription.slice(0, 100)}
@@ -81,7 +86,7 @@ export default function CaseCardServer(props) {
             <div className="text-base font-semibold text-red-500">Last Date: {application.clastdate.slice(0, 10)}</div>
             <div className="flex-shrink-0">
               {
-                donate ? "" :
+                !donate && !show ? "" :
                   <button
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -89,6 +94,21 @@ export default function CaseCardServer(props) {
                   >
                     Approve
                   </button>
+              }
+              {
+                donate && !show ? "" :
+                  ""
+
+              }
+              {
+                donate && show ?
+                  <button
+                    type="button"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    data-bs-toggle="modal" data-bs-target={`#confirmcase__${application.cno}`}
+                  >
+                    Transfer
+                  </button> : ""
               }
             </div>
           </div>

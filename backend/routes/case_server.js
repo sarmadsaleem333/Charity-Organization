@@ -121,7 +121,7 @@ router.get("/get_all_transferred_cases_by_server", fetchserver, async (req, res)
 //route to get the completed byut not transferred cases
 router.get("/get_all_non_transferred_cases_but_completed", fetchserver, async (req, res) => {
     try {
-        con.query("select * from registeredcases natural join cases  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 ", [date], (error, userResults) => {
+        con.query("select * from registeredcases natural join cases natural join (select uno ,uname from users)  AS userTable  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 ", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

@@ -7,11 +7,12 @@ import alertContext from '../context/alertContext/AlertContext';
 export default function CasesServer() {
     const context = useContext(serverCaseContext);
     const context2 = useContext(alertContext);
-    const { UserApplications, getUserApplications,ServerRegisteredCases,getServerRegisteredCases} = context;
+    const { UserApplications, NonTransferredCompletedCases, getNonTransferredCompletedCases, getUserApplications, ServerRegisteredCases, getServerRegisteredCases } = context;
     const { showAlert } = context2;
     useEffect(() => {
         getUserApplications();
         getServerRegisteredCases();
+        getNonTransferredCompletedCases();
     }, [])
 
 
@@ -20,13 +21,19 @@ export default function CasesServer() {
             <h1 className='text-center font-bold text-4xl py-2'>Case Applications</h1>
             <div className='flex flex-wrap justify-center gap-4'>
                 {UserApplications.map((application) => (
-                    <CaseCardServer key={application.cno} application={application} donate={false} />
+                    <CaseCardServer key={application.cno} application={application} donate={false} show={false} />
                 ))}
             </div>
             <h1 className='text-center font-bold text-4xl pt-6'>On Going Approved Cases</h1>
             <div className='flex flex-wrap justify-center gap-4'>
                 {ServerRegisteredCases.map((application) => (
-                    <CaseCardServer key={application.cno} application={application} donate={true} />
+                    <CaseCardServer key={application.cno} application={application} donate={true} show={false}  />
+                ))}
+            </div>
+            <h1 className='text-center font-bold text-4xl pt-6'>Transfer Your Completed Cases</h1>
+            <div className='flex flex-wrap justify-center gap-4'>
+                {NonTransferredCompletedCases.map((application) => (
+                    <CaseCardServer key={application.cno} application={application} donate={true} show={true}  />
                 ))}
             </div>
         </>
