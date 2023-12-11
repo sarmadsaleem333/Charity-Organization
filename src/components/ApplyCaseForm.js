@@ -1,16 +1,21 @@
 import React, { useContext, useState } from 'react';
 import userCaseContext from '../context/userCaseContext';
-
+import alertContext from '../context/alertContext/AlertContext';
 const ApplyCaseForm = () => {
     const context = useContext(userCaseContext);
+    const context2 = useContext(alertContext);
     const { applyCase } = context;
+    const { showAlert } = context2;
     const [CaseCredentials, setCaseCredentials] = useState({ cdescription: "", clastdate: "", camountreq: "", caccountno: "", caccounttitle: "" });
     const onChange = (e) => {
         setCaseCredentials({ ...CaseCredentials, [e.target.name]: e.target.value });
     }
-    const handleApplication = async () => {
+    const handleApplication = async (e) => {
+        e.preventDefault();
         const response = await applyCase(CaseCredentials.cdescription, CaseCredentials.clastdate, CaseCredentials.camountreq, CaseCredentials.caccountno, CaseCredentials.caccounttitle);
-        console.log(response);
+        showAlert(response, "success");
+        setCaseCredentials({ cdescription: "", clastdate: "", camountreq: "", caccountno: "", caccounttitle: "" });
+
     }
 
     return (
@@ -67,8 +72,8 @@ const ApplyCaseForm = () => {
                                     Account No.
                                 </label>
                                 <input
-                                    type="text"
-                                    id="name"
+                                    type='number'
+
                                     name="caccountno"
                                     value={CaseCredentials.caccountno}
                                     onChange={onChange}
@@ -82,7 +87,7 @@ const ApplyCaseForm = () => {
                                     Amount Required
                                 </label>
                                 <input
-                                    type="text"
+                                    type='number'
                                     id="name"
                                     name="camountreq"
                                     value={CaseCredentials.camountreq}
@@ -103,7 +108,7 @@ const ApplyCaseForm = () => {
                                     name="clastdate"
                                     value={CaseCredentials.clastdate}
                                     onChange={onChange}
-                                    placeholder="YYYY-MM-DD"
+                                    placeholder="DD-MM-YYYY"
                                     className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                                 />
                             </div>

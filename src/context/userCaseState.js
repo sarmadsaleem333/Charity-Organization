@@ -68,11 +68,9 @@ const UserCaseState = (props) => {
                 body: JSON.stringify({ cdescription: cdescription, clastdate: clastdate, camountreq: camountreq, caccountno: caccountno, caccounttitle: caccounttitle }),
             });
 
-            if (!response.ok) {
-                throw new Error(await response.text());
-            }
             const json = await response.json();
             return json;
+
         } catch (error) {
             console.error(error.message);
         }
