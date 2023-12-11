@@ -7,10 +7,11 @@ import alertContext from '../context/alertContext/AlertContext';
 export default function CasesServer() {
     const context = useContext(serverCaseContext);
     const context2 = useContext(alertContext);
-    const { UserApplications, getUserApplications } = context;
+    const { UserApplications, getUserApplications,ServerRegisteredCases,getServerRegisteredCases} = context;
     const { showAlert } = context2;
     useEffect(() => {
         getUserApplications();
+        getServerRegisteredCases();
     }, [])
 
 
@@ -19,12 +20,14 @@ export default function CasesServer() {
             <h1 className='text-center font-bold text-4xl py-2'>Case Applications</h1>
             <div className='flex flex-wrap justify-center gap-4'>
                 {UserApplications.map((application) => (
-                    <CaseCardServer key={application.cno} application={application} />
+                    <CaseCardServer key={application.cno} application={application} donate={false} />
                 ))}
             </div>
-            <h1 className='text-center font-bold text-4xl py-2'>Non -Transferred Cases</h1>
+            <h1 className='text-center font-bold text-4xl pt-6'>On Going Approved Cases</h1>
             <div className='flex flex-wrap justify-center gap-4'>
-                {/* <CaseCard/> */}
+                {ServerRegisteredCases.map((application) => (
+                    <CaseCardServer key={application.cno} application={application} donate={true} />
+                ))}
             </div>
         </>
 

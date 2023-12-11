@@ -4,20 +4,20 @@ import serverCaseContext from '../context/ServerCase/serverCaseContext';
 import alertContext from '../context/alertContext/AlertContext';
 
 export default function CaseCardServer(props) {
-  const { application } = props;
+  const { application, donate } = props;
   const context = useContext(serverCaseContext);
   const context2 = useContext(alertContext);
   const { approveCase } = context;
   const { showAlert } = context2
-  const { nameCase, setnameCase } = useState("");
+  const [nameCase, setNameCase] = useState("");
   const onChange = (e) => {
-    setnameCase({ ...nameCase, [e.target.name]: e.target.value });
+    setNameCase(e.target.value);
   }
 
   const handleClick = async (cno) => {
-    // const response = await approveCase(cno);
-    // showAlert(response, "success");
-    console.log(nameCase)
+    const response = await approveCase(cno, nameCase);
+    showAlert(response, "success");
+
   }
 
 
@@ -71,6 +71,7 @@ export default function CaseCardServer(props) {
             <div className="font-semibold text-lg mb-2 text-red-900">By: {application.uname}</div>
             <p className="py-2 text-base font-semibold">Apply Date: {application.capplydate.slice(0, 10)}</p>
             <div className="font-semibold text-lg mb-2">Amount Requested: PKR {application.camountreq}</div>
+            {donate && <div className="font-semibold text-lg mb-2">Amount Made: PKR {application.amountmade}</div>}
             <p className="text-gray-700 text-base">
               {application.cdescription.slice(0, 100)}
             </p>
@@ -79,13 +80,16 @@ export default function CaseCardServer(props) {
           <div className="flex justify-between items-center border-t pt-4">
             <div className="text-base font-semibold text-red-500">Last Date: {application.clastdate.slice(0, 10)}</div>
             <div className="flex-shrink-0">
-              <button
-                type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                data-bs-toggle="modal" data-bs-target={`#confirmcase__${application.cno}`}
-              >
-                Approve
-              </button>
+              {
+                donate ? "" :
+                  <button
+                    type="button"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    data-bs-toggle="modal" data-bs-target={`#confirmcase__${application.cno}`}
+                  >
+                    Approve
+                  </button>
+              }
             </div>
           </div>
         </div>
