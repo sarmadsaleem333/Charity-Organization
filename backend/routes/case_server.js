@@ -81,7 +81,7 @@ router.get("/get_all_registered_cases_by_server", fetchserver
 //getting all applications by a server
 router.get("/get_all_applications", fetchserver, async (req, res) => {
     try {
-        con.query("select * from my_applied_cases_unapproved  where  clastdate>(?)", [date], (error, userResults) => {
+        con.query("select * from my_applied_cases_unapproved natural join (select uno ,uname from users)  AS userTable  where  clastdate>(?)", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

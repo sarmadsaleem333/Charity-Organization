@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import serverCaseContext from './serverCaseContext'
 
-const serverCaseState = (props) => {
+const ServerCaseState = (props) => {
     const [ServerRegisteredCases, setServerRegisteredCases] = useState([]);
     const [UserApplications, setUserApplications] = useState([]);
     const [TransferredCases, setTransferredCases] = useState([]);
@@ -142,4 +142,4 @@ const serverCaseState = (props) => {
 }
 
 
-export default serverCaseState;
+export default ServerCaseState;
