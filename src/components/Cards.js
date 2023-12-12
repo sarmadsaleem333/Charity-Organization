@@ -4,7 +4,7 @@ import userCaseContext from '../context/userCaseContext';
 
 export default function Cards() {
     const context = useContext(userCaseContext);
-    const { RegisteredCases, getAllRegisteredCases } = context;
+    const { RegisteredCases, getAllRegisteredCases} = context;
     useEffect(() => {
         getAllRegisteredCases();
         console.log(RegisteredCases)

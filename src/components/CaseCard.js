@@ -92,7 +92,7 @@ export default function CaseCard(props) {
                             approved &&
                             <div className="font-bold text-xl mb-2 text-red-900">{caseItem.name}</div>}
 
-                        <div className="font-bold text-xl mb-2">Amount: PKR {caseItem.camountreq}</div>
+                        <div className="font-bold text-xl mb-2">Amount Required: PKR {caseItem.camountreq}</div>
                         {
                             !approved ? <div className="font-bold text-xl mb-2 text-red-900">Status:Pending</div> : ""
                         }
@@ -104,7 +104,7 @@ export default function CaseCard(props) {
                     <div className="flex justify-between items-center border-t pt-4">
                         {approved &&
                             <div className="text-lg font-semibold text-red-500">
-                                Remaining amount: {amountLeft}
+                                Amount Left: PKR {amountLeft}
                             </div>
                         }
                         <p className="py-2 font-semibold">Last Date: {caseItem.clastdate.slice(0, 10)}</p>
@@ -123,6 +123,7 @@ export default function CaseCard(props) {
                     }
                 </div>
             </div>
+
         </>
     );
 }

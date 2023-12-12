@@ -16,7 +16,7 @@ import AlertState from './context/alertContext/AlertState';
 import Alert from "./components/Alert"
 import ServerCaseState from './context/ServerCase/ServerCaseState';
 import DonationCaseState from './context/DonationCase/DonationCaseState';
-global.user = true;
+global.user = false;
 
 function App() {
   return (
