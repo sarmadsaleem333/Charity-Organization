@@ -1,39 +1,81 @@
-import React, { useEffect } from 'react';
-
-
+import React, { useContext, useState } from 'react';
+import donationCaseContext from '../context/DonationCase/donationCaseContext';
+import alertContext from '../context/alertContext/AlertContext';
 export default function CaseCard(props) {
     const { caseItem } = props;
     let amountLeft = caseItem.camountreq - caseItem.amountmade;
-
+    const context = useContext(donationCaseContext);
+    const context2 = useContext(alertContext);
+    const { donateCase } = context;
+    const { showAlert } = context2;
+    const [DonationCredentials, setDonationCredentials] = useState({ accountno: "", accounttitle: "", cardno: "", amount: "" });
+    const onChange = (e) => {
+        setDonationCredentials({ ...DonationCredentials, [e.target.name]: e.target.value });
+    }
+    const handleDonation = async (caseID) => {
+        const response = await donateCase(caseID, DonationCredentials.amount, DonationCredentials.accounttitle, DonationCredentials.accountno);
+        setDonationCredentials({ accountno: "", accountitle: "", cardno: "", amount: "" });
+        if (DonationCredentials.cardno.length < 16 || DonationCredentials.cardno.length > 19) {
+            return showAlert("Enter Correct Card number (Between 16 and 19 digits)")
+        }
+        showAlert(response, "success");
+    }
     return (
         <>
+            <div className="modal fade custom-modal" id={`add-comment__${caseItem.cno}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-lg modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h3 className="modal-title"></h3>
+                            <h5 className="modal-subtitle">{caseItem.cdescription}</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             {/* Modal */}
-            <div className="modal fade" id="modal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id={`add-donate__${caseItem.cno}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h3 className="modal-title" id="exampleModalLabel">Donating for case </h3>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="accountNumber" className="form-label">Enter your Account No</label>
-                                <input type="text" className="form-control" id="accountNumber" />
+                                <input type="number" className="form-control" name="accountno" value={DonationCredentials.accountno} onChange={onChange} id="accountNumber" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="accountName" className="form-label">Enter your account name</label>
-                                <input type="text" className="form-control" id="accountName" />
+                                <input type="text" className="form-control" name="accounttitle" value={DonationCredentials.accounttitle} onChange={onChange} id="accountName" />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="accountName" className="form-label">Enter Credit Card Number </label>
+                                <input type="number" className="form-control" name='cardno' value={DonationCredentials.cardno} onChange={onChange} id="accountName" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="donationAmount" className="form-label">Enter amount (At least Rs.100)</label>
-                                <input type="text" className="form-control" id="donationAmount" />
+                                <input type="number" className="form-control" name="amount" value={DonationCredentials.amount} onChange={onChange} id="donationAmount" />
                             </div>
                             <button
                                 type="button"
+                                data-bs-dismiss="modal"
+                                onClick={() => handleDonation(caseItem.cno)}
                                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                            >
-                                Donate
+                            >   Donate
+
                             </button>
+                            <button className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -47,7 +89,7 @@ export default function CaseCard(props) {
                         <p className="text-gray-700 text-base">
                             {caseItem.cdescription.slice(0, 100)}
                         </p>
-                        <div className="btn-primary btn mt-4">Read More</div>
+                        <div className="btn-primary btn mt-4" data-bs-toggle="modal" data-bs-target={`#add-comment__${caseItem.cno}`}>Read More</div>
                     </div>
                     <div className="flex justify-between items-center border-t pt-4">
                         <div className="text-lg font-semibold text-red-500">
@@ -60,8 +102,7 @@ export default function CaseCard(props) {
                             type="button"
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                             data-bs-toggle="modal"
-                            data-bs-target="#modal"
-                        >
+                            data-bs-target={`#add-donate__${caseItem.cno}`}                        >
                             Donate
                         </button>
                     </div>

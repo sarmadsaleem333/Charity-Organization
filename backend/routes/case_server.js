@@ -61,7 +61,7 @@ router.get("/get_all_registered_cases_by_server", fetchserver
 
         try {
             // Find the user associated with the applied case
-            con.query("SELECT * FROM cases_shown_for_donation natural join (select uno ,uname from users)  AS userTable  WHERE clastdate >= ? or  camountreq!=amountmade ", [date], (error, userResults) => {
+            con.query("SELECT * FROM cases_shown_for_donation natural join (select uno ,uname from users)  AS userTable  WHERE clastdate >= ? or  amountmade<camountreq ", [date], (error, userResults) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json({ error: "Internal server error" });
