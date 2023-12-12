@@ -91,7 +91,7 @@ router.get("/get_my_transferredcases", fetchuser, async (req, res) => {
 router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? and  amountmade<camountreq and uno=?", [date,req.user.id], (error, results) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate ?= ? and  amountmade<camountreq and uno=?", [date,req.user.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
