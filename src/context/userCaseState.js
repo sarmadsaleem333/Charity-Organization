@@ -78,7 +78,7 @@ const UserCaseState = (props) => {
 
 
     return (
-        <userCaseContext.Provider value={{ RegisteredCases, AllTransferedCases, AllUnApprovedCases, AllUnApprovedCases, AllInProgressCases, getAllInProgressCases, getAllRegisteredCases, getAllTransferedCases, applyCase }} >
+        <userCaseContext.Provider value={{ RegisteredCases, AllTransferedCases, AllUnApprovedCases, getAllUnApprovedCases, AllInProgressCases, getAllInProgressCases, getAllRegisteredCases, getAllTransferedCases, applyCase }} >
             {props.children}
         </userCaseContext.Provider>
     )

@@ -2,8 +2,12 @@ import React, { useContext, useState } from 'react';
 import donationCaseContext from '../context/DonationCase/donationCaseContext';
 import alertContext from '../context/alertContext/AlertContext';
 export default function CaseCard(props) {
-    const { caseItem } = props;
-    let amountLeft = caseItem.camountreq - caseItem.amountmade;
+    const { caseItem, approved } = props;
+    let amountLeft = 0;
+    if (approved) {
+        amountLeft = caseItem.camountreq - caseItem.amountmade;
+    }
+
     const context = useContext(donationCaseContext);
     const context2 = useContext(alertContext);
     const { donateCase } = context;
@@ -84,7 +88,9 @@ export default function CaseCard(props) {
             <div className="py-8 px-8">
                 <div className="max-w-md rounded overflow-hidden shadow-lg border-2 border-gray-300 p-4">
                     <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2 text-red-900">{caseItem.name}</div>
+                        {
+                            approved &&
+                            <div className="font-bold text-xl mb-2 text-red-900">{caseItem.name}</div>}
                         <div className="font-bold text-xl mb-2">Amount: PKR {caseItem.camountreq}</div>
                         <p className="text-gray-700 text-base">
                             {caseItem.cdescription.slice(0, 100)}
@@ -92,9 +98,11 @@ export default function CaseCard(props) {
                         <div className="btn-primary btn mt-4" data-bs-toggle="modal" data-bs-target={`#add-comment__${caseItem.cno}`}>Read More</div>
                     </div>
                     <div className="flex justify-between items-center border-t pt-4">
-                        <div className="text-lg font-semibold text-red-500">
-                            Remaining amount: {amountLeft}
-                        </div>
+                        {approved &&
+                            <div className="text-lg font-semibold text-red-500">
+                                Remaining amount: {amountLeft}
+                            </div>
+                        }
                         <p className="py-2 font-semibold">Last Date: {caseItem.clastdate.slice(0, 10)}</p>
                     </div>
                     <div className="flex justify-end pt-4">

@@ -23,7 +23,7 @@ const ApplyCaseForm = () => {
             <div className="container px-5 py-10 mx-auto">
 
                 <div className="flex flex-col text-center w-full mb-12">
-                    <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+                    <h1 className="text-center font-bold text-4xl py-2">
                         Case Application
                     </h1>
                     <p className="lg:w-2/3 mx-auto leading-relaxed text-base">

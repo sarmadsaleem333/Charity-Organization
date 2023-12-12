@@ -15,7 +15,7 @@ export default function Cards() {
             <h1 className='text-center font-bold text-4xl'>Donate and Make a Change</h1>
             <div className='flex flex-wrap justify-center gap-4'>
                 {RegisteredCases == null ? "No cases yet" : RegisteredCases.map((caseItem) => {
-                    return <CaseCard caseItem={caseItem} key={caseItem.cno} />;
+                    return <CaseCard caseItem={caseItem} key={caseItem.cno} approved={true} />;
                 })}
             </div>
         </>
