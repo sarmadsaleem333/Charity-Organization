@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import serverCaseContext from './serverCaseContext'
 
-const serverCaseState = (props) => {
+const ServerCaseState = (props) => {
     const [ServerRegisteredCases, setServerRegisteredCases] = useState([]);
     const [UserApplications, setUserApplications] = useState([]);
     const [TransferredCases, setTransferredCases] = useState([]);
@@ -10,7 +10,7 @@ const serverCaseState = (props) => {
     const host = "http://localhost:3333";
 
     // approve the case 
-    const approveCase = async (caseId) => {
+    const approveCase = async (caseId,name) => {
         try {
             const response = await fetch(`${host}/charity_organization/case_server/approve_case/${caseId}`, {
                 method: "POST",
@@ -18,6 +18,7 @@ const serverCaseState = (props) => {
                     "Content-Type": "application/json",
                     "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
                 },
+                body: JSON.stringify({name}),
             });
             const json = await response.json();
             return json;
@@ -142,4 +143,4 @@ const serverCaseState = (props) => {
 }
 
 
-export default serverCaseState;
+export default ServerCaseState;

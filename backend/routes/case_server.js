@@ -43,7 +43,7 @@ router.post("/approve_case/:id", fetchserver,
                     }
                     const registeredCaseId = results.insertId;
                     handleNotifications(`Your case has been approved  with id ${req.params.id}. You will reach the transfer amount after being collected.`, user.uno,"user");
-                    return res.send("You have approved this case.");
+                    return res.json("You have approved this case.");
                 });
             });
         } catch (error) {
@@ -61,7 +61,7 @@ router.get("/get_all_registered_cases_by_server", fetchserver
 
         try {
             // Find the user associated with the applied case
-            con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? or  camountreq=amountmade ", [date], (error, userResults) => {
+            con.query("SELECT * FROM cases_shown_for_donation natural join (select uno ,uname from users)  AS userTable  WHERE clastdate >= ? or  camountreq!=amountmade ", [date], (error, userResults) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json({ error: "Internal server error" });
@@ -81,7 +81,7 @@ router.get("/get_all_registered_cases_by_server", fetchserver
 //getting all applications by a server
 router.get("/get_all_applications", fetchserver, async (req, res) => {
     try {
-        con.query("select * from my_applied_cases_unapproved  where  clastdate>(?)", [date], (error, userResults) => {
+        con.query("select * from my_applied_cases_unapproved natural join (select uno ,uname from users)  AS userTable  where  clastdate>(?)", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -121,7 +121,7 @@ router.get("/get_all_transferred_cases_by_server", fetchserver, async (req, res)
 //route to get the completed byut not transferred cases
 router.get("/get_all_non_transferred_cases_but_completed", fetchserver, async (req, res) => {
     try {
-        con.query("select * from registeredcases natural join cases  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 ", [date], (error, userResults) => {
+        con.query("select * from registeredcases natural join cases natural join (select uno ,uname from users)  AS userTable  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 ", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

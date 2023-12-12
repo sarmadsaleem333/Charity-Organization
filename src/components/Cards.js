@@ -1,17 +1,23 @@
-import React from 'react'
-import CaseCard from './CaseCard'
+import React, { useContext, useEffect } from 'react';
+import CaseCard from './CaseCard';
+import userCaseContext from '../context/userCaseContext';
+
 export default function Cards() {
+    const context = useContext(userCaseContext);
+    const { RegisteredCases, getAllRegisteredCases } = context;
+    useEffect(() => {
+        getAllRegisteredCases();
+        console.log(RegisteredCases)
+    }, []);
+
     return (
-        <div className='flex flex-wrap justify-center gap-4'>
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-            <CaseCard /> 
-        </div>
-    )
+        <>
+            <h1 className='text-center font-bold text-4xl'>Donate and Make a Change</h1>
+            <div className='flex flex-wrap justify-center gap-4'>
+                {RegisteredCases == null ? "No cases yet" : RegisteredCases.map((caseItem) => {
+                    return <CaseCard caseItem={caseItem} key={caseItem.cno} />;
+                })}
+            </div>
+        </>
+    );
 }

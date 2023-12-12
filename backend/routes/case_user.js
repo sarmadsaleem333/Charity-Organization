@@ -11,22 +11,34 @@ const date = new Date();
 //request for applying case
 router.post("/apply_case", fetchuser, [
     body("cdescription", "Enter a description of at least 10 characters").isLength({ min: 10 }),
-    body("clastdate").notEmpty().withMessage("Enter a valid date").custom((value) => {
-        // Custom validation to check if the date is in the "DD-MM-YYYY" format
-        const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
-        if (!dateRegex.test(value)) {
-            throw new Error("Invalid date format. Please use DD-MM-YYYY.");
-        }
-        return true;
-    }).customSanitizer((value) => {
-        if (value) {
+
+    body("clastdate")
+        .notEmpty().withMessage("Enter a valid date")
+        .custom((value) => {
+            const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+            if (!dateRegex.test(value)) {
+                throw new Error("Invalid date format. Please use DD-MM-YYYY.");
+            }
+
             const [day, month, year] = value.split('-');
-            return new Date(`${year}-${month}-${day}`);
-        }
-        return null; 
-    }),
+            const dateObject = new Date(`${year}-${month}-${day}`);
+
+            // Check if the dateObject is a valid date (accounting for invalid dates like month 13)
+            if (isNaN(dateObject.getTime())) {
+                throw new Error("Invalid date. Please provide a valid date.");
+            }
+
+            return true;
+        })
+        .customSanitizer((value) => {
+            if (value) {
+                const [day, month, year] = value.split('-');
+                return new Date(`${year}-${month}-${day}`);
+            }
+            return null;
+        }),
     body("camountreq", "Password should be at least 8 characters").notEmpty(),
-    body("caccountno", "Mention the account no").notEmpty(),
+    body("caccountno", "Mention the account no should be atleast 11 characters").isLength(11),
     body("caccounttitle", "Mention the account title").notEmpty(),
 ], async (req, res) => {
     const { cdescription, clastdate, camountreq, caccountno, caccounttitle } = req.body;
@@ -44,8 +56,8 @@ router.post("/apply_case", fetchuser, [
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
-            handleNotifications(`Your application for your case ${results.insertId} has been sent.`,req.user.id,"user");
-            return res.send("Your application has been sent. You would be informed shortly");
+            handleNotifications(`Your application for your case has been sent`, req.user.id, "user");
+            return res.json("Your application has been sent. You would be informed shortly");
         });
 
     } catch (error) {
@@ -108,10 +120,10 @@ router.get("/get_my_applied_unapproved_cases", fetchuser, async (req, res) => {
         console.log(error);
         return res.status(500).send("Internal server error occurred");
     }
-}); 
+});
 // --tested
 //get all registered cases whose date is not passed it still by server 
-router.get("/get_all_registered_cases_by_user", fetchuser,async (req, res) => {
+router.get("/get_all_registered_cases_by_user", fetchuser, async (req, res) => {
 
     try {
         // Find the user associated with the applied case
@@ -132,4 +144,4 @@ router.get("/get_all_registered_cases_by_user", fetchuser,async (req, res) => {
 });
 
 
-module.exports=router;
+module.exports = router;
