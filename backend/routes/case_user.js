@@ -91,7 +91,7 @@ router.get("/get_my_transferredcases", fetchuser, async (req, res) => {
 router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("select * from inprogress_cases_of_user where uno=(?)", [req.user.id], (error, results) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? and  amountmade<camountreq and uno=?", [date,req.user.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -110,7 +110,7 @@ router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
 router.get("/get_my_applied_unapproved_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("select * from my_applied_cases_unapproved where uno=(?)", [req.user.id], (error, results) => {
+        con.query("select * from my_applied_cases_unapproved where uno=(?) and clastdate>=?", [req.user.id,date], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

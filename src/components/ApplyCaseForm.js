@@ -23,9 +23,10 @@ const ApplyCaseForm = () => {
             <div className="container px-5 py-10 mx-auto">
 
                 <div className="flex flex-col text-center w-full mb-12">
-                    <h1 className="text-center font-bold text-4xl py-2">
-                        Case Application
-                    </h1>
+                    <h1 className="text-center font-bold text-4xl py-2 text-black">
+                        Case Application Form
+                    </h1> 
+
                     <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
                         Case Application does not guarantee case approval.
                         Remember Your information will be hided and all your collected donations will reach you before specified date.
@@ -114,7 +115,7 @@ const ApplyCaseForm = () => {
                             </div>
                         </div>
                         <div className="p-2 w-full flex justify-center">
-                            <div className="btn btn-primary " onClick={handleApplication}>Apply For the Case</div>
+                            <div className="btn btn-primary py-2 " onClick={handleApplication}>Apply For the Case</div>
                         </div>
                     </div>
                 </div>

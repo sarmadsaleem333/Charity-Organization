@@ -5,7 +5,7 @@ import CaseCard from './CaseCard';
 
 export default function CaseApplicationUser() {
   const context = useContext(userCaseContext);
-  const { AllUnApprovedCases, getAllUnApprovedCases } = context;
+  const { AllUnApprovedCases, getAllUnApprovedCases,AllInProgressCases, getAllInProgressCases } = context;
 
   useEffect(() => {
     getAllUnApprovedCases();
@@ -23,6 +23,17 @@ export default function CaseApplicationUser() {
           ))
         ) : (
           <p>You have no current applications.</p>
+        )}
+      </div>
+      <h1 className='text-center font-bold text-4xl py-2'>My In Progress Cases </h1>
+      <div className='flex flex-wrap justify-center gap-4'>
+        {AllInProgressCases.length > 0 ? (
+          AllInProgressCases.map((application) => (
+            <CaseCard key={application.cno} caseItem={application} approved={true} />
+
+          ))
+        ) : (
+          <p>You have no in progress courses.</p>
         )}
       </div>
 

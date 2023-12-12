@@ -91,9 +91,13 @@ export default function CaseCard(props) {
                         {
                             approved &&
                             <div className="font-bold text-xl mb-2 text-red-900">{caseItem.name}</div>}
+
                         <div className="font-bold text-xl mb-2">Amount: PKR {caseItem.camountreq}</div>
+                        {
+                            !approved ? <div className="font-bold text-xl mb-2 text-red-900">Status:Pending</div> : ""
+                        }
                         <p className="text-gray-700 text-base">
-                            {caseItem.cdescription.slice(0, 100)}
+                            {caseItem.cdescription.slice(0, 100)}...
                         </p>
                         <div className="btn-primary btn mt-4" data-bs-toggle="modal" data-bs-target={`#add-comment__${caseItem.cno}`}>Read More</div>
                     </div>
@@ -113,6 +117,7 @@ export default function CaseCard(props) {
                             data-bs-target={`#add-donate__${caseItem.cno}`}                        >
                             Donate
                         </button>
+
                     </div>
                 </div>
             </div>
