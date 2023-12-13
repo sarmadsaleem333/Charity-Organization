@@ -10,10 +10,10 @@ const navigation = [
   { name: 'History', href: '/history_user', current: false },
   { name: 'My Cases', href: '/my_cases', current: false },
   { name: 'Applications', href: '/applications_server', current: false },
-  { name: 'Events', href: '/events_server', current: false },
-  { name: 'Items', href: '/items_server', current: false },
   { name: 'Pending Transfer', href: '/pending_transfer_server', current: false },
   { name: 'Successful Cases', href: '/transferedcompletedcases', current: false },
+  { name: 'Events', href: '/events_server', current: false },
+  { name: 'Items', href: '/items_server', current: false },
 ];
 
 function classNames(...classes) {

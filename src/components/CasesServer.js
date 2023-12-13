@@ -36,12 +36,7 @@ export default function CasesServer() {
                     <CaseCardServer key={application.cno} application={application}  />
                 ))}
             </div>
-            {/* <h1 className='text-center font-bold text-4xl pt-6'>Transfer Your Completed Cases</h1>
-            <div className='flex flex-wrap justify-center gap-4'>
-                {NonTransferredCompletedCases.map((application) => (
-                    <CaseCardServer key={application.cno} application={application} donate={true} show={true}  />
-                ))}
-            </div> */}
+            
         </>
 
     )

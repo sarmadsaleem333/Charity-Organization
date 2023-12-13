@@ -1,6 +1,4 @@
-import React, { useContext, useState } from 'react';
-import donationCaseContext from '../context/DonationCase/donationCaseContext';
-import alertContext from '../context/alertContext/AlertContext';
+import React from 'react';
 export default function CompletedCasesServer(props) {
    
 

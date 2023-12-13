@@ -1,12 +1,48 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React from 'react';
 
 
 export default function TransferCompletedCasesCard(props) {
     const { application } = props;
-    let amountLeft = application.camountreq - application.amountmade;
+
+    const handleTransfer = (id) => {
+
+        console.log(id)
+    }
 
     return (
         <>
+            {/* Modal 2*/}
+            <div className="modal fade" id={`transfer${application.cno}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id={`exampleModalLabel${application.cno}`}>
+                                Transfer Details
+                            </h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>
+                                <span className="font-semibold">Account No:</span> {application.caccountno}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Account Title:</span> {application.caccounttitle}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Transferring:</span> PKR {application.amountmade}
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button className="btn btn-primary" onClick={()=>handleTransfer(application.cno)}>
+                                Transfer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {/* Modal */}
             <div className="modal fade" id={`add-comment__${application.cno}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
@@ -43,12 +79,12 @@ export default function TransferCompletedCasesCard(props) {
                     <div className="flex justify-between items-center border-t pt-4">
 
                         <div className="text-lg font-semibold text-red-500">
-                            Amount Left: PKR {amountLeft}
+                            Amount Made:{application.amountmade}
                         </div>
                         <p className="py-2 font-semibold">Last Date: {application.clastdate.slice(0, 10)}</p>
                     </div>
                     <div>
-                        <div className="btn-secondary  btn py-3"> Transfer The Money  </div>
+                        <div className="btn-secondary btn py-3" data-bs-toggle="modal" data-bs-target={`#transfer${application.cno}`} > Transfer The Money  </div>
                     </div>
 
                 </div>

@@ -17,7 +17,7 @@ import Alert from "./components/Alert"
 import ServerCaseState from './context/ServerCase/ServerCaseState';
 import DonationCaseState from './context/DonationCase/DonationCaseState';
 import SuccessfulCases from './components/SuccessfulCases';
-global.user = false;
+global.user = true;
 
 function App() {
   return (
