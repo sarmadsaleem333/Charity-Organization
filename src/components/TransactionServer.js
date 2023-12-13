@@ -11,7 +11,9 @@ export default function TransactionServer() {
     useEffect(() => {
         getTransferredCasesByServer();
         getNonTransferredCompletedCases();
+        console.log(NonTransferredCompletedCases)
     }, [])
+
 
     return (
         <div className="p-8">

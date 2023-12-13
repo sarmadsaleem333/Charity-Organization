@@ -1,12 +1,16 @@
-import React from 'react';
-
-
+import React, { useContext } from 'react';
+import serverCaseContext from '../context/ServerCase/serverCaseContext';
+import alertContext from '../context/alertContext/AlertContext';
 export default function TransferCompletedCasesCard(props) {
     const { application } = props;
+    const context = useContext(serverCaseContext);
+    const context2 = useContext(alertContext);
+    const { transferCaseMoney } = context;
+    const { showAlert } = context2;
 
-    const handleTransfer = (id) => {
-
-        console.log(id)
+    const handleTransfer = async (id) => {
+        const response = await transferCaseMoney(id);
+        showAlert(response, "success");
     }
 
     return (
@@ -36,7 +40,7 @@ export default function TransferCompletedCasesCard(props) {
                             <button className="btn btn-secondary" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button className="btn btn-primary" onClick={()=>handleTransfer(application.cno)}>
+                            <button className="btn btn-primary" onClick={() => handleTransfer(application.cno)}>
                                 Transfer
                             </button>
                         </div>

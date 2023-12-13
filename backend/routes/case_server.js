@@ -162,7 +162,7 @@ router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
                     handleNotifications(`Your case ${result1[0].name} has been resolved`, result1[0].uno);
                     handleNotifications(`You have made transaction of amount ${result1[0].amountmade}. `, 1, "server");
 
-                    res.send(`You have transfered the amount ${result1[0].amountmade} to the case`);
+                    res.json(`You have transfered the amount ${result1[0].amountmade} to the case`);
                 })
             })
         })
