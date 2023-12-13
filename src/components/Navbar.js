@@ -9,10 +9,11 @@ const navigation = [
   { name: 'Item Donation', href: '/item_donation_user', current: false },
   { name: 'History', href: '/history_user', current: false },
   { name: 'My Cases', href: '/my_cases', current: false },
-  { name: 'Cases', href: '/cases_server', current: false },
+  { name: 'Applications', href: '/applications_server', current: false },
   { name: 'Events', href: '/events_server', current: false },
   { name: 'Items', href: '/items_server', current: false },
-  { name: 'Transaction', href: '/transaction_server', current: false },
+  { name: 'Pending Transfer', href: '/pending_transfer_server', current: false },
+  { name: 'Successful Cases', href: '/transferedcompletedcases', current: false },
 ];
 
 function classNames(...classes) {
@@ -21,7 +22,7 @@ function classNames(...classes) {
 
 export default function Navbar(props) {
   let { user } = props;
-  const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4, 8);
+  const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4, 9);
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (

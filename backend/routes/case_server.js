@@ -42,7 +42,7 @@ router.post("/approve_case/:id", fetchserver,
                         return res.status(500).json({ error: "You have already approved this course" });
                     }
                     const registeredCaseId = results.insertId;
-                    handleNotifications(`Your case has been approved  with id ${req.params.id}. You will reach the transfer amount after being collected.`, user.uno,"user");
+                    handleNotifications(`Your case has been approved  with id ${req.params.id}. You will reach the transfer amount after being collected.`, user.uno, "user");
                     return res.json("You have approved this case.");
                 });
             });
@@ -140,7 +140,7 @@ router.get("/get_all_non_transferred_cases_but_completed", fetchserver, async (r
 router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
 
     try {
-        con.query(" select * from registeredcases natural join cases  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 and  cno=?", [date,req.params.id], (errors, result1) => {
+        con.query(" select * from registeredcases natural join cases  where ( clastdate< ? or camountreq<=amountmade) and transferstatus=0 and  cno=?", [date, req.params.id], (errors, result1) => {
 
             if (errors) {
                 console.log(errors);
@@ -159,8 +159,8 @@ router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
                         console.log(error);
                         return res.status(500).send("Internal server error occurred");
                     }
-                    handleNotifications(`Your case ${result1[0].name} has been resolved`,result1[0].uno);
-                    handleNotifications(`You have made transaction of amount ${result1[0].amountmade}. `,1,"server");
+                    handleNotifications(`Your case ${result1[0].name} has been resolved`, result1[0].uno);
+                    handleNotifications(`You have made transaction of amount ${result1[0].amountmade}. `, 1, "server");
 
                     res.send(`You have transfered the amount ${result1[0].amountmade} to the case`);
                 })

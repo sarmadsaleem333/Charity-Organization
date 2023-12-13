@@ -10,7 +10,7 @@ const ServerCaseState = (props) => {
     const host = "http://localhost:3333";
 
     // approve the case 
-    const approveCase = async (caseId,name) => {
+    const approveCase = async (caseId, name) => {
         try {
             const response = await fetch(`${host}/charity_organization/case_server/approve_case/${caseId}`, {
                 method: "POST",
@@ -18,7 +18,7 @@ const ServerCaseState = (props) => {
                     "Content-Type": "application/json",
                     "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
                 },
-                body: JSON.stringify({name}),
+                body: JSON.stringify({ name }),
             });
             const json = await response.json();
             return json;
@@ -87,6 +87,7 @@ const ServerCaseState = (props) => {
             }
 
             const json = await response.json();
+            console.log(json);
             setTransferredCases(json);
         } catch (error) {
             console.error(error.message);

@@ -16,6 +16,7 @@ import AlertState from './context/alertContext/AlertState';
 import Alert from "./components/Alert"
 import ServerCaseState from './context/ServerCase/ServerCaseState';
 import DonationCaseState from './context/DonationCase/DonationCaseState';
+import SuccessfulCases from './components/SuccessfulCases';
 global.user = false;
 
 function App() {
@@ -36,8 +37,9 @@ function App() {
                   <Route path="/events_user" element={<EventsUser />} />
                   <Route path="/events_server" element={<EventsServer />} />
                   <Route path="/items_server" element={<ItemServer />} />
-                  <Route path="/transaction_server" element={<TransactionServer />} />
-                  <Route path="/cases_server" element={<CasesServer />} />
+                  <Route path="/pending_transfer_server" element={<TransactionServer />} />
+                  <Route path="/applications_server" element={<CasesServer />} />
+                  <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
                 </Routes>
                 <Footer />
               </BrowserRouter>
