@@ -34,7 +34,7 @@ const HistoryDonationState = (props) => {
                 },
             });
             const donations = await response.json();
-            return json;
+            return donations;
         } catch (error) {
             console.error(error.message);
         }
