@@ -6,7 +6,6 @@ const fetchuser = require('../midlleware/fetchuser');
 const fetchserver = require('../midlleware/fetchserver');
 const multer = require("multer");
 const handleNotifications = require("../midlleware/handleNotifications");
-
 const date = new Date();
 
 //storing in backend/public/images/
@@ -49,7 +48,33 @@ router.post('/upload_item',
             return res.status(500).json({ error: 'Internal server error' });
         }
     });
+//router for updating the quantity
+router.post('/edit_quantity/:id',
+    [body('iquantity', 'Quantity should be a positive integer').isInt({ min: 1 }),
+    ], fetchserver, async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const response = errors.array();
+            console.log(response[0].msg)
+            return res.status(400).json(response[0].msg);
+        }
+        const { iquantity } = req.body;
 
+        try {
+            con.query('Update items SET iquantity = ? WHERE ino = ?', [iquantity, req.params.id], (error, result) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).json({ error: 'Internal server error' });
+                }
+                return res.send("Your quantity  has been successfully updated");
+            });
+
+            return res.json({ message: 'Item uploaded successfully', insertedId: result.insertId });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    });
 
 //router for getting all items by server 
 router.get("/get_items_by_server", fetchserver, async (req, res) => {
@@ -91,7 +116,9 @@ router.get("/get_items_by_user", fetchuser, async (req, res) => {
 router.post("/donate_item/:id", fetchuser, [
     body("quantity", "Quantity should be at least 1").isInt({ min: 1 }),
     body("accounttitle", "Enter Account Title ").notEmpty(),
-    body("accountno", "Enter account no").notEmpty(),
+    body('accountno')
+        .isLength({ min: 8, max: 12 })
+        .withMessage('Account number must be between 8 and 12 characters'),
 ], async (req, res) => {
     const { quantity, accountno, accounttitle } = req.body;
     const errors = validationResult(req);
@@ -181,16 +208,16 @@ router.get("/all_transfer_items", fetchserver, async (req, res) => {
     }
 
 });
-router.get("/transfer_item/:id", fetchserver, async (req, res) => {
+router.post("/transfer_item/:id", fetchserver, async (req, res) => {
     try {
-        con.query("update itemdonates set transferstatus=1 where receiptno=?",[req.params.id] ,(error, result) => {
+        con.query("update itemdonates set transferstatus=1 where receiptno=?", [req.params.id], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
         });
-        handleNotifications("You have transferred the items",1,"server");
-        res.send( "You have successfully transferred the items")
+        handleNotifications("You have transferred the items", 1, "server");
+        res.send("You have successfully transferred the items")
 
     } catch (error) {
         console.log(error);

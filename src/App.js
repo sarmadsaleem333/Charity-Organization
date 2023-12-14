@@ -17,37 +17,39 @@ import Alert from "./components/Alert"
 import ServerCaseState from './context/ServerCase/ServerCaseState';
 import DonationCaseState from './context/DonationCase/DonationCaseState';
 import SuccessfulCases from './components/SuccessfulCases';
+import NotificationsState from './context/notifications/NotificationsState';
 global.user = false;
 
 function App() {
   return (
     <>
-      <DonationCaseState>
-        <ServerCaseState>
-          <UserCaseState>
-            <AlertState>
-              <BrowserRouter>
-                <Navbar user={global.user} />
-                <Alert />
-                <Routes>
-                  <Route path="/" element={<HomeUser />} />
-                  <Route path="/item_donation_user" element={<ItemsUser />} />
-                  <Route path="/history_user" element={<UserHistory />} />
-                  <Route path="/my_cases" element={<CaseApplicationUser />} />
-                  <Route path="/events_user" element={<EventsUser />} />
-                  <Route path="/events_server" element={<EventsServer />} />
-                  <Route path="/items_server" element={<ItemServer />} />
-                  <Route path="/pending_transfer_server" element={<TransactionServer />} />
-                  <Route path="/applications_server" element={<CasesServer />} />
-                  <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
-                </Routes>
-                <Footer />
-              </BrowserRouter>
-            </AlertState >
-          </UserCaseState >
-        </ServerCaseState>
-      </DonationCaseState>
-
+      <NotificationsState>
+        <DonationCaseState>
+          <ServerCaseState>
+            <UserCaseState>
+              <AlertState>
+                <BrowserRouter>
+                  <Navbar user={global.user} />
+                  <Alert />
+                  <Routes>
+                    <Route path="/" element={<HomeUser />} />
+                    <Route path="/item_donation_user" element={<ItemsUser />} />
+                    <Route path="/history_user" element={<UserHistory />} />
+                    <Route path="/my_cases" element={<CaseApplicationUser />} />
+                    <Route path="/events_user" element={<EventsUser />} />
+                    <Route path="/events_server" element={<EventsServer />} />
+                    <Route path="/items_server" element={<ItemServer />} />
+                    <Route path="/pending_transfer_server" element={<TransactionServer />} />
+                    <Route path="/applications_server" element={<CasesServer />} />
+                    <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
+                  </Routes>
+                  <Footer />
+                </BrowserRouter>
+              </AlertState >
+            </UserCaseState >
+          </ServerCaseState>
+        </DonationCaseState>
+      </NotificationsState>
 
 
     </>
