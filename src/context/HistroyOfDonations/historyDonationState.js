@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import historyDonationContext from "./historyDonationContext";
 
-const historyDonationState = (props) => {
+const HistoryDonationState = (props) => {
     const host = "http://localhost:3333";
 
     const [HistoryOfUserDonations, setHistoryOfUserDonations] = useState([]);
+
     // get history of all donations by user
     const getAllDonationsByUser = async () => {
         try {
@@ -17,22 +18,6 @@ const historyDonationState = (props) => {
             });
             const donations = await response.json();
             setHistoryOfUserDonations(donations);
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
-    //get all details by user
-    const getAllDonationsDetailsByUser = async (id) => {
-        try {
-            const response = await fetch(`${host}/charity_organization/get_history_of_donations/get_all_donation_details_by_user/${id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMH0sImlhdCI6MTcwMjEwMjg4N30.pTKfAAPUoREb8F_jJ0aUDuyGcYKLzu0d9dpRqZajT5s",
-                },
-            });
-            const donations = await response.json();
-            return json;
         } catch (error) {
             console.error(error.message);
         }
@@ -56,10 +41,10 @@ const historyDonationState = (props) => {
     };
 
     return (
-        <historyDonationContext.Provider value={{ getAllDonationsByServer, getAllDonationsDetailsByUser,getAllDonationsByUser,HistoryOfUserDonation }} >
+        <historyDonationContext.Provider value={{ getAllDonationsByServer, getAllDonationsByUser, HistoryOfUserDonations }} >
             {props.children}
         </historyDonationContext.Provider>
     )
 }
 
-export default historyDonationState;
+export default HistoryDonationState;

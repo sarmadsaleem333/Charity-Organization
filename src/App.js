@@ -18,7 +18,7 @@ import ServerCaseState from './context/ServerCase/ServerCaseState';
 import DonationCaseState from './context/DonationCase/DonationCaseState';
 import SuccessfulCases from './components/SuccessfulCases';
 import NotificationsState from './context/notifications/NotificationsState';
-global.user = false;
+global.user = true;
 
 function App() {
   return (
