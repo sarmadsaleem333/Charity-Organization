@@ -1,29 +1,11 @@
-import React, { useContext, useState } from 'react';
-import donationCaseContext from '../context/DonationCase/donationCaseContext';
-import alertContext from '../context/alertContext/AlertContext';
-export default function CaseCard(props) {
-    const { caseItem, approved } = props;
-    let amountLeft = 0;
-    if (approved) {
-        amountLeft = caseItem.camountreq - caseItem.amountmade;
-    }
+import React from 'react';
+export default function CompletedCasesServer(props) {
+   
 
-    const context = useContext(donationCaseContext);
-    const context2 = useContext(alertContext);
-    const { donateCase } = context;
-    const { showAlert } = context2;
-    const [DonationCredentials, setDonationCredentials] = useState({ accountno: "", accounttitle: "", cardno: "", amount: "" });
-    const onChange = (e) => {
-        setDonationCredentials({ ...DonationCredentials, [e.target.name]: e.target.value });
-    }
-    const handleDonation = async (caseID) => {
-        const response = await donateCase(caseID, DonationCredentials.amount, DonationCredentials.accounttitle, DonationCredentials.accountno);
-        setDonationCredentials({ accountno: "", accountitle: "", cardno: "", amount: "" });
-        if (DonationCredentials.cardno.length < 16 || DonationCredentials.cardno.length > 19) {
-            return showAlert("Enter Correct Card number (Between 16 and 19 digits)")
-        }
-        showAlert(response, "success");
-    }
+  
+   
+
+    
     return (
         <>
             <div className="modal fade custom-modal" id={`add-comment__${caseItem.cno}`} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

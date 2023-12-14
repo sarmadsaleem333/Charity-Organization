@@ -39,6 +39,7 @@ const UserCaseState = (props) => {
             headers: {
                 "Content-Type": "application/json",
                 "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMH0sImlhdCI6MTcwMjEwMjg4N30.pTKfAAPUoREb8F_jJ0aUDuyGcYKLzu0d9dpRqZajT5s",
+            
             }
         });
         const json = await response.json();
@@ -78,7 +79,7 @@ const UserCaseState = (props) => {
 
 
     return (
-        <userCaseContext.Provider value={{ RegisteredCases, AllTransferedCases, AllUnApprovedCases, AllUnApprovedCases, AllInProgressCases, getAllInProgressCases, getAllRegisteredCases, getAllTransferedCases, applyCase }} >
+        <userCaseContext.Provider value={{ RegisteredCases, AllTransferedCases, AllUnApprovedCases, getAllUnApprovedCases, AllInProgressCases, getAllInProgressCases, getAllRegisteredCases, getAllTransferedCases, applyCase }} >
             {props.children}
         </userCaseContext.Provider>
     )

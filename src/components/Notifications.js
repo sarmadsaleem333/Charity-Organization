@@ -1,18 +1,28 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, BellIcon } from '@heroicons/react/20/solid';
+import notificationsContext from '../context/notifications/notificationsContext';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
-
 export default function Notifications() {
-    const [notifications, setNotifications] = useState([
-        // Your notification data goes here
-        { id: 1, text: 'Notification 1' },
-        { id: 2, text: 'Notification 2' },
-        // Add more notifications as needed
-    ]);
+    const context = useContext(notificationsContext);
+    const { getAllNotificationsUser, userNotifications } = context;
+
+    useEffect(() => {
+        getAllNotificationsUser();
+        console.log(userNotifications)
+    }, [])
+
+
+
+    // const [notifications, setNotifications] = useState([
+    //     // Your notification data goes here
+    //     { id: 1, text: 'Notification 1' },
+    //     { id: 2, text: 'Notification 2' },
+    //     // Add more notifications as needed
+    // ]);
 
     return (
         <Menu as="div" className="relative inline-block text-left">
@@ -20,7 +30,7 @@ export default function Notifications() {
                 <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                     <span className="flex items-center">
                         Notifications
-                        {notifications.length > 0 && (
+                        {userNotifications.length > 0 && (
                             <span className="ml-2">
                                 <BellIcon className="h-4 w-4 text-red-500" />
                             </span>
@@ -42,15 +52,15 @@ export default function Notifications() {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         {/* Notifications section */}
-                        {notifications.length > 0 && (
+                        {userNotifications.length > 0 && (
                             <div className="border-b border-gray-200 py-2 px-4 text-sm text-gray-500">
                                 Notifications
                             </div>
                         )}
 
                         {/* Render notifications */}
-                        {notifications.map((notification) => (
-                            <Menu.Item key={notification.id}>
+                        {userNotifications.map((notification) => (
+                            <Menu.Item key={notification.nno}>
                                 {({ active }) => (
                                     <a
                                         href="#"
@@ -59,7 +69,7 @@ export default function Notifications() {
                                             'block px-4 py-2 text-sm'
                                         )}
                                     >
-                                        {notification.text}
+                                        {notification.nmessage}
                                     </a>
                                 )}
                             </Menu.Item>

@@ -14,7 +14,9 @@ const date = new Date();
 router.post("/donate_case/:id", fetchuser,
     [body("amount", "Amount should not be empty").notEmpty(),
     body("accounttitle", "Enter Account Title ").notEmpty(),
-    body("accountno", "Enter account no").notEmpty(),
+    body('accountno')
+        .isLength({ min: 8, max: 12 })
+        .withMessage('Account number must be between 8 and 12 characters'),
     ], async (req, res) => {
         const { amount, accounttitle, accountno } = req.body;
         const errors = validationResult(req);
@@ -24,8 +26,11 @@ router.post("/donate_case/:id", fetchuser,
         }
         try {
             let caseName;
+            if (amount < 0) {
+                return res.json("Enter correct amount ");
+            }
             if (amount < 100) {
-                return res.send("Amount should be atleast Rs.100");
+                return res.json("Amount should be atleast Rs.100");
             }
             con.query("INSERT INTO casedonates (uno,cno,amount,accounttitle,accountno) VALUES (?,?,?,?,?)", [req.user.id, req.params.id, amount, accounttitle, accountno], (error, results) => {
                 if (error) {
@@ -47,8 +52,8 @@ router.post("/donate_case/:id", fetchuser,
                                 console.log(error);
                                 return res.status(500).json({ error: "Internal server error" });
                             }
-                            handleNotifications(`You have made donation to ${results2[0].name} of Rs. ${amount}`, req.user.id,"user");
-                            return res.send(`You donated for the case ${results2[0].name}`);
+                            handleNotifications(`You have made donation to ${results2[0].name} of Rs. ${amount}`, req.user.id, "user");
+                            return res.json(`You donated for the case ${results2[0].name}`);
                         })
                     })
                 })
@@ -64,4 +69,4 @@ router.post("/donate_case/:id", fetchuser,
 
 
 
-module.exports=router;
+module.exports = router;

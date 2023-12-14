@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import notificationsContext from "./notificationsContext";
-const notificationsState = (props) => {
+const NotificationsState = (props) => {
     const [userNotifications, setuserNotifications] = useState([]);
     const [serverNotifications, setserverNotifications] = useState([]);
     const host = "http://localhost:3333";
@@ -17,6 +17,7 @@ const notificationsState = (props) => {
             });
             const donations = await response.json();
             setuserNotifications(donations);
+            console.log(donations)
         } catch (error) {
             console.error(error.message);
         }
@@ -41,10 +42,10 @@ const notificationsState = (props) => {
 
     return (
 
-        <notificationsContext.Provider value={{getAllNotificationsServer,getAllNotificationsUser,userNotifications,serverNotifications}} >
+        <notificationsContext.Provider value={{ getAllNotificationsServer, getAllNotificationsUser, userNotifications, serverNotifications }} >
             {props.children}
         </notificationsContext.Provider>
     )
 }
 
-export default notificationsState;
+export default NotificationsState;

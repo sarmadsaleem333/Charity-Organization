@@ -38,7 +38,9 @@ router.post("/apply_case", fetchuser, [
             return null;
         }),
     body("camountreq", "Password should be at least 8 characters").notEmpty(),
-    body("caccountno", "Mention the account no should be atleast 11 characters").isLength(11),
+    body('caccountno')
+        .isLength({ min: 8, max: 12 })
+        .withMessage('Account number must be between 8 and 12 characters'),
     body("caccounttitle", "Mention the account title").notEmpty(),
 ], async (req, res) => {
     const { cdescription, clastdate, camountreq, caccountno, caccounttitle } = req.body;
@@ -89,7 +91,7 @@ router.get("/get_my_transferredcases", fetchuser, async (req, res) => {
 router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("select * from inprogress_cases_of_user where uno=(?)", [req.user.id], (error, results) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate ?= ? and  amountmade<camountreq and uno=?", [date,req.user.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -108,7 +110,7 @@ router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
 router.get("/get_my_applied_unapproved_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("select * from my_applied_cases_unapproved where uno=(?)", [req.user.id], (error, results) => {
+        con.query("select * from my_applied_cases_unapproved where uno=(?) and clastdate>=?", [req.user.id,date], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -127,7 +129,7 @@ router.get("/get_all_registered_cases_by_user", fetchuser, async (req, res) => {
 
     try {
         // Find the user associated with the applied case
-        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? or amountmade>=camountreq", [date], (error, userResults) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? and  amountmade<camountreq", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

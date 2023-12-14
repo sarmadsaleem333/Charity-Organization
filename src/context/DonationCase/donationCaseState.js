@@ -1,7 +1,7 @@
 import donationCaseContext from "./donationCaseContext";
 import React from "react";
 
-const donationCaseState = (props) => {
+const DonationCaseState = (props) => {
     const host = "http://localhost:3333";
 
     const donateCase = async (caseId, amount, accounttitle, accountno) => {
@@ -15,7 +15,9 @@ const donationCaseState = (props) => {
                 body: JSON.stringify({ amount, accounttitle, accountno }),
             });
 
-            const message = await response.text();
+            const json = await response.json();
+            return json;
+
 
         } catch (error) {
             console.error(error.message);
@@ -30,4 +32,4 @@ const donationCaseState = (props) => {
     )
 }
 
-export default donationCaseState;
+export default DonationCaseState;
