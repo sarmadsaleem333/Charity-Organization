@@ -22,14 +22,14 @@ export default function UserHistory() {
   return (
     <>
       <div>
-        <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-black-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        <h2 className="text-2xl font-bold leading-7 pt-10 pb-2 text-center text-black-900 sm:truncate sm:text-3xl sm:tracking-tight">
           Your Donation History is as Follows
         </h2>
         <div className='flex justify-between py-3'>
           <div style={headerStyle}>Case Name</div>
           <div style={headerStyle}>Receipt No</div>
           <div style={headerStyle}>Date of Donation</div>
-          <div style={headerStyle}>Amount</div>
+          <div style={headerStyle}>Amount (PKR)</div>
           <div style={headerStyle}>Account Title</div>
         </div>
         <div>
