@@ -1,6 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import serverCaseContext from '../context/ServerCase/serverCaseContext';
+import { Link } from 'react-router-dom';
 
 export default function SuccessfulCaseCard(props) {
     const { application } = props;
@@ -49,7 +50,7 @@ export default function SuccessfulCaseCard(props) {
                         <div className="text-lg font-semibold text-red-500">
                             Amount Made:{application.amountmade}
                         </div>
-                        <div className="btn-primary btn mt-4 pb-2" onClick={() => getDetails(application.cno)}>Get Details</div>
+                        <Link className="btn-primary btn mt-4 pb-2" to={`/case_donation_history/${application.cno}`}>Get Details</Link>
                     </div>
 
                 </div>

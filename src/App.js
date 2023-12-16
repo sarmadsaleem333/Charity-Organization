@@ -19,7 +19,8 @@ import DonationCaseState from './context/DonationCase/DonationCaseState';
 import SuccessfulCases from './components/SuccessfulCases';
 import NotificationsState from './context/notifications/NotificationsState';
 import HistoryDonationState from './context/HistroyOfDonations/HistoryDonationState';
-global.user = true;
+import CaseHistoryDonations from './components/CaseHistoryDonations';
+global.user = false;
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                       <Route path="/pending_transfer_server" element={<TransactionServer />} />
                       <Route path="/applications_server" element={<CasesServer />} />
                       <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
+                      <Route path="/case_donation_history/:id" element={<CaseHistoryDonations />} />
                     </Routes>
                     <Footer />
                   </BrowserRouter>

@@ -5,6 +5,7 @@ const HistoryDonationState = (props) => {
     const host = "http://localhost:3333";
 
     const [HistoryOfUserDonations, setHistoryOfUserDonations] = useState([]);
+    const [ServerHistoryOfUserDonations, setServerHistoryOfUserDonations] = useState([]);
 
     // get history of all donations by user
     const getAllDonationsByUser = async () => {
@@ -34,14 +35,14 @@ const HistoryDonationState = (props) => {
                 },
             });
             const donations = await response.json();
-            return donations;
+            setServerHistoryOfUserDonations(donations);
         } catch (error) {
             console.error(error.message);
         }
     };
 
     return (
-        <historyDonationContext.Provider value={{ getAllDonationsByServer, getAllDonationsByUser, HistoryOfUserDonations }} >
+        <historyDonationContext.Provider value={{  getAllDonationsByUser, HistoryOfUserDonations,getAllDonationsByServer, ServerHistoryOfUserDonations }} >
             {props.children}
         </historyDonationContext.Provider>
     )

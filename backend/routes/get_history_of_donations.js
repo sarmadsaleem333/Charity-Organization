@@ -26,7 +26,7 @@ router.get("/get_all_donations_by_user", fetchuser, async (req, res) => {
 //get specific donations details by server
 router.get("/get_specific_case_donations_by_server/:id", fetchserver, async (req, res) => {
     try {
-        con.query("select * from server_view_for_donationsas where cno=? ", [req.params.id], (error, results) => {
+        con.query("select cno,uname,uno,receiptno,name,amount,accounttitle,date from transferredcases natural join casedonates natural join users where cno=? ", [req.params.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
