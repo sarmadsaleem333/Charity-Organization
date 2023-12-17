@@ -9,7 +9,7 @@ export default function CaseHistoryDonations(props) {
 
     const { id } = useParams();
     const divStyle = {
-        width: '20%', // Adjust the width as needed
+        width: '20%', 
         textAlign: 'center',
         border: '1px solid #ccc',
         padding: '8px',

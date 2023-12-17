@@ -8,6 +8,9 @@ export default function ItemsUser() {
   const { showAlert } = context2;
   const { getItemsByUser, UserItems } = context1;
 
+  useEffect(() => {
+    getItemsByUser();
+  }, [])
 
 
   return (
@@ -20,17 +23,13 @@ export default function ItemsUser() {
         <section className="text-gray-600 body-font">
           <div className="container px-5 py-10 mx-auto">
             <div className="flex flex-wrap -m-4">
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-
+              {UserItems.length === 0 ? (
+                <p>No items available</p>
+              ) : (
+                UserItems.map((item) => <Item key={item.ino} user={true} item={item} />)
+              )}
             </div>
+
           </div>
         </section>
 

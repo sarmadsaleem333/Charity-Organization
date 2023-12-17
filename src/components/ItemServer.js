@@ -81,7 +81,7 @@ export default function ItemServer() {
         {UserItems.length === 0 ? (
           <p>No items available</p>
         ) : (
-          UserItems.map((item) => <Item key={item.ino} item={item} />)
+          UserItems.map((item) => <Item key={item.ino} user={false} item={item} />)
         )}
       </div>
     </div>
