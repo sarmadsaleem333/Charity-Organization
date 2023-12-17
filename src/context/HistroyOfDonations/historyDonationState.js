@@ -35,6 +35,7 @@ const HistoryDonationState = (props) => {
                 },
             });
             const donations = await response.json();
+            console.log(donations)
             setServerHistoryOfUserDonations(donations);
         } catch (error) {
             console.error(error.message);

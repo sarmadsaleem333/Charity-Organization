@@ -24,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Exclude images folder
-public
+backend/public/images/

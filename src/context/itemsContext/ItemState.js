@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react'
 import axios from 'axios';
+import ItemContext from './ItemContext';
 const ItemState = (props) => {
     const [ServerItems, setServerItems] = useState([]);
     const [UserItems, setUserItems] = useState([]);
@@ -17,6 +17,8 @@ const ItemState = (props) => {
                     "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
                 },
             });
+            console.log(formData)
+            console.log(response.data);
             return response.data;
         } catch (error) {
             console.error(error.message);

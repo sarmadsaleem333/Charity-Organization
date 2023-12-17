@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import historyDonationContext from '../context/HistroyOfDonations/historyDonationContext';
+
 export default function CaseHistoryDonations(props) {
 
     const context = useContext(historyDonationContext);
@@ -12,16 +13,21 @@ export default function CaseHistoryDonations(props) {
         textAlign: 'center',
         border: '1px solid #ccc',
         padding: '8px',
+
     };
-    let name;
+    const [caseName, setCaseName] = useState(null);
     useEffect(() => {
         getAllDonationsByServer(id);
+        if (ServerHistoryOfUserDonations.length > 0) {
+            setCaseName(ServerHistoryOfUserDonations[0].name);
+        }
+
     }, [])
 
 
     return (
         <div>
-            <h1 className='text-center font-bold text-4xl pt-6'>Case Name: {ServerHistoryOfUserDonations[0].name} </h1>
+            <h1 className='text-center font-bold text-4xl pt-6'>Case Name: {caseName} </h1>
 
             <div className='flex justify-between py-3'>
                 <div style={{ ...divStyle, fontWeight: 'bold' }}>Receipt</div>

@@ -8,12 +8,12 @@ function classNames(...classes) {
 }
 export default function Notifications() {
     const context = useContext(notificationsContext);
-    const { getAllNotificationsUser, userNotifications } = context;
+    // const { getAllNotificationsUser, userNotifications } = context;
 
-    useEffect(() => {
-        getAllNotificationsUser();
-        console.log(userNotifications)
-    }, [])
+    // useEffect(() => {
+    //     getAllNotificationsUser();
+    //     console.log(userNotifications)
+    // }, [])
 
 
 
@@ -29,12 +29,12 @@ export default function Notifications() {
             <div>
                 <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                     <span className="flex items-center">
-                        Notifications
+                        {/* Notifications
                         {userNotifications.length > 0 && (
                             <span className="ml-2">
                                 <BellIcon className="h-4 w-4 text-red-500" />
                             </span>
-                        )}
+                        )} */}
                     </span>
                     <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </Menu.Button>
@@ -52,14 +52,14 @@ export default function Notifications() {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         {/* Notifications section */}
-                        {userNotifications.length > 0 && (
+                        {/* {userNotifications.length > 0 && (
                             <div className="border-b border-gray-200 py-2 px-4 text-sm text-gray-500">
                                 Notifications
                             </div>
-                        )}
+                        )} */}
 
                         {/* Render notifications */}
-                        {userNotifications.map((notification) => (
+                        {/* {userNotifications.map((notification) => (
                             <Menu.Item key={notification.nno}>
                                 {({ active }) => (
                                     <a
@@ -73,7 +73,7 @@ export default function Notifications() {
                                     </a>
                                 )}
                             </Menu.Item>
-                        ))}
+                        ))} */}
 
                         {/* Menu items */}
                         <Menu.Item>

@@ -9,45 +9,51 @@ const handleNotifications = require("../midlleware/handleNotifications");
 const date = new Date();
 
 //storing in backend/public/images/
-var storage = multer.diskStorage({
+var imageStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "backend/public/images/");
+        cb(null, "public/images/");
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now();
         cb(null, uniqueSuffix + file.originalname)
     }
 })
-const upload = multer({ storage: storage })
+const upload = multer({ storage: imageStorage })
 
 //router for uplpading an item
 router.post('/upload_item',
-    [body('iquantity', 'Quantity should be a positive integer').isInt({ min: 1 }),
-    body('iname', 'Item name is required').notEmpty(),
-    body('iprice', 'Price should be a positive decimal number').isDecimal({ decimal_digits: '1,2' })], upload.single('iphoto'), fetchserver, async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const response = errors.array();
-            console.log(response[0].msg)
-            return res.status(400).json(response[0].msg);
-        }
-        const { iquantity, iname, iprice } = req.body;
-        const imageName = req.file.filename;
-        try {
-            con.query('INSERT INTO items (iquantity, iname, iphoto, iprice) VALUES (?, ?, ?, ?, ?)', [iquantity, iname, imageName, iprice], (error, result) => {
-                if (error) {
-                    console.error(error);
-                    return res.status(500).json({ error: 'Internal server error' });
-                }
-                return res.send("Your item has been successfullu uploaded");
-            });
 
-            return res.status(201).json({ message: 'Item uploaded successfully', insertedId: result.insertId });
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: 'Internal server error' });
-        }
-    });
+    [
+        body('iquantity', 'Quantity should be a positive integer'),
+        body('iname', 'Item name is required'),
+        body('iprice', 'Price should be a positive decimal number')], 
+        upload.single('iphoto'), 
+        fetchserver, 
+        async (req, res) => {
+
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                const response = errors.array();
+                console.log(response[0].msg)
+                return res.status(400).json(response[0].msg);
+            }
+            const { iquantity, iname, iprice } = req.body;
+            const imageName = req.file.filename;
+            try {
+                con.query('INSERT INTO items (iquantity, iname, iphoto, iprice) VALUES (?, ?, ?, ?)', [iquantity, iname, imageName, iprice], (error, result) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(500).json({ error: 'Internal server error' });
+                    }
+                    return res.status(201).json({ message: 'Item uploaded successfully', insertedId: result.insertId });
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+        });
+
 //router for updating the quantity
 router.post('/edit_quantity/:id',
     [body('iquantity', 'Quantity should be a positive integer').isInt({ min: 1 }),
@@ -68,7 +74,6 @@ router.post('/edit_quantity/:id',
                 }
                 return res.send("Your quantity  has been successfully updated");
             });
-
             return res.json({ message: 'Item uploaded successfully', insertedId: result.insertId });
         } catch (error) {
             console.error(error);

@@ -1,6 +1,7 @@
 import React from 'react';
 
-export default function Item() {
+export default function Item(props) {
+    const {item}=props
     return (
         <>
             {/* modal */}
@@ -38,21 +39,21 @@ export default function Item() {
                     <img
                         alt="ecommerce"
                         className="object-cover object-center w-full h-full block"
-                        src="https://dummyimage.com/420x260"
+                        src={`http://localhost:3333/images/${(item.iphoto)}`}
                     />
                 </a>
                 <div className="mt-4">
                     <div className='flex justify-around'>
                         <h2 className="text-gray-900 title-font text-lg font-medium">
-                            Blanket
+                            {item.iname}
                         </h2>
                         <h2 className="text-gray-900 title-font text-lg font-medium">
-                            InStock :7
+                            InStock :{item.iquantity}
                         </h2>
                     </div>
                     <div className='flex  justify-around'>
                         <h2 className="text-red-500 title-font text-lg font-medium">
-                            PKR 70
+                            PKR  {item.iprice}
                         </h2>
                     </div>
                     <div className="flex justify-around pt-3">

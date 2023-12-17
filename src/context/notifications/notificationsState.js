@@ -17,7 +17,6 @@ const NotificationsState = (props) => {
             });
             const donations = await response.json();
             setuserNotifications(donations);
-            console.log(donations)
         } catch (error) {
             console.error(error.message);
         }
