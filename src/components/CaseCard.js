@@ -64,7 +64,7 @@ export default function CaseCard(props) {
                                 <input type="text" className="form-control" name="accounttitle" value={DonationCredentials.accounttitle} onChange={onChange} id="accountName" />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="accountName" className="form-label">Enter Credit Card Number </label>
+                                <label htmlFor="accountName" className="form-label">Enter Credit Card Number(16-18 digits) </label>
                                 <input type="number" className="form-control" name='cardno' value={DonationCredentials.cardno} onChange={onChange} id="accountName" />
                             </div>
                             <div className="mb-3">

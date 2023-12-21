@@ -106,7 +106,7 @@ const ItemState = (props) => {
 
 
     // donate items 
-    const donateItem = async (quantity, accounttitle, accountno, id) => {
+    const donateItem = async (quantity, id) => {
         try {
             const response = await fetch(`${host}/charity_organization/donation_item/donate_item/${id}`, {
                 method: "POST",
@@ -114,7 +114,7 @@ const ItemState = (props) => {
                     "Content-Type": "application/json",
                     "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMH0sImlhdCI6MTcwMjEwMjg4N30.pTKfAAPUoREb8F_jJ0aUDuyGcYKLzu0d9dpRqZajT5s",
                 },
-                body: JSON.stringify({ quantity: quantity, accounttitle: accounttitle, accountno: accountno }),
+                body: JSON.stringify({ quantity: quantity }),
 
             });
             if (!response.ok) {

@@ -120,14 +120,9 @@ router.get("/get_items_by_user", fetchuser, async (req, res) => {
 //donation of item
 router.post("/donate_item/:id", fetchuser, [
     body("quantity", "Quantity should be at least 1").isInt({ min: 1 }),
-    body("accounttitle", "Enter Account Title ").notEmpty(),
-    body('accountno')
-        .isLength({ min: 8, max: 12 })
-        .withMessage('Account number must be between 8 and 12 characters'),
 ], async (req, res) => {
-    const { quantity, accountno, accounttitle } = req.body;
+    const { quantity } = req.body;
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
         const response = errors.array();
         return res.status(400).json(response[0].msg);
@@ -137,16 +132,19 @@ router.post("/donate_item/:id", fetchuser, [
 
         // Insert into itemdonates
         con.query("Select * from items where ino=?", [req.params.id], (errors, result0) => {
+
             if (errors) {
                 console.log(errors);
                 return res.status(500).json({ error: "Internal server error" });
-
+            }
+            if (result0.length===0){
+                return res.json("No item found")
             }
             if (result0[0].quantity < quantity) {
-                return res.send("Sorry this much quantity is not available");
+                return res.json("Sorry this much quantity is not available");
             }
-            con.query("INSERT INTO itemdonates (uno, ino, idate, amount, quantity,accountno,accounttitle) VALUES (?, ?, ?, ?, ?,?,?)",
-                [req.user.id, req.params.id, date, result0[0].iprice * quantity, quantity, accountno, accounttitle],
+            con.query("INSERT INTO itemdonates (uno, ino, idate, amount, quantity) VALUES (?, ?, ?, ?, ?)",
+                [req.user.id, req.params.id, date, result0[0].iprice * quantity, quantity],
                 (error, results) => {
                     if (error) {
                         console.log(error);
@@ -167,8 +165,8 @@ router.post("/donate_item/:id", fetchuser, [
                                 return res.status(500).json({ error: "Internal server error" });
                             }
 
-                            handleNotifications(`You have made a donation of ${quantity} ${result0[0].iname} with Rs ${result0[0].iprice * quantity}/.`, req.user.id);
-                            return res.send("Your item donation has been successfully recorded.");
+                            handleNotifications(`You have donated ${quantity} ${result0[0].iname} with Rs ${result0[0].iprice * quantity}.`, req.user.id);
+                            return res.json("Your item donation has been successfully recorded.");
                         });
                     });
                 }

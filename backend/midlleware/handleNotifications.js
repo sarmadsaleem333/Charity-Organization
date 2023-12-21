@@ -17,10 +17,15 @@ const handleNotifications = (message, userId, string) => {
                 "INSERT INTO usernotification (nno, uno) VALUES (?, ?)" :
                 "INSERT INTO servernotification (nno, sno) VALUES (?, ?)";
 
-            con.query(insertUserNotificationSql, [notificationId, userId], (error) => {
+            const values = (string === "user") ? [notificationId, userId] : [notificationId, 1];
+
+            con.query(insertUserNotificationSql, values, (error, results) => {
                 if (error) {
                     console.error(error);
-                    return;}
+                    return;
+                }
+
+                return
             });
         } else {
             console.error("Error: InsertId not found in notificationResults");

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Item from './Item'
+import Item from './Item';
 import ItemContext from '../context/itemsContext/ItemContext'
 import alertContext from '../context/alertContext/AlertContext'
 
@@ -81,7 +81,7 @@ export default function ItemServer() {
         {UserItems.length === 0 ? (
           <p>No items available</p>
         ) : (
-          UserItems.map((item) => <Item key={item.ino} user={false} item={item} />)
+          UserItems.map((item) => <Item key={item.ino}  item={item} />)
         )}
       </div>
     </div>
