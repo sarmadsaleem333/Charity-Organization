@@ -15,6 +15,7 @@ export default function UserHistory() {
     fontWeight: 'bold',
   };
 
+
   useEffect(() => {
     getAllDonationsByUser();
   }, []);

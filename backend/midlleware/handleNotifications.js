@@ -25,7 +25,7 @@ const handleNotifications = (message, userId, string) => {
                     return;
                 }
 
-                return
+                return;
             });
         } else {
             console.error("Error: InsertId not found in notificationResults");

@@ -2,12 +2,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import Item from './Item';
 import ItemContext from '../context/itemsContext/ItemContext'
 import alertContext from '../context/alertContext/AlertContext'
+import NonTransferItem from './NonTransferItem';
 
 export default function ItemServer() {
+  const divStyle = {
+    width: '20%', // Adjust the width as needed
+    textAlign: 'center',
+    border: '1px solid #ccc',
+    color: 'red',
+    padding: '8px',
+};
+
   const context1 = useContext(ItemContext);
   const context2 = useContext(alertContext);
   const { showAlert } = context2;
-  const { getItemsByUser, uploadItem, UserItems } = context1;
+  const { getItemsByUser, uploadItem, UserItems, NonTransferItems, getNonTransferItems } = context1;
 
   const [itemCredentials, setItemCredentials] = useState({ iname: "", iquantity: "", iphoto: "", iprice: "" });
   const onChange = (e) => {
@@ -40,10 +49,14 @@ export default function ItemServer() {
 
   useEffect(() => {
     getItemsByUser();
+    getNonTransferItems();
   }, [])
 
   return (
     <div>
+      <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        Items for Donation
+      </h2>
 
       <div>
         <div className="modal fade" id="create-post-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -81,7 +94,32 @@ export default function ItemServer() {
         {UserItems.length === 0 ? (
           <p>No items available</p>
         ) : (
-          UserItems.map((item) => <Item key={item.ino}  item={item} />)
+          UserItems.map((item) => <Item key={item.ino} user={false} item={item} />)
+        )}
+      </div>
+      <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        Pending donations
+      </h2>
+    
+      <div className='flex justify-between py-3'>
+        <div style={divStyle}>Item Name</div>
+        <div style={divStyle}>Donor Name</div>
+        <div style={divStyle}>Quantity</div>
+        <div style={divStyle}>Date of Donation</div>
+        <div style={divStyle}>Status</div>
+    
+      </div>
+      <div className='flex justify-between py-3'>
+
+      </div>
+      <div className="flex flex-col">
+        {NonTransferItems.length > 0 ? (
+          NonTransferItems.map((item) => (
+            <NonTransferItem key={item.ino} item={item} />
+
+          ))
+        ) : (
+          <p className="text-gray-500 justify-center d-flex font-bold pt-5">No non transfer donations</p>
         )}
       </div>
     </div>

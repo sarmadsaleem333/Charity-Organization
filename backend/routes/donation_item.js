@@ -54,6 +54,7 @@ router.post('/upload_item',
             }
         });
 
+
 //router for updating the quantity
 router.post('/edit_quantity/:id',
     [body('iquantity', 'Quantity should be a positive integer').isInt({ min: 1 }),
@@ -72,9 +73,8 @@ router.post('/edit_quantity/:id',
                     console.error(error);
                     return res.status(500).json({ error: 'Internal server error' });
                 }
-                return res.send("Your quantity  has been successfully updated");
             });
-            return res.json({ message: 'Item uploaded successfully', insertedId: result.insertId });
+            return res.json("Your quantity  has been successfully updated");
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal server error' });
@@ -165,7 +165,7 @@ router.post("/donate_item/:id", fetchuser, [
                                 return res.status(500).json({ error: "Internal server error" });
                             }
 
-                            handleNotifications(`You have donated ${quantity} ${result0[0].iname} with Rs ${result0[0].iprice * quantity}.`, req.user.id);
+                            handleNotifications(`You have donated ${quantity} ${result0[0].iname} with Rs ${result0[0].iprice * quantity}.`, req.user.id,"user");
                             return res.json("Your item donation has been successfully recorded.");
                         });
                     });
@@ -182,11 +182,13 @@ router.post("/donate_item/:id", fetchuser, [
 // get all non transfer details
 router.get("/all_non_transfer_items", fetchserver, async (req, res) => {
     try {
-        con.query("select * from itemdonates natural join items where transferstatus=0", (error, result) => {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=0", (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
+            return res.send(result);
+
         })
     } catch (error) {
         console.log(error);
@@ -198,11 +200,12 @@ router.get("/all_non_transfer_items", fetchserver, async (req, res) => {
 // get all  transfer details
 router.get("/all_transfer_items", fetchserver, async (req, res) => {
     try {
-        con.query("select * from itemdonates natural join items where transferstatus=1", (error, result) => {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=1", (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
+            return res.send(result);
         })
     } catch (error) {
         console.log(error);
@@ -220,7 +223,7 @@ router.post("/transfer_item/:id", fetchserver, async (req, res) => {
             }
         });
         handleNotifications("You have transferred the items", 1, "server");
-        res.send("You have successfully transferred the items")
+        res.json("You have successfully transferred the items")
 
     } catch (error) {
         console.log(error);
