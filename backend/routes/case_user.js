@@ -11,7 +11,6 @@ const date = new Date();
 //request for applying case
 router.post("/apply_case", fetchuser, [
     body("cdescription", "Enter a description of at least 10 characters").isLength({ min: 10 }),
-
     body("clastdate")
         .notEmpty().withMessage("Enter a valid date")
         .custom((value) => {
@@ -58,7 +57,7 @@ router.post("/apply_case", fetchuser, [
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
-            handleNotifications(`Your application for your case has been sent`, req.user.id, "user");
+            handleNotifications(`Your application for your your case with ${cdescription.slice(0,10)} has been sent`, req.user.id, "user");
             return res.json("Your application has been sent. You would be informed shortly");
         });
 
@@ -91,7 +90,7 @@ router.get("/get_my_transferredcases", fetchuser, async (req, res) => {
 router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate ?= ? and  amountmade<camountreq and uno=?", [date,req.user.id], (error, results) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate ?= ? and  amountmade<camountreq and uno=?", [date, req.user.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -110,7 +109,7 @@ router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
 router.get("/get_my_applied_unapproved_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("select * from my_applied_cases_unapproved where uno=(?) and clastdate>=?", [req.user.id,date], (error, results) => {
+        con.query("select * from my_applied_cases_unapproved where uno=(?) and clastdate>=?", [req.user.id, date], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

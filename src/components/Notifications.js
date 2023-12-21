@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, BellIcon } from '@heroicons/react/20/solid';
 import notificationsContext from '../context/notifications/notificationsContext';
@@ -12,17 +12,8 @@ export default function Notifications() {
 
     useEffect(() => {
         getAllNotificationsUser();
-        console.log(userNotifications)
-    }, [])
-
-
-
-    // const [notifications, setNotifications] = useState([
-    //     // Your notification data goes here
-    //     { id: 1, text: 'Notification 1' },
-    //     { id: 2, text: 'Notification 2' },
-    //     // Add more notifications as needed
-    // ]);
+        userNotifications.reverse();
+    }, []);
 
     return (
         <Menu as="div" className="relative inline-block text-left">
@@ -51,45 +42,28 @@ export default function Notifications() {
             >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
-                        {/* Notifications section */}
-                        {userNotifications.length > 0 && (
+                        {userNotifications.length > 0 ? (
                             <div className="border-b border-gray-200 py-2 px-4 text-sm text-gray-500">
-                                Notifications
+                                {userNotifications.map((notification) => (
+                                    <Menu.Item key={notification.nno}>
+                                        {({ active }) => (
+                                            <a
+                                                href="#"
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                    'block px-4 py-2 text-sm'
+                                                )}
+                                            >
+                                                {notification.nmessage}
+                                            </a>
+                                        )}
+                                    </Menu.Item>
+                                ))}
                             </div>
+                        ) : (
+                            <div className="px-4 py-2 text-sm text-gray-500">No notifications yet.</div>
                         )}
 
-                        {/* Render notifications */}
-                        {userNotifications.map((notification) => (
-                            <Menu.Item key={notification.nno}>
-                                {({ active }) => (
-                                    <a
-                                        href="#"
-                                        className={classNames(
-                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                            'block px-4 py-2 text-sm'
-                                        )}
-                                    >
-                                        {notification.nmessage}
-                                    </a>
-                                )}
-                            </Menu.Item>
-                        ))}
-
-                        {/* Menu items */}
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Account settings
-                                </a>
-                            )}
-                        </Menu.Item>
-                        {/* ... (other menu items) */}
 
                         <form method="POST" action="#">
                             <Menu.Item>
@@ -101,7 +75,7 @@ export default function Notifications() {
                                             'block w-full px-4 py-2 text-left text-sm'
                                         )}
                                     >
-                                        Sign out
+                                        Submit
                                     </button>
                                 )}
                             </Menu.Item>
@@ -111,4 +85,5 @@ export default function Notifications() {
             </Transition>
         </Menu>
     );
+
 }

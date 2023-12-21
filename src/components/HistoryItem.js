@@ -1,17 +1,22 @@
-import React from 'react'
+import React from 'react';
 
-export default function HistoryItem() {
+export default function HistoryItem(props) {
+    const { donation } = props;
+
+    const divStyle = {
+        width: '20%', // Adjust the width as needed
+        textAlign: 'center',
+        border: '1px solid #ccc',
+        padding: '8px',
+    };
+
     return (
-
-        <div className='flex justify-between py-3 '>
-
-            <h1 className="text-3xl font-semibold mb-4">Hello, Sarmad!</h1>
-            <div className=' border-gray-900 text-gray-900'>Fundingwdbd wikd wj</div>
-            <div className=' border-gray-900 text-gray-900'>23-09-2023</div>
-            <div className=' border-gray-900 text-gray-900'>400</div>
-            <div className=' border-gray-900 text-gray-900  '>234567890wdbwj d</div>
-            <div className=' border-gray-900 text-gray-900 '> Sarmad Saleem </div>
+        <div className='flex justify-between py-3'>
+            <div style={divStyle}>{donation.name}</div>
+            <div style={divStyle}>{donation.receiptno}</div>
+            <div style={divStyle}>{(donation.date).slice(0, 10)}</div>
+            <div style={divStyle}>{donation.amount}</div>
+            <div style={divStyle}>{donation.accounttitle}</div>
         </div>
-
-    )
+    );
 }

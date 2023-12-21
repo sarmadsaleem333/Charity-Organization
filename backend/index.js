@@ -18,7 +18,7 @@ app.use('/charity_organization/notification', require('./routes/notification'));
 app.use('/charity_organization/donation_item', require('./routes/donation_item'));
 app.use('/charity_organization/get_history_of_donations', require('./routes/get_history_of_donations'));
 app.use('/charity_organization/case_user', require('./routes/case_user'));
-
+app.use(express.static(path.resolve(__dirname, './public')));
 
 app.listen(port, () => {
     console.log(`Give Hope Network is listening on port http://localhost:${port}`);
