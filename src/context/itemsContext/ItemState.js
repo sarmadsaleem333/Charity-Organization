@@ -202,6 +202,7 @@ const ItemState = (props) => {
                 throw new Error(await response.text());
             }
             const json = await response.json();
+            console.log(userHistory)
             setUserHistory(json);
         } catch (error) {
             console.error(error.message);

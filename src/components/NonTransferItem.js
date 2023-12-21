@@ -10,7 +10,7 @@ export default function NonTransferItem(props) {
     const { showAlert } = context2;
     const { transferItem } = context1;
     const divStyle = {
-        width: '20%', // Adjust the width as needed
+        width: '20%', 
         textAlign: 'center',
         border: '1px solid #ccc',
         padding: '8px',

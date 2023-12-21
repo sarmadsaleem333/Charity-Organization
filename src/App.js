@@ -21,7 +21,7 @@ import NotificationsState from './context/notifications/NotificationsState';
 import HistoryDonationState from './context/HistroyOfDonations/HistoryDonationState';
 import CaseHistoryDonations from './components/CaseHistoryDonations';
 import ItemState from './context/itemsContext/ItemState';
-global.user = false  ;
+global.user = true  ;
 
 function App() {
   return (

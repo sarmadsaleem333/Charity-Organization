@@ -251,7 +251,7 @@ router.get("/all_donations_by_server", fetchserver, async (req, res) => {
 })
 router.get("/all_donations_by_user", fetchuser, async (req, res) => {
     try {
-        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where uno= ", [req.user.id], (error, result) => {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where uno= ?", [req.user.id], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
