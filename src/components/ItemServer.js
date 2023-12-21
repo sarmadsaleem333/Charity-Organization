@@ -11,12 +11,12 @@ export default function ItemServer() {
     border: '1px solid #ccc',
     color: 'red',
     padding: '8px',
-};
+  };
 
   const context1 = useContext(ItemContext);
   const context2 = useContext(alertContext);
   const { showAlert } = context2;
-  const { getItemsByUser, uploadItem, UserItems, NonTransferItems, getNonTransferItems } = context1;
+  const { getItemsByUser, uploadItem, UserItems, NonTransferItems, getNonTransferItems,getHistoryByServer,serverHistory} = context1;
 
   const [itemCredentials, setItemCredentials] = useState({ iname: "", iquantity: "", iphoto: "", iprice: "" });
   const onChange = (e) => {
@@ -50,6 +50,7 @@ export default function ItemServer() {
   useEffect(() => {
     getItemsByUser();
     getNonTransferItems();
+    getHistoryByServer();
   }, [])
 
   return (
@@ -100,23 +101,40 @@ export default function ItemServer() {
       <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         Pending donations
       </h2>
-    
+
       <div className='flex justify-between py-3'>
         <div style={divStyle}>Item Name</div>
         <div style={divStyle}>Donor Name</div>
         <div style={divStyle}>Quantity</div>
         <div style={divStyle}>Date of Donation</div>
         <div style={divStyle}>Status</div>
-    
-      </div>
-      <div className='flex justify-between py-3'>
 
       </div>
       <div className="flex flex-col">
         {NonTransferItems.length > 0 ? (
           NonTransferItems.map((item) => (
-            <NonTransferItem key={item.ino} item={item} />
+            <NonTransferItem key={item.ino} item={item} transfer={false} />
 
+          ))
+        ) : (
+          <p className="text-gray-500 justify-center d-flex font-bold pt-5">No non transfer donations</p>
+        )}
+      </div>
+      <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        Donations History
+      </h2>
+
+      <div className='flex justify-between py-3'>
+        <div style={divStyle}>Item Name</div>
+        <div style={divStyle}>Donor Name</div>
+        <div style={divStyle}>Quantity</div>
+        <div style={divStyle}>Date of Donation</div>
+        <div style={divStyle}>Status</div>
+      </div>
+      <div className="flex flex-col">
+        {serverHistory.length > 0 ? (
+          serverHistory.map((item) => (
+            <NonTransferItem key={item.ino} item={item} transfer={true} />
           ))
         ) : (
           <p className="text-gray-500 justify-center d-flex font-bold pt-5">No non transfer donations</p>

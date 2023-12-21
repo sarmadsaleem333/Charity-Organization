@@ -35,7 +35,6 @@ router.post('/upload_item',
 
             if (!errors.isEmpty()) {
                 const response = errors.array();
-                console.log(response[0].msg)
                 return res.status(400).json(response[0].msg);
             }
             const { iquantity, iname, iprice } = req.body;
@@ -224,6 +223,42 @@ router.post("/transfer_item/:id", fetchserver, async (req, res) => {
         });
         handleNotifications("You have transferred the items", 1, "server");
         res.json("You have successfully transferred the items")
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+
+    }
+
+})
+router.get("/all_donations_by_server", fetchserver, async (req, res) => {
+    try {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=1 ",  (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+            return res.send(result)
+        });
+        
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+
+    }
+
+})
+router.get("/all_donations_by_user", fetchuser, async (req, res) => {
+    try {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where uno= ", [req.user.id], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+            return res.send(result)
+        });
+        
 
     } catch (error) {
         console.log(error);
