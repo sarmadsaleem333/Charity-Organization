@@ -42,7 +42,7 @@ router.post("/approve_case/:id", fetchserver,
                         return res.status(500).json({ error: "You have already approved this course" });
                     }
                     const registeredCaseId = results.insertId;
-                    handleNotifications(`Your case has been approved  with id ${req.params.id}. You will reach the transfer amount after being collected.`, user.uno, "user");
+                    handleNotifications(`Your case has been approved  with name ${name}. You will reach the transfer amount after being collected.`, user.uno, "user");
                     return res.json("You have approved this case.");
                 });
             });
@@ -162,7 +162,7 @@ router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
                     handleNotifications(`Your case ${result1[0].name} has been resolved`, result1[0].uno);
                     handleNotifications(`You have made transaction of amount ${result1[0].amountmade}. `, 1, "server");
 
-                    res.json(`You have transfered the amount ${result1[0].amountmade} to the case`);
+                    res.json(`You have transfered the amount ${result1[0].amountmade} to the case  with ${result1[0].name}`);
                 })
             })
         })

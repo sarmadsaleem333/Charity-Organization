@@ -57,7 +57,7 @@ router.post("/apply_case", fetchuser, [
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
             }
-            handleNotifications(`Your application for your case has been sent`, req.user.id, "user");
+            handleNotifications(`Your application for your your case with ${cdescription.slice(0,10)} has been sent`, req.user.id, "user");
             return res.json("Your application has been sent. You would be informed shortly");
         });
 
