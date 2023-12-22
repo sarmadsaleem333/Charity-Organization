@@ -40,7 +40,7 @@ export default function TransferCompletedCasesCard(props) {
                             <button className="btn btn-secondary" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button className="btn btn-primary" onClick={() => handleTransfer(application.cno)}>
+                            <button className="btn btn-primary"  onClick={() => handleTransfer(application.cno)} data-bs-dismiss="modal">
                                 Transfer
                             </button>
                         </div>

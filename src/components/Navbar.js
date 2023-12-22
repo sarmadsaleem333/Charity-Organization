@@ -3,6 +3,7 @@ import { Disclosure, } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import Notifications from "./Notifications"
+import ServerNotifications from './ServerNotifications';
 
 const navigation = [
   { name: 'Dashboard', href: '/', current: true },
@@ -66,10 +67,15 @@ export default function Navbar(props) {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Notifications />
-            
-              </div>
+              {user ?
+                (<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <Notifications />
+                </div>) :
+                (<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <ServerNotifications />
+                </div>)
+
+              }
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">

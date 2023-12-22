@@ -22,6 +22,7 @@ const upload = multer({ storage: imageStorage })
 
 router.post("/upload_event",
     [
+        
         body('eventname', 'Event name should be 6 characters').isLength({ min: 6 }),
         body("eventdate")
             .notEmpty().withMessage("Enter a valid date")
