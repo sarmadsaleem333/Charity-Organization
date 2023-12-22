@@ -221,7 +221,7 @@ router.post("/transfer_item/:id", fetchserver, async (req, res) => {
                 return res.status(500).json({ error: "Internal server error" });
             }
         });
-        handleNotifications("You have transferred the items", 1, "server");
+        handleNotifications(`You have transferred the items with receipt number: ${receiptno}`, 1, "server");
         res.json("You have successfully transferred the items")
 
     } catch (error) {
