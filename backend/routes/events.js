@@ -86,7 +86,7 @@ router.post("/volunteer_for_event/:id", fetchuser, async (req, res) => {
                 return res.status(500).json({ error: 'Internal server error' });
                 
             }
-            if(result[0].current_volunteers ===result[0].volunteers_no){
+            if(result[0].current_volunteers>=result[0].volunteers_no){
                 return res.json("Volunteers are completed")
             }
             con.query("insert into worksonevent uno,eventno values(?,?)",[req.user.id,result[0].eventno], (error, result1) => {
@@ -162,7 +162,7 @@ router.get("/get_volunteers_for_event/:id", fetchserver, async (req, res) => {
     }
 });
 
-router.get("/get_all_my_events", fetchserver, async (req, res) => {
+router.get("/get_all_my_events", fetchuser, async (req, res) => {
     try {
         con.query("select * from worksonevent natural join (select uno,uname from users) as usertable where uno and eventdate=>?",[require.user.id,date], (error, result) => {
             if (error) {

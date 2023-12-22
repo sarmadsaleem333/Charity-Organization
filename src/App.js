@@ -21,11 +21,13 @@ import NotificationsState from './context/notifications/NotificationsState';
 import HistoryDonationState from './context/HistroyOfDonations/HistoryDonationState';
 import CaseHistoryDonations from './components/CaseHistoryDonations';
 import ItemState from './context/itemsContext/ItemState';
-global.user = true  ;
+import EventState from './context/eventsContext/EventState';
+global.user = false  ;
 
 function App() {
   return (
     <>
+    <EventState>
       <ItemState>
         <HistoryDonationState>
           <NotificationsState>
@@ -58,6 +60,7 @@ function App() {
           </NotificationsState>
         </HistoryDonationState>
       </ItemState>
+      </EventState>
     </>
   );
 }
