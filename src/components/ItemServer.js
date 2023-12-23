@@ -33,7 +33,6 @@ export default function ItemServer() {
     formData.append("iname", itemCredentials.iname);
     formData.append("iprice", itemCredentials.iprice);
     formData.append("iphoto", itemCredentials.iphoto);
-    const message = await uploadItem(formData);
     if (itemCredentials.iquantity < 0) {
       setItemCredentials({ iname: "", iquantity: "", iphoto: null, iprice: "" });
       return showAlert("Add valid quantity", "success");
@@ -42,6 +41,7 @@ export default function ItemServer() {
       setItemCredentials({ iname: "", iquantity: "", iphoto: "", iprice: "" });
       return showAlert("Add valid price", "success");
     }
+    const message = await uploadItem(formData);
 
     setItemCredentials({ iname: "", iquantity: "", iphoto: "", iprice: "" });
     showAlert(message.message, "success");

@@ -7,43 +7,21 @@ const EventState = (props) => {
     const [userMineEvents, setUserMineEvents] = useState([]);
     const [serverEvents, setServerEvents] = useState([]);
     // uplaod event by server 
-    // const uploadEvent = async (formData) => {
-    //     try {
-    //         const response = await axios.post(`${host}/charity_organization/events/upload_event`, formData, {
-    //             headers: {
-    //                 "Content-Type": "multipart/form-data",
-    //                 "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
-    //             },
-    //         });
-    //         console.log(response)
-    //         return response.data;
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     const uploadEvent = async (formData) => {
         try {
-            const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc"; // Replace with your actual authentication token
-
-            const response = await axios.post(
-                `${host}/charity_organization/events/upload_event`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "auth-token": authToken,
-                    },
-                }
-            );
-
-            console.log("Response:", response.data);
+            const response = await axios.post(`${host}/charity_organization/events/upload_event`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                },
+            });
+            console.log(response)
             return response.data;
         } catch (error) {
-            console.error("Upload Event Error:", error.message);
-            throw error; // Rethrow the error so that the caller can handle it
+            console.error(error);
         }
     };
+
     const getEventsByUser = async () => {
         try {
             const response = await fetch(`${host}/charity_organization/events/get_events_by_user`, {

@@ -22,7 +22,8 @@ import HistoryDonationState from './context/HistroyOfDonations/HistoryDonationSt
 import CaseHistoryDonations from './components/CaseHistoryDonations';
 import ItemState from './context/itemsContext/ItemState';
 import EventState from './context/eventsContext/EventState';
-global.user = false  ;
+import LoginUser from './components/LoginUser';
+global.user =false  ;
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
                         <Route path="/applications_server" element={<CasesServer />} />
                         <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
                         <Route path="/case_donation_history/:id" element={<CaseHistoryDonations />} />
+                        <Route path="/login_user" element={<LoginUser />} />
                       </Routes>
                       <Footer />
                     </BrowserRouter>

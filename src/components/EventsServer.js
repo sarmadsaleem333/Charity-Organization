@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import EventContext from '../context/eventsContext/EventContext';
 import alertContext from '../context/alertContext/AlertContext';
 
@@ -6,7 +6,7 @@ export default function EventsServer() {
   const context = useContext(alertContext);
   const context1 = useContext(EventContext);
   const { showAlert } = context
-  const { uploadEvent } = context1
+  const { uploadEvent, getEventsByServer, serverEvents, } = context1
   const [eventCredentials, setEventCredentials] = useState({ eventname: "", eventdate: "", volunteers_no: "", description: "" });
   const onChange = (e) => {
     setEventCredentials({ ...eventCredentials, [e.target.name]: e.target.value });
@@ -14,21 +14,28 @@ export default function EventsServer() {
   const onImageChange = (e) => {
     setEventCredentials({ ...eventCredentials, photolink: e.target.files[0] });
   };
-  const upload = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("eventname", eventCredentials.eventname);
-    formData.append("eventdate", eventCredentials.eventdate);
-    formData.append("volunteers_no", eventCredentials.volunteers_no);
-    formData.append("description", eventCredentials.description);
-    formData.append("photolink", eventCredentials.photolink);
-    const message = await uploadEvent(formData);
-    setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
-    console.log(message)
-    // showAlert(message.message, "success");
+    const upload = async (e) => {
+      e.preventDefault();
+        const formData = new FormData();
+        formData.append("eventname", eventCredentials.eventname);
+        formData.append("eventdate", eventCredentials.eventdate);
+        formData.append("volunteers_no", eventCredentials.volunteers_no);
+        formData.append("description", eventCredentials.description);
+        // formData.append("photolink", eventCredentials.photolink);
+        console.log(formData)
+        console.log(eventCredentials)
+      // const message = await uploadEvent(formData);
+      // setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
+      // console.log(error)
+ 
   }
+  useEffect(() => {
+    getEventsByServer();
+  }, [])
+
   return (
     <div>
+    {/* {console.log(serverEvents)} */}
       <div className="modal fade" id="create-event-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -37,15 +44,15 @@ export default function EventsServer() {
               <button className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="input-group mb-3">
-              <input type="text" className="form-control" placeholder="Name of Event" aria-label="Blog Title" name='eventname' onChange={onChange} value={eventCredentials.eventname}  aria-describedby="basic-addon1" />
-            
+              <input type="text" className="form-control" placeholder="Name of Event" aria-label="Blog Title" name='eventname' onChange={onChange} value={eventCredentials.eventname} aria-describedby="basic-addon1" />
+
             </div>
 
             <div className="input-group mb-3">
-              <input type="text" className="form-control" id='blog-text' placeholder='Date in dd-mm-yyyy' name='eventdate' onChange={onChange} value={eventCredentials.eventdate}  aria-label="Blog Text" aria-describedby="basic-addon1" />
+              <input type="text" className="form-control" id='blog-text' placeholder='Date in dd-mm-yyyy' name='eventdate' onChange={onChange} value={eventCredentials.eventdate} aria-label="Blog Text" aria-describedby="basic-addon1" />
             </div>
             <div className="input-group mb-3">
-              <input type="number" className="form-control" id='blog-text' placeholder="Number Of Volunteers" name='volunteers_no' onChange={onChange} value={eventCredentials.volunteers_no}  aria-label="Blog Text" aria-describedby="basic-addon1" />
+              <input type="number" className="form-control" id='blog-text' placeholder="Number Of Volunteers" name='volunteers_no' onChange={onChange} value={eventCredentials.volunteers_no} aria-label="Blog Text" aria-describedby="basic-addon1" />
             </div>
             <div>
               <textarea
