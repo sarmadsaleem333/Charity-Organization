@@ -1,15 +1,59 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './signin.css';
-
+import userAuthContext from '../context/userContext/userAuthContext';
+import serverAuthContext from '../context/serverContext/serverAuthContext';
+import alertContext from '../context/alertContext/AlertContext';
 const LoginUser = () => {
-  const [activeForm, setActiveForm] = useState('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const context = useContext(userAuthContext);
+  const context1 = useContext(serverAuthContext);
+  const context2 = useContext(alertContext);
+  const { signUp, loginUser } = context;
+  const { showAlert } = context2;
 
-  const collectData = (e) => {
+  // const{}=context1;
+  const [activeForm, setActiveForm] = useState('login');
+  const [loginCredentials, setLoginCredentials] = useState({ email: "", password: "" });
+  const [signUpCredentials, setSignUpCredentials] = useState({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
+
+  const onChangeSignUp = (e) => {
+    setSignUpCredentials({ ...signUpCredentials, [e.target.name]: e.target.value });
+  }
+
+  const onChangeLogin = (e) => {
+    setLoginCredentials({ ...loginCredentials, [e.target.name]: e.target.value });
+  }
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.warn(email, password);
+    if (loginCredentials.email.length <= 0) {
+      setLoginCredentials({ email: "", password: "" })
+      return showAlert("Please enter the email", "danger");
+
+    }
+    const response = await loginUser(loginCredentials.email, loginCredentials.password);
+    setLoginCredentials({ email: "", password: "" })
+    if (response.success) {
+      showAlert("You have logged in successfully", "success");
+    }
+    else {
+      showAlert(response.error, "danger");
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (signUpCredentials.password !== signUpCredentials.cpassword) {
+      setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" })
+      return showAlert("Your Password and Confirm Password did not match", "danger")
+    }
+    const response = await signUp(signUpCredentials.name, signUpCredentials.email, signUpCredentials.password, signUpCredentials.phone, signUpCredentials.status);
+    setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
+    if (response.success) {
+      showAlert("Successfully Your account has been created", "success");
+    }
+    else
+      showAlert(response.error, "danger");
   };
 
   const switchForm = (form) => {
@@ -30,28 +74,29 @@ const LoginUser = () => {
               <fieldset>
                 <legend>Please, enter your email and password for login.</legend>
                 <div className="input-block">
-                  <label htmlFor="login-email">E-mail</label>
                   <input
                     id="login-email"
                     type="email"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email!"
+                    value={loginCredentials.email}
+                    onChange={onChangeLogin}
+                    name="email"
+                    placeholder="Email"
                   />
                 </div>
                 <div className="input-block">
-                  <label htmlFor="login-password">Password</label>
                   <input
                     id="login-password"
                     type="password"
                     required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={loginCredentials.password}
+                    onChange={onChangeLogin}
+                    name="password"
+                    placeholder="Password"
                   />
                 </div>
               </fieldset>
-              <button type="submit" onClick={collectData} className="btn-login">
+              <button type="submit" onClick={handleLogin} className="btn-login">
                 Login
               </button>
             </form>
@@ -63,21 +108,72 @@ const LoginUser = () => {
             </button>
             <form className="form form-signup">
               <fieldset>
-                <legend>Please, enter your email, password, and password confirmation for sign up.</legend>
+                <legend>Please, enter your details for sign up.</legend>
                 <div className="input-block">
-                  <label htmlFor="signup-email">E-mail</label>
-                  <input id="signup-email" type="email" required />
+                  <input
+                    type="text"
+                    required
+                    value={signUpCredentials.name}
+                    onChange={onChangeSignUp}
+                    name="name"
+                    placeholder="Name"
+                  />
                 </div>
                 <div className="input-block">
-                  <label htmlFor="signup-password">Password</label>
-                  <input id="signup-password" type="password" required />
+                  <input
+                    id="signup-email"
+                    type="email"
+                    required
+                    value={signUpCredentials.email}
+                    onChange={onChangeSignUp}
+                    name="email"
+                    placeholder="Email"
+                  />
                 </div>
                 <div className="input-block">
-                  <label htmlFor="signup-password-confirm">Confirm password</label>
-                  <input id="signup-password-confirm" type="password" required />
+                  <input
+                    type="number"
+                    required
+                    value={signUpCredentials.phone}
+                    onChange={onChangeSignUp}
+                    name="phone"
+                    placeholder="Phone Number"
+                  />
+                </div>
+                <div className="input-block">
+                  <input
+                    type="text"
+                    required
+                    value={signUpCredentials.status}
+                    onChange={onChangeSignUp}
+                    name="status"
+                    placeholder="Status"
+                  />
+                </div>
+                <div className="input-block">
+                  <input
+                    id="signup-password"
+                    type="password"
+                    required
+                    value={signUpCredentials.password}
+                    onChange={onChangeSignUp}
+                    name="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <div className="input-block">
+                  <input
+                    id="signup-password-confirm"
+                    type="password"
+                    required
+                    value={signUpCredentials.cpassword}
+                    onChange={onChangeSignUp}
+                    name="cpassword"
+                    placeholder="Confirm Password"
+                  />
                 </div>
               </fieldset>
-              <button type="submit" className="btn-signup">
+              <button type="submit" onClick={handleSignUp} className="btn-signup">
                 Continue
               </button>
             </form>

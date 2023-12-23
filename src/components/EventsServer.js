@@ -21,12 +21,11 @@ export default function EventsServer() {
         formData.append("eventdate", eventCredentials.eventdate);
         formData.append("volunteers_no", eventCredentials.volunteers_no);
         formData.append("description", eventCredentials.description);
-        // formData.append("photolink", eventCredentials.photolink);
+        formData.append("photolink", eventCredentials.photolink);
         console.log(formData)
         console.log(eventCredentials)
-      // const message = await uploadEvent(formData);
-      // setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
-      // console.log(error)
+      const message = await uploadEvent(formData);
+      setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
  
   }
   useEffect(() => {
