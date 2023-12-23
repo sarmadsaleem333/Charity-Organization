@@ -68,7 +68,7 @@ router.get("/fetch_server", fetchserver, async (req, res) => {
 
 router.put("/edit_account_details", fetchserver, [
     body("account_title", "Enter account title").notEmpty(),
-    body("account_no", "Enter account title").notEmpty()
+    body("account_no", "Enter account no").notEmpty()
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -80,9 +80,9 @@ router.put("/edit_account_details", fetchserver, [
         con.query("update server set sacccountno=? , saccounttitle=? where sno=?", [ account_no,account_title, req.server.id],
             (error, result) => {
                 if (error) {
-                    return res.send("Error editing details");
+                    return res.json("Error editing details");
                 }
-                res.json({ message: "Successfully updated the account details" });
+                res.json( "Successfully updated the account details" );
             }
         )
 

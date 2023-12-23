@@ -23,46 +23,52 @@ import CaseHistoryDonations from './components/CaseHistoryDonations';
 import ItemState from './context/itemsContext/ItemState';
 import EventState from './context/eventsContext/EventState';
 import LoginUser from './components/LoginUser';
-global.user =false  ;
+import UserAuthState from './context/userContext/UserAuthState';
+import ServerAuthState from './context/serverContext/ServerAuthState';
+global.user = false;
 
 function App() {
   return (
     <>
-    <EventState>
-      <ItemState>
-        <HistoryDonationState>
-          <NotificationsState>
-            <DonationCaseState>
-              <ServerCaseState>
-                <UserCaseState>
-                  <AlertState>
-                    <BrowserRouter>
-                      <Navbar user={global.user} />
-                      <Alert />
-                      <Routes>
-                        <Route path="/" element={<HomeUser />} />
-                        <Route path="/item_donation_user" element={<ItemsUser />} />
-                        <Route path="/history_user" element={<UserHistory />} />
-                        <Route path="/my_cases" element={<CaseApplicationUser />} />
-                        <Route path="/events_user" element={<EventsUser />} />
-                        <Route path="/events_server" element={<EventsServer />} />
-                        <Route path="/items_server" element={<ItemServer />} />
-                        <Route path="/pending_transfer_server" element={<TransactionServer />} />
-                        <Route path="/applications_server" element={<CasesServer />} />
-                        <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
-                        <Route path="/case_donation_history/:id" element={<CaseHistoryDonations />} />
-                        <Route path="/login_user" element={<LoginUser />} />
-                      </Routes>
-                      <Footer />
-                    </BrowserRouter>
-                  </AlertState >
-                </UserCaseState >
-              </ServerCaseState>
-            </DonationCaseState>
-          </NotificationsState>
-        </HistoryDonationState>
-      </ItemState>
-      </EventState>
+      <UserAuthState>
+        <ServerAuthState>
+          <EventState>
+            <ItemState>
+              <HistoryDonationState>
+                <NotificationsState>
+                  <DonationCaseState>
+                    <ServerCaseState>
+                      <UserCaseState>
+                        <AlertState>
+                          <BrowserRouter>
+                            <Navbar user={global.user} />
+                            <Alert />
+                            <Routes>
+                              <Route path="/" element={<HomeUser />} />
+                              <Route path="/item_donation_user" element={<ItemsUser />} />
+                              <Route path="/history_user" element={<UserHistory />} />
+                              <Route path="/my_cases" element={<CaseApplicationUser />} />
+                              <Route path="/events_user" element={<EventsUser />} />
+                              <Route path="/events_server" element={<EventsServer />} />
+                              <Route path="/items_server" element={<ItemServer />} />
+                              <Route path="/pending_transfer_server" element={<TransactionServer />} />
+                              <Route path="/applications_server" element={<CasesServer />} />
+                              <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
+                              <Route path="/case_donation_history/:id" element={<CaseHistoryDonations />} />
+                              <Route path="/login_user" element={<LoginUser />} />
+                            </Routes>
+                            <Footer />
+                          </BrowserRouter>
+                        </AlertState >
+                      </UserCaseState >
+                    </ServerCaseState>
+                  </DonationCaseState>
+                </NotificationsState>
+              </HistoryDonationState>
+            </ItemState>
+          </EventState>
+        </ServerAuthState>
+      </UserAuthState>
     </>
   );
 }
