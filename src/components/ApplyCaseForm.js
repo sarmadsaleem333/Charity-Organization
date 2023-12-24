@@ -10,13 +10,23 @@ const ApplyCaseForm = () => {
     const onChange = (e) => {
         setCaseCredentials({ ...CaseCredentials, [e.target.name]: e.target.value });
     }
+    const formatDateString = (inputDate) => {
+        const dateObject = new Date(inputDate);
+
+        const day = dateObject.getDate().toString().padStart(2, '0');
+        const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Note: Months are zero-based, so we add 1
+        const year = dateObject.getFullYear();
+
+        const formattedDate = `${day}-${month}-${year}`;
+
+        return formattedDate;
+    }
     const handleApplication = async (e) => {
         e.preventDefault();
-        const response = await applyCase(CaseCredentials.cdescription, CaseCredentials.clastdate, CaseCredentials.camountreq, CaseCredentials.caccountno, CaseCredentials.caccounttitle);
+        const newDate = formatDateString(CaseCredentials.clastdate);
+        const response = await applyCase(CaseCredentials.cdescription, newDate, CaseCredentials.camountreq, CaseCredentials.caccountno, CaseCredentials.caccounttitle);
         showAlert(response, "success");
         setCaseCredentials({ cdescription: "", clastdate: "", camountreq: "", caccountno: "", caccounttitle: "" });
-
-        
     }
 
     return (
@@ -26,7 +36,7 @@ const ApplyCaseForm = () => {
                 <div className="flex flex-col text-center w-full mb-12">
                     <h1 className="text-center font-bold text-4xl py-2 text-black">
                         Case Application Form
-                    </h1> 
+                    </h1>
 
                     <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
                         Case Application does not guarantee case approval.
@@ -105,7 +115,7 @@ const ApplyCaseForm = () => {
                                     Last Date
                                 </label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     id="name"
                                     placeholder='dd-mm-yyyy'
                                     name="clastdate"

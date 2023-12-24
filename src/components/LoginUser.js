@@ -8,7 +8,7 @@ const LoginUser = () => {
   const context = useContext(userAuthContext);
   const context1 = useContext(serverAuthContext);
   const context2 = useContext(alertContext);
-  const { signUp, loginUser } = context;
+  const { signUpUser, loginUser } = context;
   const { showAlert } = context2;
 
   // const{}=context1;
@@ -38,6 +38,7 @@ const LoginUser = () => {
     }
     else {
       showAlert(response.error, "danger");
+
     }
   };
 
@@ -47,13 +48,14 @@ const LoginUser = () => {
       setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" })
       return showAlert("Your Password and Confirm Password did not match", "danger")
     }
-    const response = await signUp(signUpCredentials.name, signUpCredentials.email, signUpCredentials.password, signUpCredentials.phone, signUpCredentials.status);
+    const response = await signUpUser(signUpCredentials.name, signUpCredentials.email, signUpCredentials.password, signUpCredentials.phone, signUpCredentials.status);
     setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
     if (response.success) {
       showAlert("Successfully Your account has been created", "success");
     }
-    else
+    else {
       showAlert(response.error, "danger");
+    }
   };
 
   const switchForm = (form) => {
@@ -173,8 +175,8 @@ const LoginUser = () => {
                   />
                 </div>
               </fieldset>
-              <button type="submit" onClick={handleSignUp} className="btn-signup">
-                Continue
+              <button type="submit" onClick={handleSignUp} className="btn-login">
+                Sign Up
               </button>
             </form>
           </div>
