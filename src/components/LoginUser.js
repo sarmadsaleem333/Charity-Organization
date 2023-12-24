@@ -11,7 +11,6 @@ const LoginUser = () => {
   const { signUpUser, loginUser } = context;
   const { showAlert } = context2;
 
-  // const{}=context1;
   const [activeForm, setActiveForm] = useState('login');
   const [loginCredentials, setLoginCredentials] = useState({ email: "", password: "" });
   const [signUpCredentials, setSignUpCredentials] = useState({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
@@ -43,6 +42,7 @@ const LoginUser = () => {
   };
 
   const handleSignUp = async (e) => {
+
     e.preventDefault();
     if (signUpCredentials.password !== signUpCredentials.cpassword) {
       setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" })
@@ -56,6 +56,8 @@ const LoginUser = () => {
     else {
       showAlert(response.error, "danger");
     }
+
+
   };
 
   const switchForm = (form) => {

@@ -29,7 +29,9 @@ const UserAuthState = (props) => {
                 },
                 body: JSON.stringify({ name: name, phone: phone, email: email, password: password, status: status })
             });
+
             const json = await response.json();
+            console.log(json)
             return json;
         } catch (error) {
             console.log(error);
