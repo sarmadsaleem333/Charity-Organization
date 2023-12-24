@@ -25,6 +25,7 @@ import EventState from './context/eventsContext/EventState';
 import LoginUser from './components/LoginUser';
 import UserAuthState from './context/userContext/UserAuthState';
 import ServerAuthState from './context/serverContext/ServerAuthState';
+import LoginServer from './components/LoginServer';
 global.user = true;
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
                             <Alert />
                             <Routes>
                               <Route path="/login_user" element={<LoginUser />} />
+                              <Route path="/login_server" element={<LoginServer />} />
                               {global.user ? (
                                 <>
                                   <Route path="/" element={<HomeUser />} />

@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './signin.css';
 import userAuthContext from '../context/userContext/userAuthContext';
 import serverAuthContext from '../context/serverContext/serverAuthContext';
 import alertContext from '../context/alertContext/AlertContext';
 const LoginUser = () => {
+  const navigate=useNavigate();
   const context = useContext(userAuthContext);
   const context1 = useContext(serverAuthContext);
   const context2 = useContext(alertContext);
@@ -34,6 +35,8 @@ const LoginUser = () => {
     setLoginCredentials({ email: "", password: "" })
     if (response.success) {
       showAlert("You have logged in successfully", "success");
+      localStorage.setItem("token", response.authtoken);
+      navigate("/");
     }
     else {
       showAlert(response.error, "danger");

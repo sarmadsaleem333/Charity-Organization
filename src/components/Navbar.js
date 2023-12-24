@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import Notifications from "./Notifications"
 import ServerNotifications from './ServerNotifications';
-
+import { useNavigate } from 'react-router-dom';
 const navigation = [
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Item Donation', href: '/item_donation_user', current: false },
@@ -17,17 +17,27 @@ const navigation = [
   { name: 'Items', href: '/items_server', current: false },
 ];
 
+
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Navbar(props) {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login_user");
+   
+}
   let { user } = props;
   const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4, 9);
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
+
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -43,7 +53,7 @@ export default function Navbar(props) {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-               
+
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {visibleNavigation.map((item) => (
@@ -69,8 +79,8 @@ export default function Navbar(props) {
                 (<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <ServerNotifications />
                 </div>)
-
               }
+              <div className="btn btn-danger mx-9" onClick={handleLogout}>Log Out</div>
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">
