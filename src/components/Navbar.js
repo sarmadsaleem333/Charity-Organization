@@ -28,16 +28,35 @@ export default function Navbar(props) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login_user");
-   
-}
+
+  }
   let { user } = props;
+  
   const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4, 9);
+  
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
 
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Logging Out</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Are You sure you want to Log Out?</p>
+                </div>
+                <div class="modal-footer">
+                  <button  class="btn btn-secondary"  data-bs-dismiss="modal">No</button>
+                  <button  class="btn btn-primary" data-bs-dismiss="modal"   onClick={handleLogout} >Log Out</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -80,7 +99,7 @@ export default function Navbar(props) {
                   <ServerNotifications />
                 </div>)
               }
-              <div className="btn btn-danger mx-9" onClick={handleLogout}>Log Out</div>
+              <div className="btn btn-danger mx-9"  data-bs-toggle="modal"data-bs-target="#exampleModal">Log Out</div>
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">

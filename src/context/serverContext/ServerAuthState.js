@@ -14,26 +14,26 @@ const ServerAuthState = (props) => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                "auth-token": localStorage.getItem("token"),
             }
         });
         const json = await response.json();
         setServerDetails(json);
     }
-   
-    const editDetails = async (account_title,account_no) => {
+
+    const editDetails = async (account_title, account_no) => {
         try {
             const response = await fetch(`${host}/charity_organization/server_auth/edit_account_details`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
-                body: JSON.stringify({  account_title:account_title,account_no:account_no })
+                body: JSON.stringify({ account_title: account_title, account_no: account_no })
             });
             const json = await response.json();
             return json;
-            
+
         } catch (error) {
             console.log(error)
         }
@@ -43,23 +43,23 @@ const ServerAuthState = (props) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                "auth-token": localStorage.getItem("token"),
             },
-            body: JSON.stringify({  amount:amount })
+            body: JSON.stringify({ amount: amount })
         });
         const json = await response.json();
         return json;
     }
-   
-  
-   
-    const loginServer = async ( email, password) => {
+
+
+
+    const loginServer = async (email, password) => {
         const response = await fetch(`${host}/charity_organization/server_auth/login_server`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({  email: email, password: password })
+            body: JSON.stringify({ email: email, password: password })
         });
         const json = await response.json();
         return json;
@@ -68,7 +68,7 @@ const ServerAuthState = (props) => {
 
 
     return (
-        <serverAuthContext.Provider value={{fetchserverDetails, editBalance,editDetails,serverDetails,loginServer }}>
+        <serverAuthContext.Provider value={{ fetchserverDetails, editBalance, editDetails, serverDetails, loginServer }}>
             {props.children}
         </serverAuthContext.Provider>
     )

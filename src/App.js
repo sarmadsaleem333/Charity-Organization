@@ -47,27 +47,31 @@ function App() {
                             <Routes>
                               <Route path="/login_user" element={<LoginUser />} />
                               <Route path="/login_server" element={<LoginServer />} />
-                              {global.user ? (
+                              {localStorage.getItem("token") ? (
                                 <>
-                                  <Route path="/" element={<HomeUser />} />
-                                  <Route path="/item_donation_user" element={<ItemsUser />} />
-                                  <Route path="/history_user" element={<UserHistory />} />
-                                  <Route path="/my_cases" element={<CaseApplicationUser />} />
-                                  <Route path="/events_user" element={<EventsUser />} />
+                                  {global.user ? (
+                                    <>
+                                      <Route path="/" element={<HomeUser />} />
+                                      <Route path="/item_donation_user" element={<ItemsUser />} />
+                                      <Route path="/history_user" element={<UserHistory />} />
+                                      <Route path="/my_cases" element={<CaseApplicationUser />} />
+                                      <Route path="/events_user" element={<EventsUser />} />
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Route path="/events_server" element={<EventsServer />} />
+                                      <Route path="/items_server" element={<ItemServer />} />
+                                      <Route path="/pending_transfer_server" element={<TransactionServer />} />
+                                      <Route path="/applications_server" element={<CasesServer />} />
+                                      <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
+                                      <Route
+                                        path="/case_donation_history/:id"
+                                        element={<CaseHistoryDonations />}
+                                      />
+                                    </>
+                                  )}
                                 </>
-                              ) : (
-                                <>
-                                  <Route path="/events_server" element={<EventsServer />} />
-                                  <Route path="/items_server" element={<ItemServer />} />
-                                  <Route path="/pending_transfer_server" element={<TransactionServer />} />
-                                  <Route path="/applications_server" element={<CasesServer />} />
-                                  <Route path="/transferedcompletedcases" element={<SuccessfulCases />} />
-                                  <Route
-                                    path="/case_donation_history/:id"
-                                    element={<CaseHistoryDonations />}
-                                  />
-                                </>
-                              )}
+                              ) : null}
                             </Routes>
                             <Footer />
                           </BrowserRouter>

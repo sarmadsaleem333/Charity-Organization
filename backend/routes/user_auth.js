@@ -14,8 +14,8 @@ router.post("/create_user", [
     body("name", "Enter a valid name").isLength({ min: 5 }),
     body("email", "Enter a valid email").isEmail(),
     body("password", "Password should be at least 8 characters")
-        .isLength({ min: 8 })
-        .matches(/^(?=.*\d)(?=.*[!@#$%^&*])/, "Password must contain at least one number and one special character"),
+        .isLength({ min: 8 }),
+        // .matches(/^(?=.*\d)(?=.*[!@#$%^&*])/, "Password must contain at least one number and one special character"),
     body("status", "Enter your status").notEmpty(),
     body("phone", "Phone number should be of 11 characters").isLength(11),
 ], async (req, res) => {

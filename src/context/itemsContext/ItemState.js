@@ -16,7 +16,7 @@ const ItemState = (props) => {
             const response = await axios.post(`${host}/charity_organization/donation_item/upload_item`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             console.log(formData)
@@ -33,7 +33,7 @@ const ItemState = (props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             if (!response.ok) {
@@ -53,7 +53,7 @@ const ItemState = (props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMH0sImlhdCI6MTcwMjEwMjg4N30.pTKfAAPUoREb8F_jJ0aUDuyGcYKLzu0d9dpRqZajT5s",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             if (!response.ok) {
@@ -73,7 +73,7 @@ const ItemState = (props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             if (!response.ok) {
@@ -93,7 +93,7 @@ const ItemState = (props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             if (!response.ok) {
@@ -114,7 +114,7 @@ const ItemState = (props) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMH0sImlhdCI6MTcwMjEwMjg4N30.pTKfAAPUoREb8F_jJ0aUDuyGcYKLzu0d9dpRqZajT5s",
+                    "auth-token": localStorage.getItem("token"),
                 },
                 body: JSON.stringify({ quantity: quantity }),
 
@@ -135,7 +135,7 @@ const ItemState = (props) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
 
             });
@@ -156,7 +156,7 @@ const ItemState = (props) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
                 body: JSON.stringify({ iquantity: iquantity }),
 
@@ -177,7 +177,7 @@ const ItemState = (props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXJ2ZXIiOnsiaWQiOjF9LCJpYXQiOjE3MDIxMDQ5MDh9.f_W1o8cy0MWPuCbmV0M_waLfjTLaKUzCUJQhJFBy-Mc",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             if (!response.ok) {
@@ -195,7 +195,7 @@ const ItemState = (props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMH0sImlhdCI6MTcwMjEwMjg4N30.pTKfAAPUoREb8F_jJ0aUDuyGcYKLzu0d9dpRqZajT5s",
+                    "auth-token": localStorage.getItem("token"),
                 },
             });
             if (!response.ok) {
@@ -211,7 +211,7 @@ const ItemState = (props) => {
 
 
     return (
-        <ItemContext.Provider value={{userHistory,serverHistory,getHistoryByServer,getHistoryByUser,editQuantity, TransferItems, NonTransferItems, ServerItems, UserItems, uploadItem, getItemsByServer, getItemsByUser, getNonTransferItems, getTransferItems, donateItem, transferItem }} >
+        <ItemContext.Provider value={{ userHistory, serverHistory, getHistoryByServer, getHistoryByUser, editQuantity, TransferItems, NonTransferItems, ServerItems, UserItems, uploadItem, getItemsByServer, getItemsByUser, getNonTransferItems, getTransferItems, donateItem, transferItem }} >
             {props.children}
         </ItemContext.Provider>
     )

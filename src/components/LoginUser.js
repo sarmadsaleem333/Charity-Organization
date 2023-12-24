@@ -36,6 +36,7 @@ const LoginUser = () => {
     if (response.success) {
       showAlert("You have logged in successfully", "success");
       localStorage.setItem("token", response.authtoken);
+      global.user=true;
       navigate("/");
     }
     else {
