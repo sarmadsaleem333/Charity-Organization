@@ -27,13 +27,23 @@ export default function Navbar(props) {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
-    global.user = false;
-    navigate("/login_user");
+    if (localStorage.getItem("role") == "user") {
+
+      localStorage.removeItem("role");
+      navigate("/login_user");
+      return;
+    }
+    if (localStorage.getItem("role") == "server") {
+
+      localStorage.removeItem("role");
+      navigate("/login_server");
+      return;
+    }
+
   }
   let { user } = props;
-
-  const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4, 9);
-
+  const userRole = localStorage.getItem('role');
+  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 4) : navigation.slice(4, 9);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -91,7 +101,7 @@ export default function Navbar(props) {
                   </div>
                 </div>
               </div>
-              {user ?
+              {userRole=="user" ?
                 (<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <Notifications />
                 </div>) :

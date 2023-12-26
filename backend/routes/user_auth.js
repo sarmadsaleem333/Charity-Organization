@@ -77,39 +77,89 @@ router.post("/create_user", [
 });
 
 // login route
+// router.post("/login_user", [
+//     body("email", "Enter a valid email").isEmail(),
+//     body("password"),
+// ], async (req, res) => {
+//     const { email, password } = req.body;
+//     let success = false;
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//         const response = errors.array();
+//         return res.status(400).json(response[0].msg);
+//     }
+//     try {
+//         con.query("Select * from users where uemail =? limit 1", [email], async (error, user) => {
+//             if (error) {
+//                 return res.send("Error finding user");
+//             }
+//             if (user.length == 0) {
+
+//                 return res.json({ message: "No user found with this email", success });
+//             }
+//             const passwordCompare = await bcrypt.compare(password, user[0].upassword);
+//             if (!passwordCompare) {
+//                 return res.status(400).json({ success, error: "Please enter the correct Password" });
+//             }
+//             const data = {
+//                 user: {
+//                     id: user[0].uno
+//                 }
+//             };
+//             const authtoken = jwt.sign(data, JWT_Secret);
+//             success = true;
+//             res.json({ success, authtoken });
+//         })
+
+//     } catch (error) {
+//         console.log("Error logging in...", error);
+//         res.status(500).send("Internal server error occurred");
+//     }
+// });
+
+
 router.post("/login_user", [
     body("email", "Enter a valid email").isEmail(),
-    body("password"),
+    body("password").notEmpty().withMessage('Password is required'),
 ], async (req, res) => {
+    const role="user"
     const { email, password } = req.body;
     let success = false;
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         const response = errors.array();
         return res.status(400).json(response[0].msg);
     }
+
     try {
-        con.query("Select * from users where uemail =? limit 1", [email], async (error, user) => {
+        con.query("SELECT * FROM users WHERE uemail = ? LIMIT 1", [email], async (error, user) => {
             if (error) {
                 return res.send("Error finding user");
             }
-            if (user.length == 0) {
 
+            if (user.length === 0) {
                 return res.json({ message: "No user found with this email", success });
             }
+
             const passwordCompare = await bcrypt.compare(password, user[0].upassword);
+
             if (!passwordCompare) {
                 return res.status(400).json({ success, error: "Please enter the correct Password" });
             }
+
             const data = {
                 user: {
-                    id: user[0].uno
+                    id: user[0].uno,
                 }
             };
+
             const authtoken = jwt.sign(data, JWT_Secret);
+
             success = true;
-            res.json({ success, authtoken });
-        })
+
+            res.json({ success, authtoken,role});
+        });
 
     } catch (error) {
         console.log("Error logging in...", error);

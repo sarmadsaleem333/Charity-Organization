@@ -7,7 +7,7 @@ export default function HomeUser() {
   const navigate=useNavigate();
   useEffect(() => {
     if(localStorage.getItem("token")){
-      return
+      return;
     }
     else{
       navigate("/login_user")

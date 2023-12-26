@@ -44,7 +44,7 @@ export default function ServerNotifications() {
                     <div className="py-1">
                         {serverNotifications.length > 0 ? (
                             <div className="border-b border-gray-200 py-2 px-4 text-sm text-gray-500">
-                                {serverNotifications.map((notification) => (
+                                {serverNotifications.slice(0, 5).map((notification) => (
                                     <Menu.Item key={notification.nno}>
                                         {({ active }) => (
                                             <a
