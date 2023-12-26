@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import EventContext from '../context/eventsContext/EventContext';
 import alertContext from '../context/alertContext/AlertContext';
-
+import { useNavigate } from 'react-router-dom';
 export default function EventsServer() {
   const context = useContext(alertContext);
   const context1 = useContext(EventContext);
-  const { showAlert } = context
+  const { showAlert } = context;
   const { uploadEvent, getEventsByServer, serverEvents, } = context1
   const [eventCredentials, setEventCredentials] = useState({ eventname: "", eventdate: "", volunteers_no: "", description: "" });
   const onChange = (e) => {
@@ -14,27 +14,31 @@ export default function EventsServer() {
   const onImageChange = (e) => {
     setEventCredentials({ ...eventCredentials, photolink: e.target.files[0] });
   };
-    const upload = async (e) => {
-      e.preventDefault();
-        const formData = new FormData();
-        formData.append("eventname", eventCredentials.eventname);
-        formData.append("eventdate", eventCredentials.eventdate);
-        formData.append("volunteers_no", eventCredentials.volunteers_no);
-        formData.append("description", eventCredentials.description);
-        formData.append("photolink", eventCredentials.photolink);
-        console.log(formData)
-        console.log(eventCredentials)
-      const message = await uploadEvent(formData);
-      setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
- 
-  }
-  useEffect(() => {
-    getEventsByServer();
-  }, [])
+  const upload = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("eventname", eventCredentials.eventname);
+    formData.append("eventdate", eventCredentials.eventdate);
+    formData.append("volunteers_no", eventCredentials.volunteers_no);
+    formData.append("description", eventCredentials.description);
+    formData.append("photolink", eventCredentials.photolink);
+    console.log(formData)
+    console.log(eventCredentials)
+    const message = await uploadEvent(formData);
+    setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
 
+  }
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      getEventsByServer();
+    } else {
+      navigate('/login_server');
+    }
+  }, []);
   return (
     <div>
-    {/* {console.log(serverEvents)} */}
+      {/* {console.log(serverEvents)} */}
       <div className="modal fade" id="create-event-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">

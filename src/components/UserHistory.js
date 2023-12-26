@@ -3,6 +3,7 @@ import HistoryItem from './HistoryItem';
 import historyDonationContext from '../context/HistroyOfDonations/historyDonationContext';
 import ItemContext from '../context/itemsContext/ItemContext';
 import ItemsHistory from './ItemsHistory';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserHistory() {
 
@@ -20,10 +21,15 @@ export default function UserHistory() {
     fontWeight: 'bold',
   };
 
+  const navigate=useNavigate();
   useEffect(() => {
-    getAllDonationsByUser();
-    getHistoryByUser();
-  }, []);
+    if(localStorage.getItem("token")){
+      getAllDonationsByUser();
+      getHistoryByUser(); }
+    else{
+      navigate("/login_user")
+    }
+  }, [])
 
   return (
     <>

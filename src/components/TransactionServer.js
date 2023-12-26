@@ -4,6 +4,7 @@ import serverCaseContext from '../context/ServerCase/serverCaseContext';
 import alertContext from '../context/alertContext/AlertContext';
 import TransferCompletedCasesCard from './TransferCompletedCasesCard';
 import serverAuthContext from '../context/serverContext/serverAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function TransactionServer() {
     const context = useContext(serverCaseContext);
@@ -12,10 +13,17 @@ export default function TransactionServer() {
     const { fetchserverDetails, serverDetails, editDetails } = context3;
     const { showAlert } = context2;
     const { getTransferredCasesByServer, NonTransferredCompletedCases, getNonTransferredCompletedCases } = context;
+
+
+    const navigate = useNavigate();
     useEffect(() => {
-        getTransferredCasesByServer();
-        getNonTransferredCompletedCases();
-        fetchserverDetails();
+        if (localStorage.getItem('token')) {
+            getTransferredCasesByServer();
+            getNonTransferredCompletedCases();
+            fetchserverDetails();
+        } else {
+            navigate('/login_server');
+        }
     }, []);
     const [account, setAccount] = useState({ accountno: "", accounttitle: "" });
 

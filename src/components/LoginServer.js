@@ -23,7 +23,8 @@ export default function LoginServer() {
         if (response.success) {
             showAlert("You have logged in successfully!", "success");
             localStorage.setItem("token", response.authtoken);
-            global.user=false;
+            global.user=false;  
+            
             navigate("/applications_server");
         }
         else

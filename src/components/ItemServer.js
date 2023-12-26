@@ -3,10 +3,11 @@ import Item from './Item';
 import ItemContext from '../context/itemsContext/ItemContext'
 import alertContext from '../context/alertContext/AlertContext'
 import NonTransferItem from './NonTransferItem';
+import { useNavigate } from 'react-router-dom';
 
 export default function ItemServer() {
   const divStyle = {
-    width: '20%', // Adjust the width as needed
+    width: '20%',
     textAlign: 'center',
     border: '1px solid #ccc',
     color: 'red',
@@ -16,7 +17,7 @@ export default function ItemServer() {
   const context1 = useContext(ItemContext);
   const context2 = useContext(alertContext);
   const { showAlert } = context2;
-  const { getItemsByUser, uploadItem, UserItems, NonTransferItems, getNonTransferItems,getHistoryByServer,serverHistory} = context1;
+  const { ServerItems,getItemsByUser,getItemsByServer, uploadItem, UserItems, NonTransferItems, getNonTransferItems,getHistoryByServer,serverHistory} = context1;
 
   const [itemCredentials, setItemCredentials] = useState({ iname: "", iquantity: "", iphoto: "", iprice: "" });
   const onChange = (e) => {
@@ -47,12 +48,18 @@ export default function ItemServer() {
     showAlert(message.message, "success");
   }
 
-  useEffect(() => {
-    getItemsByUser();
-    getNonTransferItems();
-    getHistoryByServer();
-  }, [])
+  const navigate=useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      getItemsByServer();
+      getItemsByUser();
+      getNonTransferItems();
+      getHistoryByServer();
+    } else {
+      navigate('/login_server');
+    }
+  }, []); 
   return (
     <div>
       <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
@@ -93,10 +100,10 @@ export default function ItemServer() {
       </div>
       
       <div className="flex flex-wrap -m-4">
-        {UserItems.length === 0 ? (
+        {ServerItems.length === 0 ? (
           <p>No items available</p>
         ) : (
-          UserItems.map((item) => <Item key={item.ino} user={false} item={item} />)
+          ServerItems.map((item) => <Item key={item.ino} user={false} item={item} />)
         )}
       </div>
       <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">

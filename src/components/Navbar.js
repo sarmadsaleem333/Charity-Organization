@@ -27,13 +27,13 @@ export default function Navbar(props) {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
+    global.user = false;
     navigate("/login_user");
-
   }
   let { user } = props;
-  
+
   const visibleNavigation = user ? navigation.slice(0, 4) : navigation.slice(4, 9);
-  
+
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -51,8 +51,8 @@ export default function Navbar(props) {
                   <p>Are You sure you want to Log Out?</p>
                 </div>
                 <div class="modal-footer">
-                  <button  class="btn btn-secondary"  data-bs-dismiss="modal">No</button>
-                  <button  class="btn btn-primary" data-bs-dismiss="modal"   onClick={handleLogout} >Log Out</button>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                  <button class="btn btn-primary" data-bs-dismiss="modal" onClick={handleLogout} >Log Out</button>
                 </div>
               </div>
             </div>
@@ -99,7 +99,7 @@ export default function Navbar(props) {
                   <ServerNotifications />
                 </div>)
               }
-              <div className="btn btn-danger mx-9"  data-bs-toggle="modal"data-bs-target="#exampleModal">Log Out</div>
+              <div className="btn btn-danger mx-9" data-bs-toggle="modal" data-bs-target="#exampleModal">Log Out</div>
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">

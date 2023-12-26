@@ -40,6 +40,7 @@ const ItemState = (props) => {
                 throw new Error(await response.text());
             }
             const json = await response.json();
+            console.log(json)
             setServerItems(json);
         } catch (error) {
             console.error(error.message);
