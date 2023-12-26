@@ -43,6 +43,7 @@ router.post("/approve_case/:id", fetchserver,
                     }
                     const registeredCaseId = results.insertId;
                     handleNotifications(`Your case has been approved  with name ${name}. You will reach the transfer amount after being collected.`, user.uno, "user");
+                    handleNotifications(`You have approved the case ${name}`, 1, "server");
                     return res.json("You have approved this case.");
                 });
             });
@@ -159,8 +160,8 @@ router.post("/tranfer_case_money/:id", fetchserver, async (req, res) => {
                         console.log(error);
                         return res.status(500).send("Internal server error occurred");
                     }
-                    handleNotifications(`Your case ${result1[0].name} has been resolved`, result1[0].uno);
-                    handleNotifications(`You have made transaction of amount ${result1[0].amountmade}. `, 1, "server");
+                    handleNotifications(`Your case ${result1[0].name} has been transferred to your account by Give Hope Network`, result1[0].uno,"user");
+                    handleNotifications(`You have made transaction of amount ${result1[0].amountmade} to case ${result1[0].name}`, 1, "server");
 
                     res.json(`You have transfered the amount ${result1[0].amountmade} to the case  with ${result1[0].name}`);
                 })

@@ -2,14 +2,20 @@ import React, { useContext, useEffect } from 'react'
 import Item from './Item'
 import ItemContext from '../context/itemsContext/ItemContext'
 import alertContext from '../context/alertContext/AlertContext'
+import { useNavigate } from 'react-router-dom'
 export default function ItemsUser() {
   const context1 = useContext(ItemContext);
   const context2 = useContext(alertContext);
   const { showAlert } = context2;
   const { getItemsByUser, UserItems } = context1;
 
+  const navigate=useNavigate();
   useEffect(() => {
-    getItemsByUser();
+    if(localStorage.getItem("token")){
+      getItemsByUser();    }
+    else{
+      navigate("/login_user")
+    }
   }, [])
 
 

@@ -18,6 +18,7 @@ app.use('/charity_organization/notification', require('./routes/notification'));
 app.use('/charity_organization/donation_item', require('./routes/donation_item'));
 app.use('/charity_organization/get_history_of_donations', require('./routes/get_history_of_donations'));
 app.use('/charity_organization/case_user', require('./routes/case_user'));
+app.use('/charity_organization/events', require('./routes/events'));
 app.use(express.static(path.resolve(__dirname, './public')));
 
 app.listen(port, () => {

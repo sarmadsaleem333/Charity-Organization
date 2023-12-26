@@ -1,28 +1,37 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import historyDonationContext from '../context/HistroyOfDonations/historyDonationContext';
+import alertContext from '../context/alertContext/AlertContext';
 
 export default function CaseHistoryDonations(props) {
 
     const context = useContext(historyDonationContext);
+    const context2=useContext(alertContext)
     const { getAllDonationsByServer, ServerHistoryOfUserDonations } = context;
+    const { showAlert } = context2;
 
     const { id } = useParams();
     const divStyle = {
-        width: '20%', 
+        width: '20%',
         textAlign: 'center',
         border: '1px solid #ccc',
         padding: '8px',
 
     };
     const [caseName, setCaseName] = useState(null);
-    useEffect(() => {
-        getAllDonationsByServer(id);
-        if (ServerHistoryOfUserDonations.length > 0) {
-            setCaseName(ServerHistoryOfUserDonations[0].name);
-        }
 
-    }, [])
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            getAllDonationsByServer(id);
+            if (ServerHistoryOfUserDonations.length > 0) {
+                setCaseName(ServerHistoryOfUserDonations[0].name);
+            }
+
+        } else {
+            navigate('/login_server');
+        }
+    }, []);
 
 
     return (

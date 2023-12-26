@@ -6,13 +6,13 @@ import notificationsContext from '../context/notifications/notificationsContext'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
-export default function Notifications() {
+export default function ServerNotifications() {
     const context = useContext(notificationsContext);
-    const { getAllNotificationsUser, userNotifications } = context;
+    const { serverNotifications, getAllNotificationsServer } = context;
 
     useEffect(() => {
-        getAllNotificationsUser();
-        userNotifications.reverse();
+        getAllNotificationsServer();
+        serverNotifications.reverse();
     }, []);
 
     return (
@@ -21,7 +21,7 @@ export default function Notifications() {
                 <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                     <span className="flex items-center">
                         Notifications
-                        {userNotifications.length > 0 && (
+                        {serverNotifications.length > 0 && (
                             <span className="ml-2">
                                 <BellIcon className="h-4 w-4 text-red-500" />
                             </span>
@@ -42,9 +42,9 @@ export default function Notifications() {
             >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-96 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
-                        {userNotifications.length > 0 ? (
+                        {serverNotifications.length > 0 ? (
                             <div className="border-b border-gray-200 py-2 px-4 text-sm text-gray-500">
-                                {userNotifications.slice(0, 5).map((notification) => (
+                                {serverNotifications.slice(0, 5).map((notification) => (
                                     <Menu.Item key={notification.nno}>
                                         {({ active }) => (
                                             <a

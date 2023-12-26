@@ -2,14 +2,26 @@ import React, { useContext, useEffect } from 'react'
 import ApplyCaseForm from './ApplyCaseForm'
 import userCaseContext from '../context/userCaseContext'
 import CaseCard from './CaseCard';
-
+import { useNavigate } from 'react-router-dom';
+import alertContext from '../context/alertContext/AlertContext';
 export default function CaseApplicationUser() {
   const context = useContext(userCaseContext);
-  const { AllUnApprovedCases, getAllUnApprovedCases,AllInProgressCases, getAllInProgressCases } = context;
-
+  const { AllUnApprovedCases, getAllUnApprovedCases, AllInProgressCases, getAllInProgressCases } = context;
+  const context2=useContext(alertContext)
+    const { showAlert } = context2;
+const navigate=useNavigate();
   useEffect(() => {
-    getAllUnApprovedCases();
+    if (localStorage.getItem("token")) {
+      getAllUnApprovedCases();
+
+    }
+    else {
+      navigate("/login_user")
+
+    }
   }, [])
+
+
 
 
   return (

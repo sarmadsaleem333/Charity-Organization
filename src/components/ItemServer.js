@@ -3,20 +3,21 @@ import Item from './Item';
 import ItemContext from '../context/itemsContext/ItemContext'
 import alertContext from '../context/alertContext/AlertContext'
 import NonTransferItem from './NonTransferItem';
+import { useNavigate } from 'react-router-dom';
 
 export default function ItemServer() {
   const divStyle = {
-    width: '20%', // Adjust the width as needed
+    width: '20%',
     textAlign: 'center',
     border: '1px solid #ccc',
     color: 'red',
     padding: '8px',
-};
+  };
 
   const context1 = useContext(ItemContext);
   const context2 = useContext(alertContext);
   const { showAlert } = context2;
-  const { getItemsByUser, uploadItem, UserItems, NonTransferItems, getNonTransferItems } = context1;
+  const { ServerItems,getItemsByUser,getItemsByServer, uploadItem, UserItems, NonTransferItems, getNonTransferItems,getHistoryByServer,serverHistory} = context1;
 
   const [itemCredentials, setItemCredentials] = useState({ iname: "", iquantity: "", iphoto: "", iprice: "" });
   const onChange = (e) => {
@@ -33,7 +34,6 @@ export default function ItemServer() {
     formData.append("iname", itemCredentials.iname);
     formData.append("iprice", itemCredentials.iprice);
     formData.append("iphoto", itemCredentials.iphoto);
-    const message = await uploadItem(formData);
     if (itemCredentials.iquantity < 0) {
       setItemCredentials({ iname: "", iquantity: "", iphoto: null, iprice: "" });
       return showAlert("Add valid quantity", "success");
@@ -42,16 +42,24 @@ export default function ItemServer() {
       setItemCredentials({ iname: "", iquantity: "", iphoto: "", iprice: "" });
       return showAlert("Add valid price", "success");
     }
+    const message = await uploadItem(formData);
 
     setItemCredentials({ iname: "", iquantity: "", iphoto: "", iprice: "" });
     showAlert(message.message, "success");
   }
 
-  useEffect(() => {
-    getItemsByUser();
-    getNonTransferItems();
-  }, [])
+  const navigate=useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      getItemsByServer();
+      getItemsByUser();
+      getNonTransferItems();
+      getHistoryByServer();
+    } else {
+      navigate('/login_server');
+    }
+  }, []); 
   return (
     <div>
       <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
@@ -90,33 +98,51 @@ export default function ItemServer() {
         </div>
         <button className="btn btn-success btn-lg m-md-3 " data-bs-toggle="modal" data-bs-target="#create-post-model">Add Item <i className="fa-solid fa-plus"></i></button>
       </div>
+      
       <div className="flex flex-wrap -m-4">
-        {UserItems.length === 0 ? (
+        {ServerItems.length === 0 ? (
           <p>No items available</p>
         ) : (
-          UserItems.map((item) => <Item key={item.ino} user={false} item={item} />)
+          ServerItems.map((item) => <Item key={item.ino} user={false} item={item} />)
         )}
       </div>
       <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         Pending donations
       </h2>
-    
+
       <div className='flex justify-between py-3'>
         <div style={divStyle}>Item Name</div>
         <div style={divStyle}>Donor Name</div>
         <div style={divStyle}>Quantity</div>
         <div style={divStyle}>Date of Donation</div>
         <div style={divStyle}>Status</div>
-    
-      </div>
-      <div className='flex justify-between py-3'>
 
       </div>
       <div className="flex flex-col">
         {NonTransferItems.length > 0 ? (
           NonTransferItems.map((item) => (
-            <NonTransferItem key={item.ino} item={item} />
+            <NonTransferItem key={item.ino} item={item} transfer={false} />
 
+          ))
+        ) : (
+          <p className="text-gray-500 justify-center d-flex font-bold pt-5">No non transfer donations</p>
+        )}
+      </div>
+      <h2 className="text-2xl font-bold leading-7 pt-10 text-center text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        Donations History
+      </h2>
+
+      <div className='flex justify-between py-3'>
+        <div style={divStyle}>Item Name</div>
+        <div style={divStyle}>Donor Name</div>
+        <div style={divStyle}>Quantity</div>
+        <div style={divStyle}>Date of Donation</div>
+        <div style={divStyle}>Status</div>
+      </div>
+      <div className="flex flex-col">
+        {serverHistory.length > 0 ? (
+          serverHistory.map((item) => (
+            <NonTransferItem key={item.ino} item={item} transfer={true} />
           ))
         ) : (
           <p className="text-gray-500 justify-center d-flex font-bold pt-5">No non transfer donations</p>

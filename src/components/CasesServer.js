@@ -5,17 +5,23 @@ import { useContext } from 'react';
 import serverCaseContext from '../context/ServerCase/serverCaseContext';
 import alertContext from '../context/alertContext/AlertContext';
 import CaseApprovalServer from './CaseApprovalServer';
+import { useNavigate } from 'react-router-dom';
 export default function CasesServer() {
     const context = useContext(serverCaseContext);
     const context2 = useContext(alertContext);
     const { UserApplications, NonTransferredCompletedCases, getNonTransferredCompletedCases, getUserApplications, ServerRegisteredCases, getServerRegisteredCases } = context;
     const { showAlert } = context2;
+   
+    const navigate=useNavigate();
     useEffect(() => {
-        getUserApplications();
-        getServerRegisteredCases();
-        getNonTransferredCompletedCases();
-    }, [])
-
+        if (localStorage.getItem('token')) {
+            getUserApplications();
+            getServerRegisteredCases();
+            getNonTransferredCompletedCases();
+        } else {
+          navigate('/login_server');
+        }
+      }, []);
 
     return (
         <>

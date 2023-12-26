@@ -5,13 +5,9 @@ import { Link } from 'react-router-dom';
 
 export default function SuccessfulCaseCard(props) {
     const { application } = props;
-    const context = useContext(serverCaseContext);
 
 
-    const getDetails = (id) => {
-        console.log()
-    }
-
+  
 
     return (
         <>
