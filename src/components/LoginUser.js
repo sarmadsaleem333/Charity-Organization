@@ -56,6 +56,7 @@ const LoginUser = () => {
     setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
     if (response.success) {
       showAlert("Successfully Your account has been created", "success");
+      
     }
     else {
       showAlert(response.error, "danger");

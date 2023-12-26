@@ -35,6 +35,8 @@ function App() {
   const userRole = localStorage.getItem('role');
 
 
+
+
   return (
     <>
       <UserAuthState>
@@ -48,15 +50,13 @@ function App() {
                       <UserCaseState>
                         <AlertState>
                           <BrowserRouter>
-                          
+
                             {isLoggedIn && <Navbar />}
                             {!isLoggedIn && <NoNavbar />}
                             <Alert />
                             <Routes>
                               <Route path="/login_user" element={<LoginUser />} />
                               <Route path="/login_server" element={<LoginServer />} />
-
-
                               <>
                                 {userRole === 'user' && (
                                   <>
@@ -101,3 +101,4 @@ function App() {
 }
 
 export default App;
+
