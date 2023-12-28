@@ -185,7 +185,7 @@ router.get("/get_volunteers_for_event/:id", fetchserver, async (req, res) => {
 
 router.get("/get_all_my_events", fetchuser, async (req, res) => {
     try {
-        con.query("select * from worksonevent natural join (select uno,uname from users) as usertable where uno and eventdate=>?", [require.user.id, date], (error, result) => {
+        con.query("select * from worksonevent natural join (select uno,uname from users) as usertable natural join events where uno=? and eventdate>=?", [req.user.id, date], (error, result) => {
             if (error) {
                 console.error(error);
                 return res.status(500).json({ error: 'Internal server error' });

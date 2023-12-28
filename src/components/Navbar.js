@@ -6,10 +6,11 @@ import Notifications from "./Notifications"
 import ServerNotifications from './ServerNotifications';
 import { useNavigate } from 'react-router-dom';
 const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
+  { name: 'Dashboard', href: '/', current: false },
   { name: 'Item Donation', href: '/item_donation_user', current: false },
   { name: 'History', href: '/history_user', current: false },
   { name: 'My Cases', href: '/my_cases', current: false },
+  { name: 'Events', href: '/events_user', current: false },
   { name: 'Applications', href: '/applications_server', current: false },
   { name: 'Pending Transfer', href: '/pending_transfer_server', current: false },
   { name: 'Successful Cases', href: '/transferedcompletedcases', current: false },
@@ -43,7 +44,7 @@ export default function Navbar(props) {
   }
   let { user } = props;
   const userRole = localStorage.getItem('role');
-  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 4) : navigation.slice(4, 9);
+  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 5) : navigation.slice(6, 9);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">

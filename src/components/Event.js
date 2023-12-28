@@ -77,27 +77,35 @@ export default function Event(props) {
                         src={event.photolink}
                     />
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 px-4">
                     <h2 className="text-gray-900 text-lg font-medium mb-2">
                         {event.eventname}
                     </h2>
                     <p className="text-gray-700">{event.description}</p>
                     <div className="flex justify-between items-center mt-4">
                         <h2 className="text-red-500 text-lg font-medium">
-                            Required { event.volunteers_no} volunteers
+                            Required {event.volunteers_no} volunteers
                         </h2>
                         <h2 className="text-red-500 text-lg font-medium">
                             Made: {event.current_volunteers} volunteers
                         </h2>
-                        {user ?
-
-                            <button className="bg-blue-500 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target={`#exampleModal${event.eventno}`}>
+                        {user ? (
+                            <button
+                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#exampleModal${event.eventno}`}
+                            >
                                 Register
                             </button>
-                            : <button onClick={() => countVolunteers(event.eventno)} className="bg-blue-500 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target={`#count${event.eventno}`}>
-                                Get Volunteers
+                        ) : (
+                            <button
+                                onClick={() => countVolunteers(event.eventno)}
+                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#count${event.eventno}`}
+                            >Get Volunteers
                             </button>
-                        }
+                        )}
                     </div>
                 </div>
             </div>
@@ -106,3 +114,4 @@ export default function Event(props) {
     );
 
 }
+

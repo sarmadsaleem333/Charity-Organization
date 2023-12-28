@@ -8,11 +8,11 @@ export default function EventsUser() {
   const context = useContext(alertContext);
   const context1 = useContext(EventContext);
   const { showAlert } = context;
-  const { getEventsByUser, userEvents } = context1
+  const { getEventsByUser, userEvents, getEventsByUserMine, userMineEvents } = context1
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getEventsByUser();
-      return
+      getEventsByUserMine();
 
     }
     else {
@@ -23,13 +23,26 @@ export default function EventsUser() {
 
 
     <div>
-    
+
+      <h1 className='text-center font-bold text-4xl'> Events</h1>
+
       <div className="flex flex-wrap -m-4 py-10">
-       
+
         {userEvents.length === 0 ? (
           <p>No events available</p>
         ) : (
           userEvents.map((event) => <Event key={event.eventno} user={true} event={event} />)
+        )}
+      </div>
+
+      <h1 className='text-center font-bold text-4xl'>My upcoming Events</h1>
+
+      <div className="flex flex-wrap -m-4 py-10">
+
+        {userMineEvents.length === 0 ? (
+          <p>You have no upcoming event</p>
+        ) : (
+          userMineEvents.map((event) => <Event key={event.eventno} user={true} event={event} />)
         )}
       </div>
     </div>

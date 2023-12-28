@@ -5,7 +5,7 @@ import userAuthContext from '../context/userContext/userAuthContext';
 import serverAuthContext from '../context/serverContext/serverAuthContext';
 import alertContext from '../context/alertContext/AlertContext';
 const LoginUser = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const context = useContext(userAuthContext);
   const context1 = useContext(serverAuthContext);
   const context2 = useContext(alertContext);
@@ -45,26 +45,32 @@ const LoginUser = () => {
     }
   };
 
-  const handleSignUp = async (e) => {
 
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    if (signUpCredentials.password !== signUpCredentials.cpassword) {
-      setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" })
-      return showAlert("Your Password and Confirm Password did not match", "danger")
+
+    // Password validation
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(signUpCredentials.password)) {
+      setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
+      return showAlert("Password must contain at least one letter, one number, and be at least 8 characters long", "danger");
     }
+
+    if (signUpCredentials.password !== signUpCredentials.cpassword) {
+      setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
+      return showAlert("Your Password and Confirm Password did not match", "danger");
+    }
+
     const response = await signUpUser(signUpCredentials.name, signUpCredentials.email, signUpCredentials.password, signUpCredentials.phone, signUpCredentials.status);
     setSignUpCredentials({ name: "", email: "", phone: "", status: "", password: "", cpassword: "" });
+
     if (response.success) {
       showAlert("Successfully Your account has been created", "success");
-      
-    }
-    else {
+    } else {
       showAlert(response.error, "danger");
     }
 
-
   };
-
   const switchForm = (form) => {
     setActiveForm(form);
   };

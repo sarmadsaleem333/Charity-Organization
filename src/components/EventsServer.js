@@ -87,11 +87,12 @@ export default function EventsServer() {
       <button className="btn btn-success btn-lg m-md-3 " data-bs-toggle="modal" data-bs-target="#create-event-model">Upload Event <i className="fa-solid fa-plus"></i></button>
 
       <div className="flex flex-wrap -m-4">
-      {console.log(serverEvents)}
+        <h1 className='text-center font-bold text-4xl'> Events</h1>
+
         {serverEvents.length === 0 ? (
           <p>No events available</p>
         ) : (
-          serverEvents.map((event) => <Event key={event.eventno}  event={event} />)
+          serverEvents.map((event) => <Event key={event.eventno} event={event} />)
         )}
       </div>
     </div>
