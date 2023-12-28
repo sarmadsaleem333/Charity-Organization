@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import EventContext from '../context/eventsContext/EventContext';
 import alertContext from '../context/alertContext/AlertContext';
 import { useNavigate } from 'react-router-dom';
+import Event from './Event';
 export default function EventsServer() {
   const context = useContext(alertContext);
   const context1 = useContext(EventContext);
@@ -24,8 +25,9 @@ export default function EventsServer() {
     formData.append("photolink", eventCredentials.photolink);
     console.log(formData)
     console.log(eventCredentials)
-    const message = await uploadEvent(formData);
+    const message = await uploadEvent(eventCredentials);
     setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
+
 
   }
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ export default function EventsServer() {
   }, []);
   return (
     <div>
-      {/* {console.log(serverEvents)} */}
+      {console.log(serverEvents)}
       <div className="modal fade" id="create-event-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -83,6 +85,15 @@ export default function EventsServer() {
       </div>
 
       <button className="btn btn-success btn-lg m-md-3 " data-bs-toggle="modal" data-bs-target="#create-event-model">Upload Event <i className="fa-solid fa-plus"></i></button>
+
+      <div className="flex flex-wrap -m-4">
+      {console.log(serverEvents)}
+        {serverEvents.length === 0 ? (
+          <p>No events available</p>
+        ) : (
+          serverEvents.map((event) => <Event key={event.eventno}  event={event} />)
+        )}
+      </div>
     </div>
   )
 }

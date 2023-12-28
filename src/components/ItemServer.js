@@ -34,6 +34,7 @@ export default function ItemServer() {
     formData.append("iname", itemCredentials.iname);
     formData.append("iprice", itemCredentials.iprice);
     formData.append("iphoto", itemCredentials.iphoto);
+    console.log(formData);
     if (itemCredentials.iquantity < 0) {
       setItemCredentials({ iname: "", iquantity: "", iphoto: null, iprice: "" });
       return showAlert("Add valid quantity", "success");

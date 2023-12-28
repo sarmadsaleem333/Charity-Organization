@@ -18,6 +18,7 @@ var imageStorage = multer.diskStorage({
         cb(null, uniqueSuffix + file.originalname)
     }
 })
+
 const upload = multer({ storage: imageStorage })
 
 //router for uplpading an item

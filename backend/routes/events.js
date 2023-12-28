@@ -78,8 +78,10 @@ router.post("/upload_event",
 
 
 router.post("/volunteer_for_event/:id", fetchuser, async (req, res) => {
+    let eventN;
     try {
         con.query("select * from events where eventno=?", [req.params.id], (error, result) => {
+            eventN=result[0].eventname;
             if (error) {
                 console.error(error);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -88,17 +90,36 @@ router.post("/volunteer_for_event/:id", fetchuser, async (req, res) => {
             if (result[0].current_volunteers >= result[0].volunteers_no) {
                 return res.json("Volunteers are completed")
             }
-            con.query("insert into worksonevent uno,eventno values(?,?)", [req.user.id, result[0].eventno], (error, result1) => {
+            con.query("select * from worksonevent where uno=? and eventno=?", [req.user.id, req.params.id], (error, result) => {
                 if (error) {
                     console.error(error);
                     return res.status(500).json({ error: 'Internal server error' });
                 }
-                handleNotifications(`You are volunteered for event "${result[0].eventname}"`,req.user.id,"user");
-                return res.json("You are volunteered for this event")
+                if (result.length > 0) {
+                    return res.json("You are already volunteered for this event")
+                }
+
+                con.query("INSERT INTO worksonevent (uno, eventno) VALUES (?, ?)", [req.user.id, req.params.id], (error, result1) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(500).json({ error: 'Internal server error' });
+                    }
+                    
+                    handleNotifications(`You are volunteered for event ${eventN}`, req.user.id, "user");
+
+                    // Update event and increase current volunteers count
+                    con.query("UPDATE events SET current_volunteers = current_volunteers + 1 WHERE eventno = ?", [req.params.id], (error, result2) => {
+                        if (error) {
+                            console.error(error);
+                            return res.status(500).json({ error: 'Internal server error' });
+                        }
+                        return res.json("You are volunteered for this event");
+                    });
+                });
 
             })
-
         })
+
     } catch (error) {
 
         console.error(error);
@@ -145,7 +166,7 @@ router.get("/get_events_by_server", fetchserver, async (req, res) => {
 });
 router.get("/get_volunteers_for_event/:id", fetchserver, async (req, res) => {
     try {
-        con.query("select * from worksonevent natural join (select uno,uname from users) as usertable where eventno=?", [require.params.id], (error, result) => {
+        con.query("select * from worksonevent natural join (select uno,uname from users) as usertable where eventno=?", [req.params.id], (error, result) => {
             if (error) {
                 console.error(error);
                 return res.status(500).json({ error: 'Internal server error' });
