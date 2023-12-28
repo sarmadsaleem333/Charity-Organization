@@ -69,17 +69,19 @@ export default function Event(props) {
                     </div>
                 </div>
             </div>
-            <div className="lg:w-1/4 md:w-1/2 p-4 w-full py-3 px-4 border border-gray-300 rounded">
-                <div className="border rounded overflow-hidden">
-                    <img
-                        alt="Event"
-                        className="object-cover object-center w-full h-48"
-                        src={event.photolink}
-                    />
-                </div>
+            <div className="lg:w-1/4 md:w-1/2 p-4 w-full py-3 border border-gray-300 rounded pr-20 mx-auto">                <div className="border rounded overflow-hidden">
+                <img
+                    alt="Event"
+                    className="object-cover object-center w-full h-48"
+                    src={event.photolink}
+                />
+            </div>
                 <div className="mt-4 px-4">
                     <h2 className="text-gray-900 text-lg font-medium mb-2">
                         {event.eventname}
+                    </h2>
+                    <h2 className="text-blue-500 text-lg font-medium">
+                        Date:{event.eventdate.slice(0, 10)}
                     </h2>
                     <p className="text-gray-700">{event.description}</p>
                     <div className="flex justify-between items-center mt-4">
@@ -89,6 +91,7 @@ export default function Event(props) {
                         <h2 className="text-red-500 text-lg font-medium">
                             Made: {event.current_volunteers} volunteers
                         </h2>
+
                         {user ? (
                             <button
                                 className="bg-blue-500 text-white px-4 py-2 rounded"

@@ -12,7 +12,6 @@ export default function ServerNotifications() {
 
     useEffect(() => {
         getAllNotificationsServer();
-        serverNotifications.reverse();
     }, []);
 
     return (

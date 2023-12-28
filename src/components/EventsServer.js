@@ -86,8 +86,8 @@ export default function EventsServer() {
 
       <button className="btn btn-success btn-lg m-md-3 " data-bs-toggle="modal" data-bs-target="#create-event-model">Upload Event <i className="fa-solid fa-plus"></i></button>
 
+        <h1 className='text-center font-bold text-4xl py-10'> Events</h1>
       <div className="flex flex-wrap -m-4">
-        <h1 className='text-center font-bold text-4xl'> Events</h1>
 
         {serverEvents.length === 0 ? (
           <p>No events available</p>

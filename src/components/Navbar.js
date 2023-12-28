@@ -16,6 +16,7 @@ const navigation = [
   { name: 'Successful Cases', href: '/transferedcompletedcases', current: false },
   { name: 'Events', href: '/events_server', current: false },
   { name: 'Items', href: '/items_server', current: false },
+  { name: 'Events', href: '/events_server', current: false },
 ];
 
 
@@ -44,7 +45,7 @@ export default function Navbar(props) {
   }
   let { user } = props;
   const userRole = localStorage.getItem('role');
-  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 5) : navigation.slice(6, 9);
+  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 5) : navigation.slice(5, 10);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
