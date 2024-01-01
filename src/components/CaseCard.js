@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import donationCaseContext from '../context/DonationCase/donationCaseContext';
 import alertContext from '../context/alertContext/AlertContext';
 export default function CaseCard(props) {
-    const { caseItem, approved } = props;
+    const { caseItem, approved ,jk} = props;
     let amountLeft = 0;
     if (approved) {
         amountLeft = caseItem.camountreq - caseItem.amountmade;
@@ -109,7 +109,7 @@ export default function CaseCard(props) {
                         }
                         <p className="py-2 font-semibold">Last Date: {caseItem.clastdate.slice(0, 10)}</p>
                     </div>
-                    {approved &&
+                    {approved && !jk &&
                         <div className="flex justify-end pt-4">
                             <button
                                 type="button"
