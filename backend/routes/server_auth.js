@@ -8,46 +8,6 @@ const JWT_Secret = process.env.JWT_Secret;
 const { con } = require("../db");
 const fetchserver = require('../midlleware/fetchserver');
 
-
-// router.post("/login_server", [
-//     body("email", "Enter a valid email").isEmail(),
-//     body("password"),
-// ], async (req, res) => {
-//     const { email, password } = req.body;
-//     let success = false;
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         const response = errors.array();
-//         return res.status(400).json(response[0].msg);
-//     }
-//     try {
-//         con.query("Select * from server where smail =? limit 1", [email], async (error, server) => {
-//             if (error) {
-//                 return res.send("Error finding server");
-//             }
-//             if (server.length == 0) {
-
-//                 return res.json({ message: "You entered wrong email", success });
-//             }
-//             const passwordCompare = await bcrypt.compare(password, server[0].spassword);
-//             if (!passwordCompare) {
-//                 return res.status(400).json({ success, error: "Please enter the correct Password" });
-//             }
-//             const data = {
-//                 server: {
-//                     id: server[0].sno
-//                 }
-//             };
-//             const authtoken = jwt.sign(data, JWT_Secret);
-//             success = true;
-//             res.json({ success, authtoken });
-//         })
-
-//     } catch (error) {
-//         console.log("Error logging in for the server", error);
-//         res.status(500).send("Internal server error occurred");
-//     }
-// });
 router.post("/login_server", [
     body("email", "Enter a valid email").isEmail(),
     body("password").notEmpty().withMessage('Password is required'),

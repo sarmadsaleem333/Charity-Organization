@@ -12,7 +12,7 @@ export default function Notifications() {
 
     useEffect(() => {
         getAllNotificationsUser();
-        userNotifications.reverse();
+        
     }, []);
 
     return (

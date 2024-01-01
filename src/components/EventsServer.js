@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import EventContext from '../context/eventsContext/EventContext';
 import alertContext from '../context/alertContext/AlertContext';
 import { useNavigate } from 'react-router-dom';
+import Event from './Event';
 export default function EventsServer() {
   const context = useContext(alertContext);
   const context1 = useContext(EventContext);
@@ -14,6 +15,17 @@ export default function EventsServer() {
   const onImageChange = (e) => {
     setEventCredentials({ ...eventCredentials, photolink: e.target.files[0] });
   };
+  const formatDateString = (inputDate) => {
+    const dateObject = new Date(inputDate);
+
+    const day = dateObject.getDate().toString().padStart(2, '0');
+    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Note: Months are zero-based, so we add 1
+    const year = dateObject.getFullYear();
+
+    const formattedDate = `${day}-${month}-${year}`;
+
+    return formattedDate;
+  }
   const upload = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -23,10 +35,11 @@ export default function EventsServer() {
     formData.append("description", eventCredentials.description);
     formData.append("photolink", eventCredentials.photolink);
     console.log(formData)
-    console.log(eventCredentials)
-    const message = await uploadEvent(formData);
+    console.log(eventCredentials);
+    const newDate=formatDateString(eventCredentials.eventdate);
+    const message = await uploadEvent(eventCredentials.eventname,newDate, eventCredentials.description, eventCredentials.volunteers_no);
     setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
-
+    showAlert(message, "success");
   }
   const navigate = useNavigate();
   useEffect(() => {
@@ -38,7 +51,7 @@ export default function EventsServer() {
   }, []);
   return (
     <div>
-      {/* {console.log(serverEvents)} */}
+      {console.log(serverEvents)}
       <div className="modal fade" id="create-event-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -52,7 +65,7 @@ export default function EventsServer() {
             </div>
 
             <div className="input-group mb-3">
-              <input type="text" className="form-control" id='blog-text' placeholder='Date in dd-mm-yyyy' name='eventdate' onChange={onChange} value={eventCredentials.eventdate} aria-label="Blog Text" aria-describedby="basic-addon1" />
+              <input type="date" className="form-control" id='blog-text' placeholder='Date in dd-mm-yyyy' name='eventdate' onChange={onChange} value={eventCredentials.eventdate} aria-label="Blog Text" aria-describedby="basic-addon1" />
             </div>
             <div className="input-group mb-3">
               <input type="number" className="form-control" id='blog-text' placeholder="Number Of Volunteers" name='volunteers_no' onChange={onChange} value={eventCredentials.volunteers_no} aria-label="Blog Text" aria-describedby="basic-addon1" />
@@ -83,6 +96,16 @@ export default function EventsServer() {
       </div>
 
       <button className="btn btn-success btn-lg m-md-3 " data-bs-toggle="modal" data-bs-target="#create-event-model">Upload Event <i className="fa-solid fa-plus"></i></button>
+
+      <h1 className='text-center font-bold text-4xl py-10'> Events</h1>
+      <div className="flex flex-wrap -m-4">
+
+        {serverEvents.length === 0 ? (
+          <p>No events available</p>
+        ) : (
+          serverEvents.map((event) => <Event key={event.eventno} event={event} />)
+        )}
+      </div>
     </div>
   )
 }

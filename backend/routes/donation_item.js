@@ -18,6 +18,7 @@ var imageStorage = multer.diskStorage({
         cb(null, uniqueSuffix + file.originalname)
     }
 })
+
 const upload = multer({ storage: imageStorage })
 
 //router for uplpading an item
@@ -199,7 +200,7 @@ router.get("/all_non_transfer_items", fetchserver, async (req, res) => {
 // get all  transfer details
 router.get("/all_transfer_items", fetchserver, async (req, res) => {
     try {
-        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=1", (error, result) => {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=1 order by receiptno desc", (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -233,7 +234,7 @@ router.post("/transfer_item/:id", fetchserver, async (req, res) => {
 })
 router.get("/all_donations_by_server", fetchserver, async (req, res) => {
     try {
-        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=1 ",  (error, result) => {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where transferstatus=1 order by receiptno desc ",  (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -251,7 +252,7 @@ router.get("/all_donations_by_server", fetchserver, async (req, res) => {
 })
 router.get("/all_donations_by_user", fetchuser, async (req, res) => {
     try {
-        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where uno= ?", [req.user.id], (error, result) => {
+        con.query("select * from itemdonates natural join (select uname ,uno from users) as usertable natural join items where uno= ? order by receiptno desc", [req.user.id], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

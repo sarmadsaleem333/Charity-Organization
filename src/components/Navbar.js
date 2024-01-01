@@ -4,17 +4,19 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import Notifications from "./Notifications"
 import ServerNotifications from './ServerNotifications';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
+  { name: 'Dashboard', href: '/', current: false },
   { name: 'Item Donation', href: '/item_donation_user', current: false },
   { name: 'History', href: '/history_user', current: false },
   { name: 'My Cases', href: '/my_cases', current: false },
+  { name: 'Events', href: '/events_user', current: false },
   { name: 'Applications', href: '/applications_server', current: false },
   { name: 'Pending Transfer', href: '/pending_transfer_server', current: false },
   { name: 'Successful Cases', href: '/transferedcompletedcases', current: false },
   { name: 'Events', href: '/events_server', current: false },
   { name: 'Items', href: '/items_server', current: false },
+  { name: 'Events', href: '/events_server', current: false },
 ];
 
 
@@ -24,6 +26,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar(props) {
+  let location = useLocation();
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -43,7 +46,7 @@ export default function Navbar(props) {
   }
   let { user } = props;
   const userRole = localStorage.getItem('role');
-  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 4) : navigation.slice(4, 9);
+  const visibleNavigation = userRole === 'user' ? navigation.slice(0, 5) : navigation.slice(5, 10);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -101,7 +104,7 @@ export default function Navbar(props) {
                   </div>
                 </div>
               </div>
-              {userRole=="user" ?
+              {userRole == "user" ?
                 (<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <Notifications />
                 </div>) :
