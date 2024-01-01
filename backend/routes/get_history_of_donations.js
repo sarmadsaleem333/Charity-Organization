@@ -7,7 +7,7 @@ const fetchserver = require('../midlleware/fetchserver');
 //user getting his all donations 
 router.get("/get_all_donations_by_user", fetchuser, async (req, res) => {
     try {
-        con.query("SELECT receiptno,date,amount,accounttitle,name FROM user_donations_for_cases  where uno=?", [req.user.id], (error, results) => {
+        con.query("SELECT receiptno,date,amount,accounttitle,name FROM user_donations_for_cases  where uno=? order by receiptno desc ", [req.user.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

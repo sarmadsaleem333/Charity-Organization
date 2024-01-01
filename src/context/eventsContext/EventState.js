@@ -6,17 +6,22 @@ const EventState = (props) => {
     const [userEvents, setUserEvents] = useState([]);
     const [userMineEvents, setUserMineEvents] = useState([]);
     const [serverEvents, setServerEvents] = useState([]);
+
     // uplaod event by server 
-    const uploadEvent = async (formData) => {
+    const uploadEvent = async (eventname, eventdate, description, volunteers_no) => {
         try {
-            const response = await axios.post(`${host}/charity_organization/events/upload_event`, formData, {
+
+            const response = await fetch(`${host}/charity_organization/events/upload_event`, {
+                method: "POST",
                 headers: {
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "application/json",
                     "auth-token": localStorage.getItem("token"),
                 },
+                body: JSON.stringify({eventname:eventname, eventdate: eventdate, description:description, volunteers_no:volunteers_no})
+
             });
             console.log(response)
-            return response.data;
+            return response.message;
         } catch (error) {
             console.error(error);
         }
@@ -112,6 +117,21 @@ const EventState = (props) => {
             return json;
         } catch (error) {
             console.error(error.message);
+        }
+    };
+
+    const uploadEvents = async (formData) => {
+        try {
+            const response = await axios.post(`${host}/charity_organization/events/upload_event`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "auth-token": localStorage.getItem("token"),
+                },
+            });
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.error(error);
         }
     };
 

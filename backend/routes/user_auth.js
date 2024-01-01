@@ -24,7 +24,7 @@ router.post("/create_user", [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const response = errors.array();
-        return res.status(400).json(response[0].msg);
+        return res.json(response[0].msg);
     }
     try {
         // Check if a user with the same email or phone already exists
@@ -184,6 +184,57 @@ router.get("/fetch_user", fetchuser, async (req, res) => {
         res.status(500).send("Internal server error occurred");
         console.log(error)
     }
-})
+});
+
+router.post("/change_password", [
+    body("oldPassword", "Old password should be at least 8 characters").isLength({ min: 8 }),
+    body("newPassword", "New password should be at least 8 characters").isLength({ min: 8 }),
+], fetchuser, async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    let success = false;
+
+    // Additional validation if needed
+
+    try {
+        const user = req.user;
+
+        // Compare the provided old password with the stored hashed password
+        bcrypt.compare(oldPassword, user.upassword, (err, isMatch) => {
+            if (err || !isMatch) {
+                return res.status(401).json("Invalid old password.");
+            }
+
+            // Hash the new password
+            bcrypt.genSalt(10, (err, salt) => {
+                if (err) {
+                    console.log("Error generating salt");
+                    return res.status(500).json({ error: "Internal server error", success });
+                }
+
+                bcrypt.hash(newPassword, salt, (err, secPass) => {
+                    if (err) {
+                        console.log("Error hashing new password");
+                        return res.status(500).json({ error: "Internal server error", success });
+                    }
+
+                    // Update the user's password in the database
+                    con.query("UPDATE users SET upassword = ? WHERE uid = ?", [secPass, user.uid], (error) => {
+                        if (error) {
+                            console.log("Error updating password");
+                            return res.status(500).json({ error: "Internal server error", success });
+                        }
+
+                        success = true;
+                        res.json({ success, message: "Password updated successfully." });
+                    });
+                });
+            });
+        });
+    } catch (error) {
+        console.log("Error changing password", error);
+        res.status(500).send("Internal server error occurred");
+    }
+});
+
 
 module.exports = router;

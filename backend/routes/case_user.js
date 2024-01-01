@@ -84,13 +84,30 @@ router.get("/get_my_transferredcases", fetchuser, async (req, res) => {
         return res.status(500).send("Internal server error occurred");
     }
 });
+//sp_get_cases_with_user_info
+router.get("/get_my_transferredcasesofuser", fetchuser, async (req, res) => {
+    try {
+
+        con.query("call sp_get_cases_with_user_info()", [req.user.id], (error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+            return res.send(results);
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Internal server error occurred");
+    }
+});
 
 // --tested
 //route for getting all my inprogress cases
 router.get("/get_my_inprogress_cases", fetchuser, async (req, res) => {
     try {
 
-        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate ?= ? and  amountmade<camountreq and uno=?", [date, req.user.id], (error, results) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? and  amountmade<camountreq and uno=?", [date, req.user.id], (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });
@@ -128,7 +145,7 @@ router.get("/get_all_registered_cases_by_user", fetchuser, async (req, res) => {
 
     try {
         // Find the user associated with the applied case
-        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? and  amountmade<camountreq", [date], (error, userResults) => {
+        con.query("SELECT * FROM cases_shown_for_donation  WHERE clastdate >= ? and  amountmade<camountreq order by clastdate asc", [date], (error, userResults) => {
             if (error) {
                 console.log(error);
                 return res.status(500).json({ error: "Internal server error" });

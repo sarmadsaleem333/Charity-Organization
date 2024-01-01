@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import Notifications from "./Notifications"
 import ServerNotifications from './ServerNotifications';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 const navigation = [
   { name: 'Dashboard', href: '/', current: false },
   { name: 'Item Donation', href: '/item_donation_user', current: false },
@@ -26,6 +26,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar(props) {
+  let location = useLocation();
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -103,7 +104,7 @@ export default function Navbar(props) {
                   </div>
                 </div>
               </div>
-              {userRole=="user" ?
+              {userRole == "user" ?
                 (<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <Notifications />
                 </div>) :

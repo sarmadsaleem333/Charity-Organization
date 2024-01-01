@@ -20,50 +20,42 @@ var imageStorage = multer.diskStorage({
 })
 const upload = multer({ storage: imageStorage })
 
-router.post("/upload_event",
-    [body('eventname', 'Event name should be 6 characters').isLength({ min: 6 }),
-    body("eventdate")
-        .notEmpty().withMessage("Enter a valid date")
-        .custom((value) => {
-            const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
-            if (!dateRegex.test(value)) {
-                throw new Error("Invalid date format. Please use DD-MM-YYYY.");
-            }
+router.post("/upload_event", [body("eventdate")
+    .notEmpty().withMessage("Enter a valid date")
+    .custom((value) => {
+        const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+        if (!dateRegex.test(value)) {
+            throw new Error("Invalid date format. Please use DD-MM-YYYY.");
+        }
 
+        const [day, month, year] = value.split('-');
+        const dateObject = new Date(`${year}-${month}-${day}`);
+
+        // Check if the dateObject is a valid date (accounting for invalid dates like month 13)
+        if (isNaN(dateObject.getTime())) {
+            throw new Error("Invalid date. Please provide a valid date.");
+        }
+
+        return true;
+    })
+    .customSanitizer((value) => {
+        if (value) {
             const [day, month, year] = value.split('-');
-            const dateObject = new Date(`${year}-${month}-${day}`);
-
-            // Check if the dateObject is a valid date (accounting for invalid dates like month 13)
-            if (isNaN(dateObject.getTime())) {
-                throw new Error("Invalid date. Please provide a valid date.");
-            }
-
-            return true;
-        })
-        .customSanitizer((value) => {
-            if (value) {
-                const [day, month, year] = value.split('-');
-                return new Date(`${year}-${month}-${day}`);
-            }
-            return null;
-        }),
-    body('description', 'Please enter description of atleast 10 letters').isLength({ min: 10 }),
-    body("volunteers_no", "Enter a valid number").isInt(),
-    upload.single('photolink'),
-    ],
+            return new Date(`${year}-${month}-${day}`);
+        }
+        return null;
+    }),],
     fetchserver,
     async (req, res) => {
-
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            const response = errors.array();
-            return res.status(400).json(response[0].msg);
-        }
-        const { eventname, eventdate, description, volunteers_no } = req.body;
-        const photolink = req.file.filename;
         try {
-            con.query('INSERT INTO events (eventname, eventdate, description,volunteers_no,photolink) VALUES (?, ?, ?,?, ?)', [eventname, eventdate, description, volunteers_no, photolink], (error, result) => {
+            const { eventname, eventdate, description, volunteers_no } = req.body;
+
+            const sqlQuery = `
+            INSERT INTO events (eventname, eventdate, description, volunteers_no, photolink) 
+            VALUES (?, ?, ?, ?, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcXnzHySkH97TnYM3ZaozZ6-sn-Vr1HvoqGQ&usqp=CAU")
+        `;
+
+            con.query(sqlQuery, [eventname, eventdate, description, volunteers_no], (error, result) => {
                 if (error) {
                     console.error(error);
                     return res.status(500).json({ error: 'Internal server error' });
@@ -81,7 +73,7 @@ router.post("/volunteer_for_event/:id", fetchuser, async (req, res) => {
     let eventN;
     try {
         con.query("select * from events where eventno=?", [req.params.id], (error, result) => {
-            eventN=result[0].eventname;
+            eventN = result[0].eventname;
             if (error) {
                 console.error(error);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -104,7 +96,7 @@ router.post("/volunteer_for_event/:id", fetchuser, async (req, res) => {
                         console.error(error);
                         return res.status(500).json({ error: 'Internal server error' });
                     }
-                    
+
                     handleNotifications(`You are volunteered for event ${eventN}`, req.user.id, "user");
 
                     // Update event and increase current volunteers count
@@ -201,4 +193,80 @@ router.get("/get_all_my_events", fetchuser, async (req, res) => {
 
     }
 });
+
+// sp_get_events_by_user 
+router.get("/get_all_my_volunteers_info", fetchuser, async (req, res) => {
+    try {
+        con.query("call sp_get_events_with_volunteer_info()", [req.user.id, date], (error, result) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).json({ error: 'Internal server error' });
+
+            }
+            return res.send(result);
+
+        })
+    } catch (error) {
+
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+
+    }
+});
+router.post("/uploadevent",
+    [body('eventname', 'Event name should be 6 characters').isLength({ min: 6 }),
+    body("eventdate")
+        .notEmpty().withMessage("Enter a valid date")
+        .custom((value) => {
+            const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+            if (!dateRegex.test(value)) {
+                throw new Error("Invalid date format. Please use DD-MM-YYYY.");
+            }
+
+            const [day, month, year] = value.split('-');
+            const dateObject = new Date(`${year}-${month}-${day}`);
+
+            // Check if the dateObject is a valid date (accounting for invalid dates like month 13)
+            if (isNaN(dateObject.getTime())) {
+                throw new Error("Invalid date. Please provide a valid date.");
+            }
+
+            return true;
+        })
+        .customSanitizer((value) => {
+            if (value) {
+                const [day, month, year] = value.split('-');
+                return new Date(`${year}-${month}-${day}`);
+            }
+            return null;
+        }),
+    body('description', 'Please enter description of atleast 10 letters').isLength({ min: 10 }),
+    body("volunteers_no", "Enter a valid number").isInt(),
+    upload.single('photolink'),
+    ],
+    fetchserver,
+    async (req, res) => {
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            const response = errors.array();
+            return res.status(400).json(response[0].msg);
+        }
+        const { eventname, eventdate, description, volunteers_no } = req.body;
+        const photolink = req.file.filename;
+        try {
+            con.query('INSERT INTO events (eventname, eventdate, description,volunteers_no,photolink) VALUES (?, ?, ?,?, ?)', [eventname, eventdate, description, volunteers_no, photolink], (error, result) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).json({ error: 'Internal server error' });
+                }
+                return res.status(201).json({ message: 'Event uploaded successfully', insertedId: result.insertId });
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    });
+
 module.exports = router;

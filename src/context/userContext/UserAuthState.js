@@ -50,6 +50,20 @@ const UserAuthState = (props) => {
         return json;
 
     }
+    
+    const changePassword = async (oldPassword,newPassword) => {
+        const response = await fetch(`${host}/charity_organization/user_auth/change_password`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ oldPassword:oldPassword, newPassword:newPassword})
+        });
+        const json = await response.json();
+        return json;
+
+    }
+    
 
 
     return (
