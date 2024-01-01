@@ -13,6 +13,7 @@ const navigate=useNavigate();
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getAllUnApprovedCases();
+      getAllInProgressCases();
 
     }
     else {
@@ -41,7 +42,7 @@ const navigate=useNavigate();
       <div className='flex flex-wrap justify-center gap-4'>
         {AllInProgressCases.length > 0 ? (
           AllInProgressCases.map((application) => (
-            <CaseCard key={application.cno} caseItem={application} approved={true} />
+            <CaseCard key={application.cno} caseItem={application} approved={true} jk={true} />
 
           ))
         ) : (
