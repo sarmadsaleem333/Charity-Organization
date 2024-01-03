@@ -28,6 +28,19 @@ export default function EventsServer() {
   }
   const upload = async (e) => {
     e.preventDefault();
+
+    // Convert event date to a Date object
+    const eventDate = new Date(eventCredentials.eventdate);
+
+    // Get the current date
+    const currentDate = new Date();
+
+    // Compare event date with the current date
+    if (eventDate <= currentDate) {
+      // Event date is not greater than the current date
+      showAlert('Event date must be greater than the current date', 'danger');
+      return;
+    }
     const formData = new FormData();
     formData.append("eventname", eventCredentials.eventname);
     formData.append("eventdate", eventCredentials.eventdate);
@@ -36,10 +49,10 @@ export default function EventsServer() {
     formData.append("photolink", eventCredentials.photolink);
     console.log(formData)
     console.log(eventCredentials);
-    const newDate=formatDateString(eventCredentials.eventdate);
-    const message = await uploadEvent(eventCredentials.eventname,newDate, eventCredentials.description, eventCredentials.volunteers_no);
+    const newDate = formatDateString(eventCredentials.eventdate);
+    const message = await uploadEvent(eventCredentials.eventname, newDate, eventCredentials.description, eventCredentials.volunteers_no);
     setEventCredentials({ eventname: "", eventdate: "", volunteers_no: "", description: "", photolink: "" });
-    showAlert(message, "success");
+    showAlert("Your event uploaded", "success");
   }
   const navigate = useNavigate();
   useEffect(() => {
